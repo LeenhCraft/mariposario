@@ -1,0 +1,13 @@
+.vscode
+.tmp.drivedownload
+.tmp.driveupload
+*.log
+.htaccess
+/app/config
+/Medios
+/Medios_old
+/Libraries/vendor
+/Libraries/node_modules
+/app/vendor
+/app/node_modules
+/app/resources/github
