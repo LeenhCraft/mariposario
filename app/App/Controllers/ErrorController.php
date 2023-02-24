@@ -10,6 +10,6 @@ class ErrorController
     {
         $response = new Response();
         $response->getBody()->write("404 :p");
-        return $response;
+        return $response->withStatus(404);
     }
 }

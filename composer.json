@@ -1,0 +1,16 @@
+{
+    "name": "leenhcraft/mvc",
+    "description": "mvc base",
+    "type": "library",
+    "require": {
+        "slim/slim": "^4.11",
+        "slim/psr7": "^1.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "leenh bustmante",
+            "email": "hackingleenh@gmail.com"
+        }
+    ]
+}

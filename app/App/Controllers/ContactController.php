@@ -22,7 +22,7 @@ class ContactController extends Controller
             // return $contacts;
         }
         $response->getBody()->write(json_encode($contacts));
-        return $response;
+        return $response->withHeader('Content-Type', 'application/json');
         
         return $this->view('contacts.index', compact('contacts'));
     }

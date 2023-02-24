@@ -11,3 +11,4 @@
 /app/vendor
 /app/node_modules
 /app/resources/github
+/vendor/
