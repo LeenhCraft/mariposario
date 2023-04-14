@@ -1,9 +1,10 @@
 .vscode
 .tmp.drivedownload
+/.tmp.drivedownload
 .tmp.driveupload
+/.tmp.driveupload
 *.log
 .htaccess
-/app/config
 /Medios
 /Medios_old
 /Libraries/vendor
@@ -12,3 +13,6 @@
 /app/node_modules
 /app/resources/github
 /vendor/
+.env
+/node_modules
+/public/img
