@@ -26,25 +26,17 @@ $(document).ready(function () {
 });
 
 function openModal() {
-  $(".modal-header").removeClass("headerUpdate");
-  $(".modal-header").addClass("headerRegister");
-  $("#btnActionForm").removeClass("btn-info");
-  $("#btnActionForm").addClass("btn-primary");
-  $("#btnText").html("Guardar");
-  $(".modal-form").html("Nuevo submenus");
-  $(".div_id").addClass("d-none");
-  $("#id").val("");
-  $("#person_form").attr("onsubmit", "return save(this,event)");
-  $("#person_form").trigger("reset");
+  resetForm();
   $("#addModal").modal("show");
 }
 
 function fntEdit(idp) {
   let ajaxUrl = base_url + "admin/person/search";
+  resetForm();
+  $("#person_form").attr("onsubmit", "return update(this,event)");
   $("#titleModal").html("Actualizar");
   $("#btnActionForm").removeClass("btn-primary").addClass("btn-info");
   $("#btnText").html("Actualizar");
-  $("#person_form").attr("onsubmit", "return update(this,event)");
   $("#addModal").modal("show");
   //
   $.post(ajaxUrl, { id: idp }, function (data) {
@@ -57,6 +49,7 @@ function fntEdit(idp) {
       $("#email").val(data.data.per_email);
       $("#address").val(data.data.per_direcc);
       $("#status").val(data.data.per_estado);
+      $(".mostrarimagen").attr("src", data.data.img_url);
     } else {
       Swal.fire({
         title: "Error",
@@ -105,36 +98,92 @@ function fntDel(idp) {
 }
 
 function save(ths, e) {
-  let form = $(ths).serialize();
+  let dat = new FormData(ths);
   divLoading.css("display", "flex");
   let ajaxUrl = base_url + "admin/person/save";
-  $.post(ajaxUrl, form, function (data) {
-    divLoading.css("display", "none");
-    if (data.status) {
-      $("#addModal").modal("hide");
-      Swal.fire("Menu", data.message, "success");
-      tb.api().ajax.reload();
-    } else {
-      Swal.fire("Error", data.message, "warning");
-    }
+  $.ajax({
+    type: "POST",
+    url: ajaxUrl,
+    data: dat,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      if (data.status) {
+        $("#addModal").modal("hide");
+        resetForm();
+        Toast.fire({
+          icon: "success",
+          title: data.message,
+        });
+        tb.api().ajax.reload();
+      } else {
+        Swal.fire("Error", data.message, "warning");
+      }
+      divLoading.css("display", "none");
+    },
+    error: function (error) {
+      console.log(error);
+    },
   });
   return false;
 }
 
 function update(ths, e) {
-  let form = $(ths).serialize();
+  let dat = new FormData(ths);
   divLoading.css("display", "flex");
   let ajaxUrl = base_url + "admin/person/update";
-
-  $.post(ajaxUrl, form, function (data) {
-    divLoading.css("display", "none");
-    if (data.status) {
-      $("#modalmenus").modal("hide");
-      Swal.fire("Menu", data.message, "success");
-      tb.api().ajax.reload();
-    } else {
-      Swal.fire("Error", data.message, "warning");
-    }
+  $.ajax({
+    type: "POST",
+    url: ajaxUrl,
+    data: dat,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      if (data.status) {
+        $("#addModal").modal("hide");
+        resetForm();
+        Toast.fire({
+          icon: "success",
+          title: data.message,
+        });
+        tb.api().ajax.reload();
+      } else {
+        Swal.fire("Error", data.message, "warning");
+      }
+      divLoading.css("display", "none");
+    },
+    error: function (error) {
+      console.log(error);
+    },
   });
   return false;
+}
+
+function viewImg(ths, event) {
+  let fileSize = $(ths)[0].files[0].size / 1024 / 1024; // Tamaño del archivo en MB
+  if (fileSize > 5) {
+    Toast.fire({
+      icon: "error",
+      title: "El tamaño del archivo no debe superar los 5MB",
+    });
+    $("#photo").val("");
+  } else {
+    let view = $(".mostrarimagen");
+    let file = $(ths)[0].files[0];
+    var tmppath = URL.createObjectURL(event.target.files[0]);
+    view.attr("src", tmppath);
+  }
+}
+
+function resetForm(ths) {
+  $("#person_form").trigger("reset");
+  $("#id").val("");
+  $(".mostrarimagen").attr(
+    "src",
+    "/img/placeholder/woocommerce-placeholder-150x150.png"
+  );
+  $(ths).attr("onsubmit", "return save(this,event)");
+  $("#btnText").html("Guardar");
+  $("#btnActionForm").removeClass("btn-info").addClass("btn-primary");
+  $(".modal-title").html("Agregar articulo");
 }

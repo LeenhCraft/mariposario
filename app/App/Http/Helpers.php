@@ -43,6 +43,7 @@ function footerWeb($view, $data = [])
 function headerApp($view, $data = "")
 {
     $nombre = getName($_SESSION['app_id'] ?? 0);
+    $fotoUsuario = getName($_SESSION['app_id'])['foto'];
     $view_header = "../app/resources/views/App/{$view}.php";
     require_once $view_header;
 }
@@ -370,6 +371,8 @@ function getName(int $id)
         } else {
             $arrPermisos['rol'] = '<span class="badge bg-info">' . $arrPermisos['rol'] . '</span>';
         }
+        $img = $mn->query("SELECT * FROM sis_imagenes WHERE img_propietario = ? AND img_type = ?", [$arrPermisos['idpersona'], 'USER::AVATAR'])->first();
+        $arrPermisos['foto'] = !empty($img) ? $img['img_url'] : "/img/placeholder/woocommerce-placeholder-150x150.png";
     }
     return $arrPermisos;
 }

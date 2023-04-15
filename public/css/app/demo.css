@@ -189,8 +189,19 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     float: none;
     text-align: center;
   }
-  div.dataTables_wrapper div.dataTables_filter{
+
+  div.dataTables_wrapper div.dataTables_filter {
     float: none;
     text-align: center;
   }
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.to-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

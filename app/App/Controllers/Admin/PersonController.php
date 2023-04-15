@@ -2,11 +2,14 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\Controller;
-use App\Models\Admin\UserModel;
-use App\Models\TableModel;
 use Slim\Csrf\Guard;
 use Slim\Psr7\Factory\ResponseFactory;
+
+use App\Complements\ImageClass;
+use App\Controllers\Controller;
+
+use App\Models\Admin\UserModel;
+use App\Models\TableModel;
 
 class PersonController extends Controller
 {
@@ -104,7 +107,10 @@ class PersonController extends Controller
             "per_estado" => $data['status'] ?: 0,
         ]);
         if (!empty($rq)) {
-            $msg = "Datos guardados correctamente";
+            $image = new ImageClass;
+            $img = $image->cargarImagenUsuario($_FILES['photo'], $rq, "img/person");
+            // $msg = "Datos guardados correctamente";
+            $msg = "Datos guardados correctamente" . $img['text'];
             return $this->respondWithSuccess($response, $msg);
         }
         $msg = "Error al guardar los datos";
@@ -149,6 +155,14 @@ class PersonController extends Controller
         $model->setId("idpersona");
         $rq = $model->find($data['id']);
         if (!empty($rq)) {
+            // adjuntar imagen de sis_imagen
+            $objImg = new TableModel;
+            $objImg->setTable("sis_imagenes");
+            $objImg->setId("idimagen");
+            $img = $objImg->where("img_propietario", $rq['idpersona'])->where("img_type", "USER::AVATAR")->first();
+            if (!empty($img)) {
+                $rq = array_merge($rq, $img);
+            }
             return $this->respondWithJson($response, ["status" => true, "data" => $rq]);
         }
         $msg = "No se encontraron datos";
@@ -197,6 +211,11 @@ class PersonController extends Controller
             "per_estado" => $data['status'] ?: 0,
         ]);
         if (!empty($rq)) {
+            $image = new ImageClass;
+            $img = ['text' => ''];
+            if ($image->verificar($_FILES['photo'])) {
+                $img = $image->cargarImagenUsuario($_FILES['photo'], $rq, "img/person");
+            }
             $msg = "Datos actualizados";
             return $this->respondWithSuccess($response, $msg);
         }

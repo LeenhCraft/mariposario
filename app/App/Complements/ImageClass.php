@@ -29,7 +29,7 @@ class ImageClass
         if ($validate['status']) {
             // meter a la bd
             $model = new TableModel;
-            $model->setTable("bib_imagenes");
+            $model->setTable("sis_imagenes");
             $model->setId("idimagen");
 
             $nombre = $data['lib_slug'];
@@ -126,6 +126,56 @@ class ImageClass
             return $img['img_url'];
         }
         return "/img/placeholder/woocommerce-placeholder-150x150.png";
+    }
+
+    public function cargarImagenUsuario($photo, $data = [], $type = "img", $isArray = false)
+    {
+        $class = new Imagenes;
+        $validate = $class->validarImagen($photo);
+        $peso = $class->peso($photo, "MB");
+        if ($peso > 5) {
+            $validate['text'] = "El peso de la imagen no debe ser mayor a 5 MB";
+            $validate['status'] = false;
+        }
+        if ($validate['status']) {
+            // meter a la bd
+            $model = new TableModel;
+            $model->setTable("sis_imagenes");
+            $model->setId("idimagen");
+
+            $nombre = urls_amigables($data['per_nombre']);
+            $extension = $class->extension($photo);
+            $ruta = $photo['tmp_name'];
+            $destination = $type . "/" . $nombre . "." . $extension;
+
+            $dataImg = $model->where("img_propietario", $data['idpersona'])->where("img_type", "USER::AVATAR")->first();
+
+            if (empty($dataImg)) {
+                $rq = $model->create([
+                    "idgalery" => '0',
+                    "img_externo" => '0',
+                    "img_url" => "/" . $destination,
+                    "img_propietario" => $data['idpersona'],
+                    "img_type" => 'USER::AVATAR',
+                ]);
+            }
+
+            if (!empty($dataImg)) {
+                $this->eliminarFile($dataImg['img_url']);
+                $rq = $model->update($dataImg['idimagen'], [
+                    "idgalery" => '0',
+                    "img_externo" => '0',
+                    "img_url" => "/" . $destination,
+                    "img_propietario" => $data['idpersona'],
+                    "img_type" => 'USER::AVATAR',
+                ]);
+            }
+            $mover = $class->moverImg($ruta, $destination);
+
+            $validate['text'] = ($mover) ? "\nImagen cargada correctamente" : "\nError al cargar la imagen";
+            $validate['status'] = ($mover) ? true : false;
+        }
+        return $validate;
     }
 
     // function mover_archivo($archivo, $ruta_destino, $crear_carpeta = false, $nombre_carpeta = '')

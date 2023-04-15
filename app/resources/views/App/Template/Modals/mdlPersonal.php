@@ -1,6 +1,6 @@
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-md">
-        <form id="person_form" name="form" class="form-horizontal" onsubmit="return save(this,event)">
+        <form id="person_form" name="form" class="form-horizontal" onsubmit="return save(this,event)" enctype="multipart/form-data">
             <input id="id" name="id" type="hidden">
             <input type="hidden" name="<?= $data['tk']['name'] ?>" value="<?= $data['tk']['key'][$data['tk']['name']]  ?>">
             <input type="hidden" name="<?= $data['tk']['value'] ?>" value="<?= $data['tk']['key'][$data['tk']['value']] ?>">
@@ -12,6 +12,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="user-avatar-section">
+                                <div class="position-relative d-flex align-items-center flex-column">
+                                    <img class="mostrarimagen img-fluid rounded my-4 cursor-pointer" src="/img/placeholder/woocommerce-placeholder-150x150.png" height="110" width="110" alt="User avatar">
+                                    <input class="position-absolute w-100 h-100 opacity-0 cursor-pointer" type="file" accept="image/png,image/jpeg" onchange="viewImg(this,event)" name="photo" id="photo">
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group col-12 col-md-5" id="divBsc">
                             <label for="">DNI: </label>
                             <div class="input-group">
@@ -68,5 +76,4 @@
             </div>
         </form>
     </div>
-</div>
 </div>

@@ -32,7 +32,7 @@ class LoginAdminModel extends Model
 
     public function bscUsu($id)
     {
-        $sql = "SELECT b.per_nombre as nombre, c.rol_nombre as rol FROM sis_usuarios a 
+        $sql = "SELECT b.per_nombre as nombre, c.rol_nombre as rol, b.idpersona FROM sis_usuarios a 
         INNER JOIN sis_personal b ON a.idpersona=b.idpersona 
         INNER JOIN sis_rol c ON c.idrol=a.idrol  WHERE a.idusuario='{$id}'";
         $request = $this->query($sql)->first();

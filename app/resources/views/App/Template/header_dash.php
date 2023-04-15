@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
+<html lang="es" class="dark-style layout-menu-fixed layout-navbar-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="/css/app/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="/css/app/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/css/app/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/css/app/vendor/css/core-dark.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/css/app/vendor/css/theme-default-dark.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="/css/app/custom.css" />
 
     <!-- Vendors CSS -->
@@ -90,7 +90,7 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="/img/placeholder/woocommerce-placeholder-150x150.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img src="<?= $fotoUsuario ?>" alt class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -99,11 +99,11 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="/img/placeholder/woocommerce-placeholder-150x150.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="<?= $fotoUsuario ?>" alt class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block"><?php echo $nombre['nombre'] ?? "UNDEFINED"; ?></span>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <span class="fw-semibold d-block to-ellipsis"><?php echo $nombre['nombre'] ?? "UNDEFINED"; ?></span>
                                                     <small class="text-muted"><?php echo $nombre['rol'] ?? "UNDEFINED"; ?></small>
                                                 </div>
                                             </div>
@@ -139,7 +139,7 @@
                                     <li>
                                         <a class="dropdown-item" href="/admin/logout">
                                             <i class="bx bx-power-off me-2"></i>
-                                            <span class="align-middle">Log Out</span>
+                                            <span class="align-middle">Cerar Sesión</span>
                                         </a>
                                     </li>
                                 </ul>
