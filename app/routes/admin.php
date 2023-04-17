@@ -22,9 +22,9 @@ use App\Controllers\Admin\SubmenusController;
 use App\Controllers\Admin\TipoArticulosController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\LogoutController;
-use App\Middleware\AdminMiddleware;
 
 // Middlewares
+use App\Middleware\AdminMiddleware;
 use App\Middleware\LoginAdminMiddleware;
 use App\Middleware\PermissionMiddleware;
 use App\Middleware\RemoveCsrfMiddleware;

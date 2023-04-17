@@ -71,7 +71,7 @@ class LoginAdminController extends Controller
             $_SESSION['app_id'] = $userData['idusuario'];
             $_SESSION['app_r'] = $userData['idrol'];
             $_SESSION['app_session'] = true;
-            $msg = "Bienvenido!\n" . $userData["per_nombre"];
+            $msg = "Bienvenido!\n" . explode(" ", $userData['per_nombre'])[0];
             $this->guard->removeAllTokenFromStorage();
             return $this->respondWithSuccess($response, $msg);
         }
@@ -81,8 +81,14 @@ class LoginAdminController extends Controller
 
     private function validar($data)
     {
-        if (empty($data["email"]) || !filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+        if (empty($data["email"])) {
             return false;
+        }
+
+        if ($_ENV['APP_ENV'] == "production") {
+            if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+                return false;
+            }
         }
 
         if (empty($data["password"])) {

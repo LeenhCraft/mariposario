@@ -16,64 +16,66 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <a href="https://themeselection.com/item/sneat-bootstrap-html-admin-template/" target="_blank">
-                    <img class="rounded-3" src="https://themeselection.com/wp-content/uploads/edd/2022/07/sneat-bootstrap-html-admin-dashboard-dark.png" alt="" height="140">
-                </a>
+    <?php if ($_ENV['APP_ENV'] === "local") : ?>
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <a href="https://themeselection.com/item/sneat-bootstrap-html-admin-template/" target="_blank">
+                        <img class="rounded-3" src="https://themeselection.com/wp-content/uploads/edd/2022/07/sneat-bootstrap-html-admin-dashboard-dark.png" alt="" height="140">
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-sm-10 col-md-6 col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <p class="fw-bold">$_SESSION</p>
-            </div>
-            <div class="card-body">
-                <?php dep($_SESSION) ?>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-sm-10 col-md-6 col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <p class="fw-bold">$data</p>
-            </div>
-            <div class="card-body">
-                <?php dep($data) ?>
+        <div class="col-12 col-sm-10 col-md-6 col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <p class="fw-bold">$_SESSION</p>
+                </div>
+                <div class="card-body">
+                    <?php dep($_SESSION) ?>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-sm-10 col-md-6 col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <p class="fw-bold">$data</p>
+        <div class="col-12 col-sm-10 col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <p class="fw-bold">$data</p>
+                </div>
+                <div class="card-body">
+                    <?php dep($data) ?>
+                </div>
             </div>
-            <div class="card-body">
-                <dl>
-                    <dt>HTML</dt>
-                    <dd>lenguaje de marcado para la creación de páginas web</dd>
-                    <dt>CSS</dt>
-                    <dd>lenguaje de hojas de estilo para la presentación de páginas web</dd>
-                    <dt>JavaScript</dt>
-                    <dd>lenguaje de programación para la creación de interacciones y efectos en páginas web</dd>
-                </dl>
+        </div>
+        <div class="col-12 col-sm-10 col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <p class="fw-bold">$data</p>
+                </div>
+                <div class="card-body">
+                    <dl>
+                        <dt>HTML</dt>
+                        <dd>lenguaje de marcado para la creación de páginas web</dd>
+                        <dt>CSS</dt>
+                        <dd>lenguaje de hojas de estilo para la presentación de páginas web</dd>
+                        <dt>JavaScript</dt>
+                        <dd>lenguaje de programación para la creación de interacciones y efectos en páginas web</dd>
+                    </dl>
 
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-sm-10 col-md-6 col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <p class="fw-bold">getName($_SESSION['app_id'])</p>
-            </div>
-            <div class="card-body">
-                <?php
-                dep(getName($_SESSION['app_id']));
-                ?>
+        <div class="col-12 col-sm-10 col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <p class="fw-bold">getName($_SESSION['app_id'])</p>
+                </div>
+                <div class="card-body">
+                    <?php
+                    dep(getName($_SESSION['app_id']));
+                    ?>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 <?php footerApp('Template/footer_dash', $data) ?>
