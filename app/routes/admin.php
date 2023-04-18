@@ -1,25 +1,18 @@
 <?php
 
 // use Slim\App;
-
-use App\Controllers\Admin\ArticulosController;
-use App\Controllers\Admin\AutoresController;
-use App\Controllers\Admin\CopiasController;
-use App\Controllers\Admin\DashboardController;
-use App\Controllers\Admin\DataBaseController;
-use App\Controllers\Admin\EditorialesController;
-use App\Controllers\Admin\LibrosController;
 use Slim\Routing\RouteCollectorProxy;
 
 // Controllers
+use App\Controllers\Crud\CrudController;
+use App\Controllers\Admin\DashboardController;
+use App\Controllers\Admin\DataBaseController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
-use App\Controllers\Admin\ReservasController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
-use App\Controllers\Admin\TipoArticulosController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\LogoutController;
 
@@ -107,78 +100,15 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post('/delete', RolController::class . ':delete');
     });
 
-    $group->group("/tipos", function (RouteCollectorProxy $group) {
-        $group->get("", TipoArticulosController::class . ":index")->add(new RemoveCsrfMiddleware());
-        $group->post("", TipoArticulosController::class . ":list");
-        $group->post("/save", TipoArticulosController::class . ":store");
-        $group->post("/search", TipoArticulosController::class . ":search");
-        $group->post("/update", TipoArticulosController::class . ":update");
-        $group->post("/delete", TipoArticulosController::class . ":delete");
+    $group->group("/crud", function (RouteCollectorProxy $group) {
+        $group->get("", CrudController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", CrudController::class . ":list");
+        $group->post("/save", CrudController::class . ":store");
+        $group->post("/search", CrudController::class . ":search");
+        $group->post("/update", CrudController::class . ":update");
+        $group->post("/delete", CrudController::class . ":delete");
+        $group->post("/libros", CrudController::class . ":libros");
     })->add(PermissionMiddleware::class);
-
-    $group->group("/autores", function (RouteCollectorProxy $group) {
-        $group->get("", AutoresController::class . ":index")->add(new RemoveCsrfMiddleware());
-        $group->post("", AutoresController::class . ":list");
-
-        $group->post("/save", AutoresController::class . ":store");
-        $group->post("/search", AutoresController::class . ":search");
-        $group->post("/update", AutoresController::class . ":update");
-        $group->post("/delete", AutoresController::class . ":delete");
-    })->add(PermissionMiddleware::class);
-
-    $group->group("/editoriales", function (RouteCollectorProxy $group) {
-        $group->get("", EditorialesController::class . ":index")->add(new RemoveCsrfMiddleware());
-        $group->post("", EditorialesController::class . ":list");
-
-        $group->post("/save", EditorialesController::class . ":store");
-        $group->post("/search", EditorialesController::class . ":search");
-        $group->post("/update", EditorialesController::class . ":update");
-        $group->post("/delete", EditorialesController::class . ":delete");
-    })->add(PermissionMiddleware::class);
-
-    $group->group("/articulos", function (RouteCollectorProxy $group) {
-        $group->get("", ArticulosController::class . ":index")->add(new RemoveCsrfMiddleware());
-
-        $group->post("", ArticulosController::class . ":list");
-        $group->post("/save", ArticulosController::class . ":store");
-        $group->post("/search", ArticulosController::class . ":search");
-        $group->post("/update", ArticulosController::class . ":update");
-        $group->post("/delete", ArticulosController::class . ":delete");
-        $group->post("/tipos", ArticulosController::class . ":tipos");
-    })->add(PermissionMiddleware::class);
-
-    $group->group("/libros", function (RouteCollectorProxy $group) {
-        $group->get("", LibrosController::class . ":index")->add(new RemoveCsrfMiddleware());
-
-        $group->post("", LibrosController::class . ":list");
-        $group->post("/save", LibrosController::class . ":store");
-        $group->post("/search", LibrosController::class . ":search");
-        $group->post("/update", LibrosController::class . ":update");
-        $group->post("/delete", LibrosController::class . ":delete");
-        $group->post("/autores", LibrosController::class . ":autores");
-        $group->post("/editoriales", LibrosController::class . ":editoriales");
-        $group->post("/articulos", LibrosController::class . ":articulos");
-    })->add(PermissionMiddleware::class);
-
-    $group->group("/copias", function (RouteCollectorProxy $group) {
-        $group->get("", CopiasController::class . ":index")->add(new RemoveCsrfMiddleware());
-
-        $group->post("", CopiasController::class . ":list");
-        $group->post("/save", CopiasController::class . ":store");
-        $group->post("/search", CopiasController::class . ":search");
-        $group->post("/update", CopiasController::class . ":update");
-        $group->post("/delete", CopiasController::class . ":delete");
-        $group->post("/libros", CopiasController::class . ":libros");
-    })->add(PermissionMiddleware::class);
-
-    $group->group("/reservas", function (RouteCollectorProxy $group) {
-        $group->get("", ReservasController::class . ":index")->add(new RemoveCsrfMiddleware());
-
-        $group->post("", ReservasController::class . ":list");
-        $group->post("/save", ReservasController::class . ":store");
-        $group->post("/search", ReservasController::class . ":search");
-        $group->post("/update", ReservasController::class . ":update");
-        $group->post("/delete", ReservasController::class . ":delete");
-        $group->post("/libros", ReservasController::class . ":libros");
-    })->add(PermissionMiddleware::class);
+    
 })->add(new LoginAdminMiddleware());

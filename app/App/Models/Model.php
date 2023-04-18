@@ -223,7 +223,6 @@ class Model
     // funcion para ejecutar multiples consultas en una sola linea con mysqli_multi_query
     public function multiQuery($sql)
     {
-        $this->query = $this->connection->multi_query($sql);
-        return $this;
+        return $this->connection->multi_query($sql);
     }
 }
