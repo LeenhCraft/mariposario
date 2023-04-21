@@ -186,11 +186,12 @@ class SubmenusController extends Controller
         }
 
         $model = new SubmenuModel;
-        $existe = $model->where("sub_nombre", "LIKE", $data['name'])->where("idsubmenu", "!=", $data['id'])->first();
-        if (!empty($existe)) {
-            $msg = "Ya tiene un submenu con el mismo nombre";
-            return $this->respondWithError($response, $msg);
-        }
+        // $existe = $model->where("sub_nombre", "LIKE", $data['name'])->where("idmenu","=", $data["idmenu"])->first();
+        // // $existe = $model->where("sub_nombre", "LIKE", $data['name'])->where("idsubmenu", "!=", $data['id'])->first();
+        // if (!empty($existe)) {
+        //     $msg = "Ya tiene un submenu con el mismo nombre";
+        //     return $this->respondWithError($response, $msg);
+        // }
 
         $rq = $model->update($data['id'], [
             "idmenu" => $data["idmenu"],
@@ -207,7 +208,7 @@ class SubmenusController extends Controller
             return $this->respondWithSuccess($response, $msg);
         }
         $msg = "Error al guardar los datos";
-        return $this->respondWithJson($response, $existe);
+        return $this->respondWithJson($response, $msg);
     }
 
     private function validarUpdate($data)

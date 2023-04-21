@@ -114,7 +114,7 @@ class PersonController extends Controller
             return $this->respondWithSuccess($response, $msg);
         }
         $msg = "Error al guardar los datos";
-        return $this->respondWithJson($response, $existe);
+        return $this->respondWithJson($response, $msg);
     }
 
     private function validar($data)

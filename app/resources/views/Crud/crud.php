@@ -43,7 +43,15 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row mb-3 d-none">
+                        <label class="col-sm-2 col-form-label" for="query">Namespace</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text"><i class='bx bx-right-arrow-alt'></i></span>
+                                <input name="namespace" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-12 col-sm-10 ms-auto">
                             <div class="col-md">
@@ -54,19 +62,32 @@
                                         <label class="form-check-label" for="execute">ejecutar</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="create_controller" name="create_controller">
+                                        <input class="form-check-input" type="checkbox" id="replace_file" name="replace_file" value="1">
+                                        <label class="form-check-label" for="replace_file">reemplazar archivos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-10 ms-auto">
+                            <div class="col-md">
+                                <small class="text-light fw-semibold d-block">Acciones adicionales</small>
+                                <div class="text-capitalize">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="create_controller" name="create_controller" value="1">
                                         <label class="form-check-label" for="create_controller">Controlador</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="create_model" name="create_model">
+                                        <input class="form-check-input" type="checkbox" id="create_model" name="create_model" value="1" disabled checked>
                                         <label class="form-check-label" for="create_model">Modelo</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="create_view" name="create_view">
+                                        <input class="form-check-input" type="checkbox" id="create_view" name="create_view" value="1">
                                         <label class="form-check-label" for="create_view">Vista</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="create_js" name="create_js">
+                                        <input class="form-check-input" type="checkbox" id="create_js" name="create_js" value="1">
                                         <label class="form-check-label" for="create_js">Js</label>
                                     </div>
                                 </div>
@@ -79,7 +100,7 @@
                                 <div class="alert-warning-body">
                                     Advertencias
                                 </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <button type="button" class="btn-close" onclick='$(".alert-warning").hide("fast");' aria-label="Close">
                                 </button>
                             </div>
                             <div class="alert alert-success alert-dismissible" role="alert" style="display: none;">

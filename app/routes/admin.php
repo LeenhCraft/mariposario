@@ -7,10 +7,12 @@ use Slim\Routing\RouteCollectorProxy;
 use App\Controllers\Crud\CrudController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DataBaseController;
+use App\Controllers\Admin\FilosController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
+use App\Controllers\Admin\ReinosController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
 use App\Controllers\Admin\UserController;
@@ -110,5 +112,37 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/delete", CrudController::class . ":delete");
         $group->post("/libros", CrudController::class . ":libros");
     })->add(PermissionMiddleware::class);
-    
+
+    // // Obtener la conexión a la base de datos
+    // $pdo = new PDO('mysql:host=localhost;dbname=tu_base_de_datos', 'tu_usuario', 'tu_contraseña');
+
+    // // Obtener los datos de la tabla de rutas
+    // $stmt = $pdo->query('SELECT * FROM rutas');
+    // $rutas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // // Definir las rutas dinámicamente
+    // foreach ($rutas as $ruta) {
+    //     $app->map([$ruta['method']], $ruta['path'], $ruta['controlador'])->add($ruta['middleware']);
+    // }
+
+
+    $group->group("/reinos", function (RouteCollectorProxy $group) {
+        $group->get("", ReinosController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", ReinosController::class . ":list");
+        $group->post("/save", ReinosController::class . ":store");
+        $group->post("/search", ReinosController::class . ":search");
+        $group->post("/update", ReinosController::class . ":update");
+        $group->post("/delete", ReinosController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/filos", function (RouteCollectorProxy $group) {
+        $group->get("", FilosController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", FilosController::class . ":list");
+        $group->post("/save", FilosController::class . ":store");
+        $group->post("/search", FilosController::class . ":search");
+        $group->post("/update", FilosController::class . ":update");
+        $group->post("/delete", FilosController::class . ":delete");
+    })->add(PermissionMiddleware::class);
 })->add(new LoginAdminMiddleware());

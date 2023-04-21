@@ -5,7 +5,6 @@
     "phpmailer/phpmailer": "^6.7",
     "vlucas/phpdotenv": "^5.5",
     "slim/csrf": "1.0.0",
-    "gossi/php-code-generator": "^0.5.0",
     "nette/php-generator": "^3.6"
   },
   "autoload": {

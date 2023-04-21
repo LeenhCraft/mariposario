@@ -76,7 +76,15 @@ class CrudController extends Controller
     {
         // $data = $this->sanitize($request->getParsedBody());
         $data = $request->getParsedBody();
-        return $this->respondWithJson($response, $data);
+        $data = array_merge([
+            "execute" => '0',
+            "replace_file" => '0',
+            "create_controller" => '0',
+            "create_model" => '0',
+            "create_view" => '0',
+            "create_js" => '0'
+        ], $data);
+        // return $this->respondWithJson($response, $data);
 
         $validate = $this->guard->validateToken($data['csrf_name'] ?? '', $data['csrf_value'] ?? '');
         if (!$validate) {
@@ -89,58 +97,63 @@ class CrudController extends Controller
         $controller = ucfirst(str_replace('controller', '', strtolower($data['controller'])));
 
         // definimos las rutas de los archivos
-        $rtControlador = '../app/App/Controllers/Admin/' . $controller . 'Controller.php';
-        $rtModelo = '../app/App/Models/Admin/' . $controller . 'Model.php';
-        $rtJavaScript = '/js/app/nw_' . $controller . '.js';
-        $rtVista = '../app/resources/views/App/' . $controller . '/' . $controller . '.php';
-        $rtModal = '../app/resources/views/App/Template/Modals/mdl' . $controller . '.php';
+        $pathController = '../app/App/Controllers/Admin/' . $controller . 'Controller.php';
+        $pathModel = '../app/App/Models/Admin/' . $controller . 'Model.php';
+        $pathJs = 'js/app/nw_' . strtolower($controller) . '.js';
+        $pathDirView = '../app/resources/views/App/' . $controller . '/';
+        $pathView = '../app/resources/views/App/' . $controller . '/' . strtolower($controller) . '.php';
+        $pathModal = '../app/resources/views/App/Template/Modals/mdl' . $controller . '.php';
 
-        $archivos = $this->buscarArchivo($controller, [
-            'controlador' => $rtControlador,
-            'modelo' => $rtModelo,
-            'js' => $rtJavaScript,
-            'vista' => $rtVista,
-            'modal' => $rtModal
-        ]);
+        // buscamos si los archivos existen
+        if (!$data["replace_file"]) { // si no se va a reemplazar los archivos
+            $archivos = $this->buscarArchivo($controller, [
+                'controlador' => $pathController,
+                'modelo' => $pathModel,
+                'js' => $pathJs,
+                'vista' => $pathView,
+                'modal' => $pathModal
+            ]);
 
-        if (!empty($archivos)) {
-            return $this->respondWithError($response, $archivos);
+            if (!empty($archivos)) {
+                return $this->respondWithError($response, $archivos);
+            }
         }
 
+        // creamos la estructura de la tabla
         if ($data['execute']) {
-
-            $bd = $this->baseDatos($data['query'], $data['table'], $data['controller']);
+            $bd = $this->executeQuery($data['query'], $data['table'], $data['controller']);
             if (!$bd) {
                 return $this->respondWithError($response, "La tabla ya existe o no se pudo crear");
             }
-
-            $structure = $this->structureTable($data['query'], $data['table'], $data['controller']);
-
-            return $this->respondWithJson($response, $structure);
-            
         }
 
-        // $model = new TableModel;
-        // $model->setTable('sis_tareas_ejecutables');
-        // $model->setId("idtarea");
+        // obtenemos la estructura de la tabla
+        $structure = $this->structureTable($data['query'], $data['table'], $data['controller']);
+        if (empty($structure)) {
+            return $this->respondWithError($response, "La tabla ´{$data['table']}´ no existe.");
+        }
 
-        // $existe = $model->where("ta_name", $data['name'])->first();
-        // if (!empty($existe)) {
-        //     $msg = "Ya existe un registro con el mismo nombre";
-        //     return $this->respondWithError($response, $msg);
-        // }
+        $msg = "<ul>";
+        if ($data['create_controller']) {
+            $contentController = $this->createController($pathController, $controller, $structure, $data['table']);
+            $msg .= $this->createFile($contentController, $pathController);
+        }
 
-        // $rq = $model->create([
-        //     "ta_name" => ucwords($data['name']) ?? "UNDEFINED",
-        //     "ta_description" => ucfirst($data['description']) ?? "UNDEFINED",
-        //     "ta_execute" => $data['execute'] ?? "-",
-        // ]);
-        // if (!empty($rq)) {
-        //     $msg = "Datos guardados correctamente";
-        //     return $this->respondWithSuccess($response, $msg);
-        // }
-        $msg = "Error al guardar los datos";
-        return $this->respondWithJson($response, $msg);
+        if ($data['create_view']) {
+            // modal
+            $contentModal = $this->createModal($pathModal, $controller, $structure, $data['table']);
+            $msg .= $this->createFile($contentModal, $pathModal);
+            // vista
+            $contentView = $this->createView($pathView, $controller, $structure, $data['table']);
+            $msg .= $this->createFile($contentView, $pathView, $pathDirView);
+        }
+
+        if ($data['create_js']) {
+            $contentJs = $this->createJS($pathJs, $controller, $structure, $data['table']);
+            $msg .= $this->createFile($contentJs, $pathJs);
+        }
+        $msg .= "</ul>";
+        return $this->respondWithError($response, $msg);
     }
 
     private function validar($data)
@@ -152,138 +165,6 @@ class CrudController extends Controller
             return false;
         }
         return true;
-    }
-
-    public function search($request, $response)
-    {
-        $data = $this->sanitize($request->getParsedBody());
-
-        $errors = $this->validarSearch($data);
-        if (!$errors) {
-            $msg = "Verifique los datos ingresados";
-            return $this->respondWithError($response, $msg);
-        }
-
-        $model = new TableModel;
-        $model->setTable('sis_tareas_ejecutables');
-        $model->setId("idtarea");
-
-        $rq = $model->find($data['id']);
-        if (!empty($rq)) {
-            return $this->respondWithJson($response, ["status" => true, "data" => $rq]);
-        }
-        $msg = "No se encontraron datos";
-        return $this->respondWithError($response, $msg);
-    }
-
-    public function validarSearch($data)
-    {
-        if (empty($data["id"])) {
-            return false;
-        }
-        return true;
-    }
-
-    public function update($request, $response)
-    {
-        // $data = $this->sanitize($request->getParsedBody());
-        $data = $request->getParsedBody();
-        // return $this->respondWithJson($response, $data);
-
-        $validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
-        if (!$validate) {
-            $msg = "Error de validación, por favor recargue la página";
-            return $this->respondWithError($response, $msg);
-        }
-
-        $errors = $this->validarUpdate($data);
-        if (!$errors) {
-            $msg = "Verifique los datos ingresados";
-            return $this->respondWithError($response, $msg);
-        }
-
-        $model = new TableModel;
-        $model->setTable('sis_tareas_ejecutables');
-        $model->setId("idtarea");
-
-        $existe = $model->where("ta_name", $data['name'])->where("idtarea", "!=", $data['id'])->first();
-        if (!empty($existe)) {
-            $msg = "Ya existe un registro con el mismo nombre";
-            return $this->respondWithError($response, $msg);
-        }
-
-        $rq = $model->update($data['id'], [
-            "ta_name" => ucwords($data['name']) ?? "UNDEFINED",
-            "ta_description" => ucfirst($data['description']) ?? "UNDEFINED",
-            "ta_execute" => $data['execute'] ?? "-",
-        ]);
-        if (!empty($rq)) {
-            $msg = "Datos actualizados";
-            return $this->respondWithSuccess($response, $msg);
-        }
-        $msg = "Error al guardar los datos";
-        return $this->respondWithJson($response, $existe);
-    }
-
-    private function validarUpdate($data)
-    {
-        if (empty($data["id"])) {
-            return false;
-        }
-        if (empty($data["name"])) {
-            return false;
-        }
-        return true;
-    }
-
-    public function delete($request, $response)
-    {
-        $data = $this->sanitize($request->getParsedBody());
-        if (empty($data["id"])) {
-            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-        }
-
-        $model = new TableModel;
-        $model->setTable('sis_tareas_ejecutables');
-        $model->setId("idtarea");
-
-        $rq = $model->find($data["id"]);
-        if (!empty($rq)) {
-            $rq = $model->delete($data["id"]);
-            if (!empty($rq)) {
-                $msg = "Datos eliminados correctamente";
-                return $this->respondWithSuccess($response, $msg);
-            }
-            $msg = "Error al eliminar los datos";
-            return $this->respondWithError($response, $msg);
-        }
-        $msg = "No se encontraron datos para eliminar.";
-        return $this->respondWithError($response, $msg);
-    }
-
-    public function execute($request, $response)
-    {
-        $data = $this->sanitize($request->getParsedBody());
-        if (empty($data["id"])) {
-            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-        }
-
-        $model = new TableModel;
-        $model->setTable('sis_tareas_ejecutables');
-        $model->setId("idtarea");
-
-        $rq = $model->find($data["id"]);
-        if (!empty($rq)) {
-            $res = $model->multiQuery($rq["ta_execute"]);
-            if ($res) {
-                $msg = "Datos eliminados correctamente";
-                return $this->respondWithSuccess($response, $msg);
-            }
-            $msg = "Error al eliminar los datos";
-            return $this->respondWithError($response, $msg);
-        }
-        $msg = "No se encontraron datos para eliminar.";
-        return $this->respondWithError($response, $msg);
     }
 
     private function buscarArchivo($archivo, $rutas)
@@ -304,7 +185,7 @@ class CrudController extends Controller
         return $message;
     }
 
-    private function baseDatos($query, $tb, $name)
+    private function executeQuery($query, $tb, $name)
     {
         $model = new TableModel;
         $request = $model->multiQuery($query);
@@ -329,9 +210,53 @@ class CrudController extends Controller
         $columnTable = $model->query("SHOW COLUMNS FROM $tb")->get();
 
         foreach ($columnTable as $key) {
-            array_push($data, $key['Field']);
+            if (empty($key['Field'])) {
+                break;
+            }
+            $data[] = $key['Field'];
         }
 
         return $data;
+    }
+
+    private function createController($ruta, $name, $estructura, $nombreTabla)
+    {
+        $createController = new CrudCreateController($ruta, $name, $estructura, $nombreTabla);
+        return $createController->getBody();
+    }
+
+    private function createModal($ruta, $name, $estructura, $nombreTabla)
+    {
+        $createController = new CrudCreateView($ruta, $name, $estructura, $nombreTabla);
+        return $createController->modal();
+    }
+
+    private function createView($ruta, $name, $estructura, $nombreTabla)
+    {
+        $createController = new CrudCreateView($ruta, $name, $estructura, $nombreTabla);
+        return $createController->body();
+    }
+
+    private function createJs($ruta, $name, $estructura, $nombreTabla)
+    {
+        $createController = new CrudCreateView($ruta, $name, $estructura, $nombreTabla);
+        return $createController->js();
+    }
+
+    private function createFile($content, $archivo, $carpeta = null)
+    {
+        // Creamos la carpeta
+        if (!file_exists($carpeta) && !empty($carpeta)) {
+            mkdir($carpeta, 0777, true);
+        }
+
+        $path = $archivo;
+
+        $archivo_abierto = fopen($path, 'w');
+        if ($archivo_abierto) {
+            fwrite($archivo_abierto, $content);
+            fclose($archivo_abierto);
+        }
+        return $archivo_abierto ? "<li>Archivo creado correctamente:</li><li>$archivo</li>" : "<li>No se pudo crear el archivo</li><li>$archivo</li>";
     }
 }
