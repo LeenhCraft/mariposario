@@ -4,7 +4,6 @@
 .tmp.driveupload
 /.tmp.driveupload
 *.log
-.htaccess
 /Medios
 /Medios_old
 /Libraries/vendor
