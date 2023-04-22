@@ -7,14 +7,19 @@ use Slim\Routing\RouteCollectorProxy;
 use App\Controllers\Crud\CrudController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DataBaseController;
+use App\Controllers\Admin\EspeciesController;
+use App\Controllers\Admin\FamiliasController;
 use App\Controllers\Admin\FilosController;
+use App\Controllers\Admin\GenerosController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
+use App\Controllers\Admin\OrdenesController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
 use App\Controllers\Admin\ReinosController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
+use App\Controllers\Admin\SubordenesController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\LogoutController;
 
@@ -126,23 +131,54 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     // }
 
 
-    $group->group("/reinos", function (RouteCollectorProxy $group) {
-        $group->get("", ReinosController::class . ":index")->add(new RemoveCsrfMiddleware());
+    $group->group("/ordenes", function (RouteCollectorProxy $group) {
+        $group->get("", OrdenesController::class . ":index")->add(new RemoveCsrfMiddleware());
 
-        $group->post("", ReinosController::class . ":list");
-        $group->post("/save", ReinosController::class . ":store");
-        $group->post("/search", ReinosController::class . ":search");
-        $group->post("/update", ReinosController::class . ":update");
-        $group->post("/delete", ReinosController::class . ":delete");
+        $group->post("", OrdenesController::class . ":list");
+        $group->post("/save", OrdenesController::class . ":store");
+        $group->post("/search", OrdenesController::class . ":search");
+        $group->post("/update", OrdenesController::class . ":update");
+        $group->post("/delete", OrdenesController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
-    $group->group("/filos", function (RouteCollectorProxy $group) {
-        $group->get("", FilosController::class . ":index")->add(new RemoveCsrfMiddleware());
+    $group->group("/subordenes", function (RouteCollectorProxy $group) {
+        $group->get("", SubordenesController::class . ":index")->add(new RemoveCsrfMiddleware());
 
-        $group->post("", FilosController::class . ":list");
-        $group->post("/save", FilosController::class . ":store");
-        $group->post("/search", FilosController::class . ":search");
-        $group->post("/update", FilosController::class . ":update");
-        $group->post("/delete", FilosController::class . ":delete");
+        $group->post("", SubordenesController::class . ":list");
+        $group->post("/save", SubordenesController::class . ":store");
+        $group->post("/search", SubordenesController::class . ":search");
+        $group->post("/update", SubordenesController::class . ":update");
+        $group->post("/delete", SubordenesController::class . ":delete");
     })->add(PermissionMiddleware::class);
+
+    $group->group("/familias", function (RouteCollectorProxy $group) {
+        $group->get("", FamiliasController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", FamiliasController::class . ":list");
+        $group->post("/save", FamiliasController::class . ":store");
+        $group->post("/search", FamiliasController::class . ":search");
+        $group->post("/update", FamiliasController::class . ":update");
+        $group->post("/delete", FamiliasController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/generos", function (RouteCollectorProxy $group) {
+        $group->get("", GenerosController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", GenerosController::class . ":list");
+        $group->post("/save", GenerosController::class . ":store");
+        $group->post("/search", GenerosController::class . ":search");
+        $group->post("/update", GenerosController::class . ":update");
+        $group->post("/delete", GenerosController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/especies", function (RouteCollectorProxy $group) {
+        $group->get("", EspeciesController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", EspeciesController::class . ":list");
+        $group->post("/save", EspeciesController::class . ":store");
+        $group->post("/search", EspeciesController::class . ":search");
+        $group->post("/update", EspeciesController::class . ":update");
+        $group->post("/delete", EspeciesController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
 })->add(new LoginAdminMiddleware());
