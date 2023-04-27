@@ -1,6 +1,7 @@
 <?php
 
 // use Slim\App;
+use App\Controllers\Admin\CentinelaController;
 use Slim\Routing\RouteCollectorProxy;
 
 // Controllers
@@ -9,14 +10,12 @@ use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DataBaseController;
 use App\Controllers\Admin\EspeciesController;
 use App\Controllers\Admin\FamiliasController;
-use App\Controllers\Admin\FilosController;
 use App\Controllers\Admin\GenerosController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
 use App\Controllers\Admin\OrdenesController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
-use App\Controllers\Admin\ReinosController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
 use App\Controllers\Admin\SubordenesController;
@@ -179,6 +178,20 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", EspeciesController::class . ":search");
         $group->post("/update", EspeciesController::class . ":update");
         $group->post("/delete", EspeciesController::class . ":delete");
+
+        $group->post("/subordenes", EspeciesController::class . ":subordenes");
+        $group->post("/familias", EspeciesController::class . ":familias");
+        $group->post("/generos", EspeciesController::class . ":generos");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/centinela", function (RouteCollectorProxy $group) {
+        $group->get("", CentinelaController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", CentinelaController::class . ":list");
+        $group->post("/save", CentinelaController::class . ":store");
+        $group->post("/search", CentinelaController::class . ":search");
+        $group->post("/update", CentinelaController::class . ":update");
+        $group->post("/delete", CentinelaController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
 })->add(new LoginAdminMiddleware());

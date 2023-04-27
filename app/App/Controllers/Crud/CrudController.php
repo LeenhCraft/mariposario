@@ -245,9 +245,12 @@ class CrudController extends Controller
 
     private function createFile($content, $archivo, $carpeta = null)
     {
+        // dep(!empty($carpeta), 1);
         // Creamos la carpeta
-        if (!file_exists($carpeta) && !empty($carpeta)) {
-            mkdir($carpeta, 0777, true);
+        if (!empty($carpeta)) {
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
         }
 
         $path = $archivo;

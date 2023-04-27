@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Controllers\Admin;
 
@@ -8,9 +8,9 @@ use Slim\Csrf\Guard;
 use Slim\Psr7\Factory\ResponseFactory;
 
 /**
- * Class Especies Controller
+ * Class Centinela Controller
  */
-class EspeciesController extends Controller
+class CentinelaController extends Controller
 {
 	protected $permisos = [];
 	protected $responseFactory;
@@ -34,11 +34,11 @@ class EspeciesController extends Controller
 	 */
 	public function index($request, $response)
 	{
-		return $this->render($response, 'App.Especies.Especies', [
-			'titulo_web' => 'Especies',
+		return $this->render($response, 'App.Centinela.Centinela', [
+			'titulo_web' => 'Centinela',
 			'url' => $request->getUri()->getPath(),
 			'permisos' => $this->permisos,
-			'js' => ['js/app/nw_especies.js'],
+			'js' => ['js/app/nw_centinela.js'],
 			'tk' => [
 				'name' => $this->guard->getTokenNameKey(),
 				'value' => $this->guard->getTokenValueKey(),
@@ -54,10 +54,10 @@ class EspeciesController extends Controller
 	public function list($request, $response)
 	{
 		$model = new TableModel;
-		$model->setTable("ma_especies_1");
-		$model->setId("idespecie");
+		$model->setTable("sis_centinela");
+		$model->setId("idvisita");
 
-		$arrData = $model->orderBy("idespecie", "DESC")->get();
+		$arrData = $model->orderBy("idvisita", "DESC")->get();
 		$data = [];
 		$num = 0;
 
@@ -68,11 +68,11 @@ class EspeciesController extends Controller
 			$num++;
 
 			if ($this->permisos['perm_d'] == 1) {
-				$btnDelete = '<a class="dropdown-item" href="javascript:fntDel(' . $arrData[$i]['idespecie'] . ');"><i class="bx bx-trash me-1"></i> Eliminar</a>';
+				$btnDelete = '<a class="dropdown-item" href="javascript:fntDel(' . $arrData[$i]['idvisita'] . ');"><i class="bx bx-trash me-1"></i> Eliminar</a>';
 			}
 
 			if ($this->permisos['perm_u'] == 1) {
-				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idespecie'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
+				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idvisita'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
 			}
 
 			$arrData[$i]['options'] = '<div class="d-flex flex-row"><div class="ms-3 dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu">' . $btnEdit . $btnDelete . '</div></div></div>';
@@ -87,8 +87,7 @@ class EspeciesController extends Controller
 	public function store($request, $response)
 	{
 		$data = $this->sanitize($request->getParsedBody());
-		$data['files'] = $_FILES;
-		return $this->respondWithJson($response, $data);
+		// return $this->respondWithJson($response, $data);
 
 		$validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
 		if (!$validate) {
@@ -103,8 +102,8 @@ class EspeciesController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_especies_1");
-		$model->setId("idespecie");
+		$model->setTable("sis_centinela");
+		$model->setId("idvisita");
 
 		/*
 		$existe = $model->where("field", "LIKE", $data['field'])->first();
@@ -115,15 +114,13 @@ class EspeciesController extends Controller
 		*/
 
 		$rq = $model->create([
-			'idgenero' => $data['idgenero'],
-			'es_nombre_cientifico' => $data['es_nombre_cientifico'],
-			'es_nombre_comun' => $data['es_nombre_comun'],
-			'es_habitad' => $data['es_habitad'],
-			'es_alimentacion' => $data['es_alimentacion'],
-			'es_plantas_hospederas' => $data['es_plantas_hospederas'],
-			'es_tiempo_de_vida' => $data['es_tiempo_de_vida'],
-			'es_imagen_url' => $data['es_imagen_url'],
-			// 'es_date' => $data['es_date'],
+			'vis_cod' => $data['vis_cod'],
+			'idwebusuario' => $data['idwebusuario'],
+			'vis_ip' => $data['vis_ip'],
+			'vis_agente' => $data['vis_agente'],
+			'vis_method' => $data['vis_method'],
+			'vis_url' => $data['vis_url'],
+			'vis_fechahora' => $data['vis_fechahora'],
 		]);
 
 		if (!empty($rq)) {
@@ -142,33 +139,27 @@ class EspeciesController extends Controller
 	 */
 	public function validar($data)
 	{
-		if (empty($data['idgenero'])) {
+		if (empty($data['vis_cod'])) {
 			return false;
 		}
-		if (empty($data['es_nombre_cientifico'])) {
+		if (empty($data['idwebusuario'])) {
 			return false;
 		}
-		if (empty($data['es_nombre_comun'])) {
+		if (empty($data['vis_ip'])) {
 			return false;
 		}
-		// if (empty($data['es_habitad'])) {
-		// 	return false;
-		// }
-		// if (empty($data['es_alimentacion'])) {
-		// 	return false;
-		// }
-		// if (empty($data['es_plantas_hospederas'])) {
-		// 	return false;
-		// }
-		// if (empty($data['es_tiempo_de_vida'])) {
-		// 	return false;
-		// }
-		// if (empty($data['es_imagen_url'])) {
-		// 	return false;
-		// }
-		// if (empty($data['es_date'])) {
-		// 	return false;
-		// }
+		if (empty($data['vis_agente'])) {
+			return false;
+		}
+		if (empty($data['vis_method'])) {
+			return false;
+		}
+		if (empty($data['vis_url'])) {
+			return false;
+		}
+		if (empty($data['vis_fechahora'])) {
+			return false;
+		}
 		return true;
 	}
 
@@ -188,10 +179,10 @@ class EspeciesController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_especies_1");
-		$model->setId("idespecie");
+		$model->setTable("sis_centinela");
+		$model->setId("idvisita");
 
-		$rq = $model->find($data['idespecie']);
+		$rq = $model->find($data['idvisita']);
 		if (!empty($rq)) {
 			return $this->respondWithJson($response, ["status" => true, "data" => $rq]);
 		}
@@ -206,7 +197,7 @@ class EspeciesController extends Controller
 	 */
 	public function validarSearch($data)
 	{
-		if (empty($data['idespecie'])) {
+		if (empty($data['idvisita'])) {
 			return false;
 		}
 		return true;
@@ -234,8 +225,8 @@ class EspeciesController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_especies_1");
-		$model->setId("idespecie");
+		$model->setTable("sis_centinela");
+		$model->setId("idvisita");
 
 		/*
 		$existe = $model->where("field", "LIKE", $data['field'])->first();
@@ -245,16 +236,14 @@ class EspeciesController extends Controller
 		}
 		*/
 
-		$rq = $model->update($data['idespecie'], [
-			'idgenero' => $data['idgenero'],
-			'es_nombre_cientifico' => $data['es_nombre_cientifico'],
-			'es_nombre_comun' => $data['es_nombre_comun'],
-			'es_habitad' => $data['es_habitad'],
-			'es_alimentacion' => $data['es_alimentacion'],
-			'es_plantas_hospederas' => $data['es_plantas_hospederas'],
-			'es_tiempo_de_vida' => $data['es_tiempo_de_vida'],
-			'es_imagen_url' => $data['es_imagen_url'],
-			'es_date' => $data['es_date'],
+		$rq = $model->update($data['idvisita'],[
+			'vis_cod' => $data['vis_cod'],
+			'idwebusuario' => $data['idwebusuario'],
+			'vis_ip' => $data['vis_ip'],
+			'vis_agente' => $data['vis_agente'],
+			'vis_method' => $data['vis_method'],
+			'vis_url' => $data['vis_url'],
+			'vis_fechahora' => $data['vis_fechahora'],
 		]);
 
 		if (!empty($rq)) {
@@ -273,34 +262,28 @@ class EspeciesController extends Controller
 	 */
 	public function validarUpdate($data)
 	{
-		if (empty($data['idespecie'])) {
+		if (empty($data['idvisita'])) {
 			return false;
 		}
-		if (empty($data['idgenero'])) {
+		if (empty($data['vis_cod'])) {
 			return false;
 		}
-		if (empty($data['es_nombre_cientifico'])) {
+		if (empty($data['idwebusuario'])) {
 			return false;
 		}
-		if (empty($data['es_nombre_comun'])) {
+		if (empty($data['vis_ip'])) {
 			return false;
 		}
-		if (empty($data['es_habitad'])) {
+		if (empty($data['vis_agente'])) {
 			return false;
 		}
-		if (empty($data['es_alimentacion'])) {
+		if (empty($data['vis_method'])) {
 			return false;
 		}
-		if (empty($data['es_plantas_hospederas'])) {
+		if (empty($data['vis_url'])) {
 			return false;
 		}
-		if (empty($data['es_tiempo_de_vida'])) {
-			return false;
-		}
-		if (empty($data['es_imagen_url'])) {
-			return false;
-		}
-		if (empty($data['es_date'])) {
+		if (empty($data['vis_fechahora'])) {
 			return false;
 		}
 		return true;
@@ -315,17 +298,17 @@ class EspeciesController extends Controller
 		$data = $this->sanitize($request->getParsedBody());
 		// return $this->respondWithJson($response, $data);
 
-		if (empty($data["idespecie"])) {
+		if (empty($data["idvisita"])) {
 			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_especies_1");
-		$model->setId("idespecie");
+		$model->setTable("sis_centinela");
+		$model->setId("idvisita");
 
-		$rq = $model->find($data['idespecie']);
+		$rq = $model->find($data['idvisita']);
 		if (!empty($rq)) {
-			$rq = $model->delete($data["idespecie"]);
+			$rq = $model->delete($data["idvisita"]);
 			if (!empty($rq)) {
 				$msg = "Datos eliminados correctamente";
 				return $this->respondWithSuccess($response, $msg);
@@ -334,45 +317,5 @@ class EspeciesController extends Controller
 
 		$msg = "Error al eliminar los datos";
 		return $this->respondWithError($response, $msg);
-	}
-
-	public function subordenes($request, $response)
-	{
-		$model = new TableModel;
-		$model->setTable("ma_subordenes_1");
-		$model->setId("idsuborden");
-
-		return $this->respondWithJson($response, $model->orderBy("idsuborden", "DESC")->get());
-	}
-
-	public function familias($request, $response)
-	{
-		$data = ($request->getParsedBody());
-		return $this->respondWithJson($response, $data);
-
-		if (empty($data["id"])) {
-			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-		}
-
-		$model = new TableModel;
-		$model->setTable("ma_familias_1");
-		$model->setId("idfamilia");
-
-		return $this->respondWithJson($response, $model->where("idsuborden", $data["id"])->orderBy("idfamilia", "DESC")->get());
-	}
-
-	public function generos($request, $response)
-	{
-		$data = $this->sanitize($request->getParsedBody());
-
-		if (empty($data["idespecie"])) {
-			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-		}
-
-		$model = new TableModel;
-		$model->setTable("ma_subordenes_1");
-		$model->setId("idsuborden");
-
-		return $this->respondWithJson($response, $model->orderBy("idsuborden", "DESC")->get());
 	}
 }

@@ -32,9 +32,6 @@
             </tbody>
         </table>
     </div>
-    <div class="mb-3 col-12">
-        <form action="/target" class="dropzone" id="my-great-dropzone"></form>
-    </div>
 </div>
 <?php
 if ($data['permisos']['perm_w'] == 1 || $data['permisos']['perm_u'] == 1) {

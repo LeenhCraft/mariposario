@@ -1,7 +1,45 @@
-let dropzone = new Dropzone(".dropzone", { url: "/admin/especies" })
+let arrImages = [];
+let dropzone = new Dropzone(".dropzone", {
+  url: "/admin/especies",
+  maxFilesize: 2,
+  maxFiles: 1,
+  addRemoveLinks: true,
+  dictRemoveFile: "Eliminar",
+  dictDefaultMessage: "Arrastre las imagenes aqui para subirlas",
+  dictResponseError: "Ha ocurrido un error en el servidor",
+  dictFallbackMessage: "Su navegador no soporta la carga de archivos",
+  dictInvalidFileType: "No puede subir archivos de este tipo",
+  dictFileTooBig:
+    "El archivo es muy grande ({{filesize}}MiB). Tamaño maximo: {{maxFilesize}}MiB.",
+  dictMaxFilesExceeded: "No puede subir mas de {{maxFiles}} archivos.",
+  // acceptedFiles: "image/*",
+  acceptedFiles: "image/jpeg, image/png, image/jpg",
+  // headers: {
+  //   "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  // },
+});
+
+dropzone.on("addedfile", (file) => {
+  // console.log(file);
+  arrImages.push(file);
+});
+
+dropzone.on("removedfile", (file) => {
+  // console.log(file);
+  let index = arrImages.indexOf(file);
+  arrImages.splice(index, 1);
+});
 
 let tb;
 $(document).ready(function () {
+  loadOptions(
+    "/admin/especies/subordenes",
+    "#subordenes",
+    "sub_nombre",
+    "idsuborden"
+  );
+
+  // loadOptions("/admin/especies/generos", "#generos", "gen_nombres", "idgenero");
   tb = $("#tbl").dataTable({
     aProcessing: true,
     aServerSide: true,
@@ -34,23 +72,43 @@ $(document).ready(function () {
 });
 function save(ths, e) {
   // let men_nombre = $("#name").val();
-  let form = $(ths).serialize();
+  let form = new FormData(ths);
+  // agregar imagenes a form
+  arrImages.forEach((file, index) => {
+    form.append("file[" + index + "]", file);
+  });
+
+  divLoading = $("#divLoading");
+  let ajaxUrl = base_url + "admin/especies/save";
   // if (men_nombre == "") {
   //   Swal.fire("Atención", "Es necesario un nombre para continuar.", "warning");
   //   return false;
   // }
-  divLoading.css("display", "flex");
-  let ajaxUrl = base_url + "admin/especies/save";
-  $.post(ajaxUrl, form, function (data) {
-    if (data.status) {
-      $("#mdlEspecies").modal("hide");
-      resetForm();
-      Swal.fire("Menu", data.message, "success");
-      tb.api().ajax.reload();
-    } else {
-      Swal.fire("Error", data.message, "warning");
-    }
-    divLoading.css("display", "none");
+  $.ajax({
+    type: "POST",
+    url: ajaxUrl,
+    data: form,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      if (data.status) {
+        resetForm();
+        $("#mdlEspecies").modal("hide");
+        // Swal.fire("Menu", data.message, "success");
+        tb.api().ajax.reload();
+        Toast.fire({
+          icon: "success",
+          title: data.message,
+        });
+        tb.api().ajax.reload();
+      } else {
+        Swal.fire("Error", data.message, "warning");
+      }
+      divLoading.css("display", "none");
+    },
+    error: function (error) {
+      console.log(error);
+    },
   });
   return false;
 }
@@ -156,10 +214,43 @@ function openModal() {
   $("#mdlEspecies").modal("show");
 }
 function resetForm(ths) {
+  dropzone.removeAllFiles();
   $("#frmEspecies").trigger("reset");
   $("#idespecie").val("");
   $(ths).attr("onsubmit", "return save(this,event)");
   $("#btnText").html("Guardar");
   $("#btnActionForm").removeClass("btn-info").addClass("btn-outline-primary");
   $(".modal-title").html("Agregar Especies");
+}
+
+// Función para cargar las opciones de un select utilizando Ajax
+function loadOptions(ruta, selectId, text, attr, param = "") {
+  console.log(param);
+  $.ajax({
+    type: "POST",
+    url: ruta,
+    data: param,
+    dataType: "json",
+    success: function (data) {
+      $.each(data, function (index, value) {
+        $(selectId).append(
+          $("<option>").text(value[text]).attr("value", value[attr])
+        );
+      });
+    },
+  });
+}
+
+function loadFamilias(s) {
+  let id = {
+    id: $(s).val(),
+  };
+
+  loadOptions(
+    "/admin/especies/familias",
+    "#familias",
+    "fam_nombre",
+    "idfamilia",
+    id
+  );
 }
