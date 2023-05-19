@@ -53,13 +53,13 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
-                        <div class="app-brand justify-content-center">
+                        <div class="app-brand justify-content-center m-3">
                             <a href="/" class="app-brand-link gap-2">
-                                <span class="demo text-body fw-bolder logo"><?php echo $_ENV['APP_NAME']; ?></span>
+                                <span class="demo text-body fw-bolder logo m-0"><?php echo $_ENV['APP_NAME']; ?></span>
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2 d-none">Welcome to Sneat!</h4>
+                        <h4 class="mb-2 text-center mb-3">Sistema de Reconocimiento y Clasificación de Mariposas</h4>
                         <p class="mb-4 d-none">Please sign-in to your account and start the adventure</p>
                         <form id="frmlogin" class="mb-3">
                             <input type="hidden" name="<?= $data['tk']['name'] ?>" value="<?= $data['tk']['key'][$data['tk']['name']]  ?>">

@@ -15,3 +15,7 @@
 .env
 /node_modules
 /public/img
+/app/App/Controllers/Admin/ia/images
+/app/App/Controllers/Admin/ia/*.jpg
+/app/App/Controllers/Admin/ia/*.txt
+*.npy

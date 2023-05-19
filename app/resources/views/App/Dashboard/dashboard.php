@@ -16,6 +16,18 @@
             </div>
         </div>
     </div>
+    <div class="col-12 col-sm-10 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h1>Identificar Mariposa</h1>
+
+            </div>
+            <div class="card-body">
+                <a class="btn btn-primary" href="<?= base_url().'admin/ia' ?>">Empezar</a>
+            </div>
+        </div>
+    </div>
+
     <?php if ($_ENV['APP_ENV'] === "local") : ?>
         <div class="col-12 col-md-4 mb-4">
             <div class="card">

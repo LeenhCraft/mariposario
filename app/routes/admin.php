@@ -11,6 +11,7 @@ use App\Controllers\Admin\DataBaseController;
 use App\Controllers\Admin\EspeciesController;
 use App\Controllers\Admin\FamiliasController;
 use App\Controllers\Admin\GenerosController;
+use App\Controllers\Admin\IaController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
 use App\Controllers\Admin\OrdenesController;
@@ -182,6 +183,20 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/subordenes", EspeciesController::class . ":subordenes");
         $group->post("/familias", EspeciesController::class . ":familias");
         $group->post("/generos", EspeciesController::class . ":generos");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/ia", function (RouteCollectorProxy $group) {
+        $group->get("", IaController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", IaController::class . ":list");
+        $group->post("/save", IaController::class . ":store");
+        $group->post("/search", IaController::class . ":search");
+        $group->post("/update", IaController::class . ":update");
+        $group->post("/delete", IaController::class . ":delete");
+
+        $group->post("/subordenes", IaController::class . ":subordenes");
+        $group->post("/familias", IaController::class . ":familias");
+        $group->post("/generos", IaController::class . ":generos");
     })->add(PermissionMiddleware::class);
 
     $group->group("/centinela", function (RouteCollectorProxy $group) {
