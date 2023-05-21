@@ -14,6 +14,7 @@ use App\Controllers\Admin\GenerosController;
 use App\Controllers\Admin\IaController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
+use App\Controllers\Admin\ModeloController;
 use App\Controllers\Admin\OrdenesController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
@@ -193,10 +194,16 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", IaController::class . ":search");
         $group->post("/update", IaController::class . ":update");
         $group->post("/delete", IaController::class . ":delete");
+    })->add(PermissionMiddleware::class);
 
-        $group->post("/subordenes", IaController::class . ":subordenes");
-        $group->post("/familias", IaController::class . ":familias");
-        $group->post("/generos", IaController::class . ":generos");
+    $group->group("/entrenamiento", function (RouteCollectorProxy $group) {
+        $group->get("", ModeloController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", ModeloController::class . ":list");
+        $group->post("/save", ModeloController::class . ":store");
+        $group->post("/search", ModeloController::class . ":search");
+        $group->post("/update", ModeloController::class . ":update");
+        $group->post("/delete", ModeloController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
     $group->group("/centinela", function (RouteCollectorProxy $group) {
@@ -208,5 +215,4 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/update", CentinelaController::class . ":update");
         $group->post("/delete", CentinelaController::class . ":delete");
     })->add(PermissionMiddleware::class);
-
 })->add(new LoginAdminMiddleware());

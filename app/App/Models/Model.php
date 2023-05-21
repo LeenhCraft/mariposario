@@ -11,6 +11,7 @@ class Model
     protected $db_user;
     protected $db_pass;
     protected $db_name;
+    protected $db_charset = "utf8mb4";
     protected $connection;
     protected $query;
     protected $table;
@@ -26,6 +27,7 @@ class Model
         $this->db_user = $_ENV['DB_USERNAME'];
         $this->db_pass = $_ENV['DB_PASSWORD'];
         $this->db_name = $_ENV['DB_DATABASE'];
+        $this->db_charset = $_ENV['DB_CHARSET'];
         $this->connection();
     }
 
@@ -35,6 +37,7 @@ class Model
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
         }
+        $this->connection->set_charset($this->db_charset);
     }
 
     public function query($sql, $data = [], $params = null)

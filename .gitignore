@@ -19,3 +19,4 @@
 /app/App/Controllers/Admin/ia/*.jpg
 /app/App/Controllers/Admin/ia/*.txt
 *.npy
+/Rubbish

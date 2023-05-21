@@ -205,3 +205,40 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* accordion */
+.wrapper {
+  /* width: 600px; */
+  margin: 20px auto;
+}
+
+.desc-wrapper {
+  margin: 0 auto;
+  /* margin-bottom: 15px; */
+  max-height: 150px;
+  overflow: hidden;
+}
+
+.more-info {
+  /* Hide more info to begin with and reveal if text inside desc is too long */
+  display: block;
+}
+
+/* Only display 'more' to begin with */
+.more-info .less,
+.more-info.expand .more {
+  display: none;
+}
+
+.more-info.expand .less {
+  display: inline;
+}
+
+/* Misc, just to make things look a bit prettier */
+.more-info:focus {
+  outline: none;
+}
+
+span.glyphicon {
+  margin-left: 3px;
+}

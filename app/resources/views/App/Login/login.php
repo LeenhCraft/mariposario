@@ -59,7 +59,7 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2 text-center mb-3">Sistema de Reconocimiento y Clasificación de Mariposas</h4>
+                        <h4 class="mb-2 text-center mb-3">Sistema de Reconocimiento y Clasificación Automatica de Mariposas</h4>
                         <p class="mb-4 d-none">Please sign-in to your account and start the adventure</p>
                         <form id="frmlogin" class="mb-3">
                             <input type="hidden" name="<?= $data['tk']['name'] ?>" value="<?= $data['tk']['key'][$data['tk']['name']]  ?>">

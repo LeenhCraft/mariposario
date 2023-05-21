@@ -92,6 +92,8 @@ class MenusController extends Controller
             return $this->respondWithError($response, $msg);
         }
 
+        $data['name'] = strlen($data['name']) > 20 ? substr($data['name'], 0, 19) : $data['name'];
+
         $rq = $model->create([
             "men_nombre" => ucfirst($data['name']) ?? "UNDEFINED",
             "men_url" => $data['url'] ?? "#",
@@ -180,6 +182,8 @@ class MenusController extends Controller
             return $this->respondWithError($response, $msg);
         }
 
+        $data['name'] = strlen($data['name']) > 20 ? substr($data['name'], 0, 19) : $data['name'];
+        
         $rq = $model->update($data['id'], [
             "men_nombre" => ucfirst($data['name']) ?? "UNDEFINED",
             "men_url" => $data['url'] ?? "#",
