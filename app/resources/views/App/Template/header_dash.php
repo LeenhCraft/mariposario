@@ -41,8 +41,15 @@
     <link rel="stylesheet" href="/css/app/plugins/select2.min.css">
     <link rel="stylesheet" href="/css/app/plugins/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="/css/app/plugins/dropzone.css">
-    
+
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.css"> -->
+    <?php
+    if (isset($data['css']) && !empty($data['css'])) {
+        for ($i = 0; $i < count($data['css']); $i++) {
+            echo '<link rel="stylesheet" type="text/css" href="' . base_url() . $data['css'][$i] . '">';
+        }
+    }
+    ?>
 
 </head>
 

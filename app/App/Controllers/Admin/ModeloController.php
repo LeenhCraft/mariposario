@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Controllers\Admin\EspeciesController;
 use App\Models\TableModel;
 use Slim\Csrf\Guard;
 use Slim\Psr7\Factory\ResponseFactory;
@@ -34,17 +35,36 @@ class ModeloController extends Controller
      */
     public function index($request, $response)
     {
-        return $this->render($response, 'App.Ia.Modelo', [
+        $model = new TableModel;
+        $model->setTable("ma_configuracion");
+        $model->setId("idconfig");
+
+        $encode_data = $model->first();
+        $decode_data = json_decode($encode_data['valor'], true);
+
+        $model->emptyQuery();
+        $model->setTable("ma_entrenamiento");
+        $model->setId("identrenamientos");
+        $ma_entrenamiento = $model->first();
+
+        $model->emptyQuery();
+        $model->setTable("ma_especies_1");
+        $model->setId("idespecie");
+        $ma_especies_1 = $model->where("es_status", "1")->get();
+
+        // dep([$decode_data, $ma_entrenamiento],1);
+
+        return $this->render($response, 'App.Ia.Modelo', array_merge([
             'titulo_web' => 'Especies',
             'url' => $request->getUri()->getPath(),
             'permisos' => $this->permisos,
-            'js' => ['js/app/nw_ia.js'],
+            'js' => ['js/app/nw_entrenamiento.js'],
             'tk' => [
                 'name' => $this->guard->getTokenNameKey(),
                 'value' => $this->guard->getTokenValueKey(),
                 'key' => $this->guard->generateToken(),
             ]
-        ]);
+        ], $decode_data, ["especies" => count($ma_especies_1)]));
     }
 
 
@@ -103,6 +123,106 @@ class ModeloController extends Controller
 
         $msg = "Error al guardar los datos";
 
+        return $this->respondWithError($response, $msg);
+    }
+
+    /**
+     * Metodo para genenerar nuevos datos de entrenamiento
+     */
+    public function generarDatosEntrenamiento($request, $response)
+    {
+        // $data = $this->sanitize($request->getParsedBody());
+
+        /* */
+        $model = new TableModel;
+        $model->setTable("ma_especies_1");
+        $model->setId("idespecie");
+
+        $model2 = new TableModel;
+        $model2->setTable("ma_configuracion");
+        $model2->setId("idconfig");
+
+        // configuraciones
+        $textData = $model2->first();
+        $configData = json_decode($textData['valor'], true);
+
+        // lista de especies
+        $arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->get();
+
+        $arrPy = [];
+        $total = 0;
+
+        for ($i = 0; $i < count($arrData); $i++) {
+            // contar las imagenes de cada especie
+            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_comun"]);
+            $total_especie = $this->contarImagenes($carpeta);
+            $total += $total_especie;
+            $arrPy[] = $total_especie . " = " . $arrData[$i]["es_nombre_cientifico"];
+        }
+
+        // veriricar si existe el directorio
+        if (!file_exists($configData["ruta_datos_entrenamiento"])) {
+            mkdir($configData["ruta_datos_entrenamiento"], 0777, true);
+        }
+
+        // $archivo = $configData["ruta_datos_entrenamiento"] . '/' . $configData["nombre_datos_entrenamiento"] . '-' . date('Ymdhis') . '.txt';
+        // $manejador = fopen($archivo, "w");
+        // fwrite($manejador, json_encode($arrPy));
+        // fclose($manejador);
+        /* */
+
+        // crear labels
+        $jsonData = json_encode($arrPy);
+        $command = escapeshellcmd(
+            'python ' . __DIR__ . '/entrenamiento/ex.py '
+                . $configData["ruta_datos_entrenamiento"] . ' '
+                . $configData["nombre_datos_entrenamiento"] . ' '
+                // . $archivo
+                . $jsonData
+        );
+        $output = shell_exec($command);
+        // dep($output, 1);
+        $output = json_decode($output, true);
+
+        if (!$output["status"]) {
+            $msg = "Error al generar las etiquetas de entrenamiento";
+            return $this->respondWithError($response, $msg);
+        }
+
+        // crear imagenes
+        $command = escapeshellcmd(
+            'python ' . __DIR__ . '/entrenamiento/img.py '
+                . $configData["carpeta_img_entrenamiento"] . ' '
+                . $configData["ruta_datos_entrenamiento"] . ' '
+                . $configData["nombre_datos_entrenamiento"] . ' '
+        );
+        $output2 = shell_exec($command);
+        $output2 = json_decode($output2, true);
+        if (!$output2["status"]) {
+            $msg = "Error al generar las imagenes de entrenamiento";
+            return $this->respondWithError($response, $msg);
+        }
+
+        $model3 = new TableModel;
+        $model3->setTable("ma_entrenamiento");
+        $model3->setId("identrenamiento");
+
+        $rq = $model3->create([
+            // "ent_fecha" => date("Y-m-d H:i:s"),
+            "ent_ruta_datos_generados" => json_encode([$output["npy"], $output2["npy"]]),
+            "ent_nombre_datos_generados" => json_encode([$output["name"], $output2["name"]]),
+            "ent_total_imagenes" => $total,
+            "ent_descripcion" => "",
+            "ent_diccionario" => $output["dicc"],
+            // "ent_default" => "0"
+        ]);
+        $model->query("UPDATE ma_entrenamiento SET ent_default = 0 WHERE identrenamiento != " . $rq["identrenamiento"]);
+        if ($rq) {
+            $msg = "Datos de entrenamiento generados correctamente";
+            return $this->respondWithSuccess($response, $msg);
+        }
+
+        $msg = "Error al guardar los datos";
         return $this->respondWithError($response, $msg);
     }
 
@@ -306,43 +426,111 @@ class ModeloController extends Controller
         return $this->respondWithError($response, $msg);
     }
 
-    public function subordenes($request, $response)
-    {
-        $model = new TableModel;
-        $model->setTable("ma_subordenes_1");
-        $model->setId("idsuborden");
-
-        return $this->respondWithJson($response, $model->orderBy("idsuborden", "DESC")->get());
-    }
-
-    public function familias($request, $response)
-    {
-        $data = ($request->getParsedBody());
-        return $this->respondWithJson($response, $data);
-
-        if (empty($data["id"])) {
-            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-        }
-
-        $model = new TableModel;
-        $model->setTable("ma_familias_1");
-        $model->setId("idfamilia");
-
-        return $this->respondWithJson($response, $model->where("idsuborden", $data["id"])->orderBy("idfamilia", "DESC")->get());
-    }
-
-    public function generos($request, $response)
+    public function imagenes($request, $response)
     {
         $data = $this->sanitize($request->getParsedBody());
-
-        if (empty($data["idespecie"])) {
-            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
-        }
+        // return $this->respondWithJson($response, $data);
 
         $model = new TableModel;
-        $model->setTable("ma_subordenes_1");
-        $model->setId("idsuborden");
+        $model->setTable("ma_configuracion");
+        $model->setId("idconfig");
 
-        return $this->respondWithJson($response, $model->orderBy("idsuborden", "DESC")->get());
+        $textdata = $model->first();
+        $arrData = json_decode($textdata['valor'], true);
+
+        $arrData["carpeta_img_entrenamiento"] = $data["carpeta_img_entrenamiento"];
+
+        $rq = $model->update($textdata['idconfig'], [
+            'valor' => json_encode($arrData),
+        ]);
+
+        $msg = (!empty($rq)) ? "Datos actualizados" : "Error al guardar los datos";
+        return (!empty($rq)) ? $this->respondWithSuccess($response, $msg) : $this->respondWithError($response, $msg);
+    }
+
+    public function especies($request, $response)
+    {
+        $model = new TableModel;
+        $model->setTable("ma_especies_1");
+        $model->setId("idespecie");
+
+        $model2 = new TableModel;
+        $model2->setTable("ma_configuracion");
+        $model2->setId("idconfig");
+
+        // configuraciones
+        $textData = $model2->first();
+        $configData = json_decode($textData['valor'], true);
+
+        // lista de especies
+        $arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->get();
+
+
+        for ($i = 0; $i < count($arrData); $i++) {
+            // contar las imagenes de cada especie
+
+            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_comun"]);
+            $arrData[$i]["total_imagenes"] = $this->contarImagenes($carpeta);
+            $arrData[$i]["ruta"] = $carpeta;
+        }
+        return $this->respondWithJson($response, $arrData);
+    }
+
+    private function contarImagenes($carpeta)
+    {
+        $total = 0;
+        if (is_dir($carpeta)) {
+            $files = scandir($carpeta);
+            foreach ($files as $file) {
+                if (is_file($carpeta . "/" . $file)) {
+                    $total++;
+                }
+            }
+        }
+        return $total;
+    }
+
+    public function pathDatosEntre($request, $response)
+    {
+        $data = $this->sanitize($request->getParsedBody());
+        // return $this->respondWithJson($response, $data);
+
+        $model = new TableModel;
+        $model->setTable("ma_configuracion");
+        $model->setId("idconfig");
+
+        $textdata = $model->first();
+        $arrData = json_decode($textdata['valor'], true);
+
+        $arrData["ruta_datos_entrenamiento"] = $data["ruta_datos_entrenamiento"];
+
+        $rq = $model->update($textdata['idconfig'], [
+            'valor' => json_encode($arrData),
+        ]);
+
+        $msg = (!empty($rq)) ? "Datos actualizados" : "Error al guardar los datos";
+        return (!empty($rq)) ? $this->respondWithSuccess($response, $msg) : $this->respondWithError($response, $msg);
+    }
+
+    public function nombreDatosEntre($request, $response)
+    {
+        $data = $this->sanitize($request->getParsedBody());
+        // return $this->respondWithJson($response, $data);
+
+        $model = new TableModel;
+        $model->setTable("ma_configuracion");
+        $model->setId("idconfig");
+
+        $textdata = $model->first();
+        $arrData = json_decode($textdata['valor'], true);
+
+        $arrData["nombre_datos_entrenamiento"] = urls_amigables($data["nombre_datos_entrenamiento"]);
+
+        $rq = $model->update($textdata['idconfig'], [
+            'valor' => json_encode($arrData),
+        ]);
+
+        $msg = (!empty($rq)) ? "Datos actualizados" : "Error al guardar los datos";
+        return (!empty($rq)) ? $this->respondWithSuccess($response, $msg) : $this->respondWithError($response, $msg);
     }
 }

@@ -2,12 +2,14 @@
 
 // use Slim\App;
 use App\Controllers\Admin\CentinelaController;
+use App\Controllers\Admin\ConfiguracionController;
 use Slim\Routing\RouteCollectorProxy;
 
 // Controllers
 use App\Controllers\Crud\CrudController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DataBaseController;
+use App\Controllers\Admin\EntrenarController;
 use App\Controllers\Admin\EspeciesController;
 use App\Controllers\Admin\FamiliasController;
 use App\Controllers\Admin\GenerosController;
@@ -20,7 +22,7 @@ use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
-use App\Controllers\Admin\SubordenesController;
+use App\Controllers\Admin\SubfamiliasController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\LogoutController;
 
@@ -142,16 +144,6 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/delete", OrdenesController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
-    $group->group("/subordenes", function (RouteCollectorProxy $group) {
-        $group->get("", SubordenesController::class . ":index")->add(new RemoveCsrfMiddleware());
-
-        $group->post("", SubordenesController::class . ":list");
-        $group->post("/save", SubordenesController::class . ":store");
-        $group->post("/search", SubordenesController::class . ":search");
-        $group->post("/update", SubordenesController::class . ":update");
-        $group->post("/delete", SubordenesController::class . ":delete");
-    })->add(PermissionMiddleware::class);
-
     $group->group("/familias", function (RouteCollectorProxy $group) {
         $group->get("", FamiliasController::class . ":index")->add(new RemoveCsrfMiddleware());
 
@@ -160,6 +152,20 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", FamiliasController::class . ":search");
         $group->post("/update", FamiliasController::class . ":update");
         $group->post("/delete", FamiliasController::class . ":delete");
+
+        $group->post("/ordenes", FamiliasController::class . ":ordenes");
+    })->add(PermissionMiddleware::class);
+
+    $group->group("/subfamilias", function (RouteCollectorProxy $group) {
+        $group->get("", SubfamiliasController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", SubfamiliasController::class . ":list");
+        $group->post("/save", SubfamiliasController::class . ":store");
+        $group->post("/search", SubfamiliasController::class . ":search");
+        $group->post("/update", SubfamiliasController::class . ":update");
+        $group->post("/delete", SubfamiliasController::class . ":delete");
+
+        $group->post("/familias", SubfamiliasController::class . ":familias");
     })->add(PermissionMiddleware::class);
 
     $group->group("/generos", function (RouteCollectorProxy $group) {
@@ -170,10 +176,13 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", GenerosController::class . ":search");
         $group->post("/update", GenerosController::class . ":update");
         $group->post("/delete", GenerosController::class . ":delete");
+
+        $group->post("/subfamilias", GenerosController::class . ":subfamilias");
     })->add(PermissionMiddleware::class);
 
     $group->group("/especies", function (RouteCollectorProxy $group) {
         $group->get("", EspeciesController::class . ":index")->add(new RemoveCsrfMiddleware());
+        $group->get("/[{slug}]", EspeciesController::class . ":especie")->add(new RemoveCsrfMiddleware());
 
         $group->post("", EspeciesController::class . ":list");
         $group->post("/save", EspeciesController::class . ":store");
@@ -181,9 +190,12 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/update", EspeciesController::class . ":update");
         $group->post("/delete", EspeciesController::class . ":delete");
 
-        $group->post("/subordenes", EspeciesController::class . ":subordenes");
         $group->post("/familias", EspeciesController::class . ":familias");
+        $group->post("/subfamilias", EspeciesController::class . ":subfamilias");
         $group->post("/generos", EspeciesController::class . ":generos");
+        $group->post("/upload", EspeciesController::class . ":uploadImgEntre");
+        $group->post("/view", EspeciesController::class . ":viewImgEntre");
+        $group->post("/destroy", EspeciesController::class . ":delImgEntre");
     })->add(PermissionMiddleware::class);
 
     $group->group("/ia", function (RouteCollectorProxy $group) {
@@ -196,14 +208,41 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/delete", IaController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
+    // ruta para generar los datos que se usaran en el entrenaminto del modelo
     $group->group("/entrenamiento", function (RouteCollectorProxy $group) {
         $group->get("", ModeloController::class . ":index")->add(new RemoveCsrfMiddleware());
 
-        $group->post("", ModeloController::class . ":list");
+        $group->post("", ModeloController::class . ":generarDatosEntrenamiento");
         $group->post("/save", ModeloController::class . ":store");
         $group->post("/search", ModeloController::class . ":search");
         $group->post("/update", ModeloController::class . ":update");
         $group->post("/delete", ModeloController::class . ":delete");
+
+        $group->post("/ruta", ModeloController::class . ":pathDatosEntre");
+        $group->post("/nombre", ModeloController::class . ":nombreDatosEntre");
+        $group->post("/imagenes", ModeloController::class . ":imagenes");
+        $group->post("/especies", ModeloController::class . ":especies");
+    })->add(PermissionMiddleware::class);
+
+    // ruta para entrenar el modelo
+    $group->group("/modelo", function (RouteCollectorProxy $group) {
+        $group->get("", EntrenarController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("/ruta", EntrenarController::class . ":nombreModelo");
+        $group->post("/datos-de-entrenamiento", EntrenarController::class . ":listDatosEntre");
+        $group->post("/datos", EntrenarController::class . ":datosEntre");
+        $group->post("/entrenar", EntrenarController::class . ":entrenar");
+    })->add(PermissionMiddleware::class);
+
+    // ruta para configurar variables genereales del sistema
+    $group->group("/sistem", function (RouteCollectorProxy $group) {
+        $group->get("", ConfiguracionController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", ConfiguracionController::class . ":list");
+        $group->post("/save", ConfiguracionController::class . ":store");
+        $group->post("/search", ConfiguracionController::class . ":search");
+        $group->post("/update", ConfiguracionController::class . ":update");
+        $group->post("/delete", ConfiguracionController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
     $group->group("/centinela", function (RouteCollectorProxy $group) {

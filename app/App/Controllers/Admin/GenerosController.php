@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Admin;
 
@@ -57,8 +57,7 @@ class GenerosController extends Controller
 		$model->setTable("ma_generos_1");
 		$model->setId("idgenero");
 
-		$arrData = $model->orderBy("idgenero", "DESC")->get();
-		$data = [];
+		$arrData = $model->leftJoin("ma_subfamilias_1", "idsubfamilia")->orderBy("idgenero", "DESC")->get();
 		$num = 0;
 
 		for ($i = 0; $i < count($arrData); $i++) {
@@ -74,7 +73,7 @@ class GenerosController extends Controller
 			if ($this->permisos['perm_u'] == 1) {
 				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idgenero'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
 			}
-
+			$arrData[$i]['num'] = $num;
 			$arrData[$i]['options'] = '<div class="d-flex flex-row"><div class="ms-3 dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu">' . $btnEdit . $btnDelete . '</div></div></div>';
 		}
 		return $this->respondWithJson($response, $arrData);
@@ -105,18 +104,16 @@ class GenerosController extends Controller
 		$model->setTable("ma_generos_1");
 		$model->setId("idgenero");
 
-		/*
-		$existe = $model->where("field", "LIKE", $data['field'])->first();
+		$existe = $model->where("gen_nombres", "LIKE", $data['gen_nombres'])->where("idsubfamilia", $data["idsubfamilia"])->first();
 		if (!empty($existe)) {
 			$msg = "Ya tiene un usuario registrado con ese nombre";
 			return $this->respondWithError($response, $msg);
 		}
-		*/
 
 		$rq = $model->create([
-			'idfamilia' => $data['idfamilia'],
+			'idsubfamilia' => $data['idsubfamilia'],
 			'gen_nombres' => $data['gen_nombres'],
-			// 'gen_date' => $data['gen_date'],
+			'gen_descripcion' => $data['gen_descripcion'],
 		]);
 
 		if (!empty($rq)) {
@@ -135,7 +132,7 @@ class GenerosController extends Controller
 	 */
 	public function validar($data)
 	{
-		if (empty($data['idfamilia'])) {
+		if (empty($data['idsubfamilia'])) {
 			return false;
 		}
 		if (empty($data['gen_nombres'])) {
@@ -184,6 +181,10 @@ class GenerosController extends Controller
 		if (empty($data['idgenero'])) {
 			return false;
 		}
+		// es numerico
+		if (!is_numeric($data['idgenero'])) {
+			return false;
+		}
 		return true;
 	}
 
@@ -212,18 +213,16 @@ class GenerosController extends Controller
 		$model->setTable("ma_generos_1");
 		$model->setId("idgenero");
 
-		/*
-		$existe = $model->where("field", "LIKE", $data['field'])->first();
+		$existe = $model->where("gen_nombres", "LIKE", $data['gen_nombres'])->where("idgenero", "!=", $data["idgenero"])->where("idsubfamilia",$data["idsubfamilia"])->first();
 		if (!empty($existe)) {
 			$msg = "Ya tiene un usuario registrado con ese nombre";
 			return $this->respondWithError($response, $msg);
 		}
-		*/
 
-		$rq = $model->update($data['idgenero'],[
-			'idfamilia' => $data['idfamilia'],
+		$rq = $model->update($data['idgenero'], [
+			'idsubfamilia' => $data['idsubfamilia'],
 			'gen_nombres' => $data['gen_nombres'],
-			// 'gen_date' => $data['gen_date'],
+			'gen_descripcion' => $data['gen_descripcion'],
 		]);
 
 		if (!empty($rq)) {
@@ -245,7 +244,7 @@ class GenerosController extends Controller
 		if (empty($data['idgenero'])) {
 			return false;
 		}
-		if (empty($data['idfamilia'])) {
+		if (empty($data['idsubfamilia'])) {
 			return false;
 		}
 		if (empty($data['gen_nombres'])) {
@@ -269,6 +268,10 @@ class GenerosController extends Controller
 		if (empty($data["idgenero"])) {
 			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
 		}
+		// es numerico
+		if (!is_numeric($data['idgenero'])) {
+			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
+		}
 
 		$model = new TableModel;
 		$model->setTable("ma_generos_1");
@@ -276,6 +279,15 @@ class GenerosController extends Controller
 
 		$rq = $model->find($data['idgenero']);
 		if (!empty($rq)) {
+			// consultar a la tabla ma_especies_1 si existe algun registro con el idgenero
+			$model2 = new TableModel;
+			$model2->setTable("ma_especies_1");
+			$model2->setId("idespecie");
+			$existe = $model2->where("idgenero", "=", $data['idgenero'])->first();
+			if (!empty($existe)) {
+				$msg = "No se puede eliminar el registro, existen especies asociadas";
+				return $this->respondWithError($response, $msg);
+			}
 			$rq = $model->delete($data["idgenero"]);
 			if (!empty($rq)) {
 				$msg = "Datos eliminados correctamente";
@@ -285,5 +297,15 @@ class GenerosController extends Controller
 
 		$msg = "Error al eliminar los datos";
 		return $this->respondWithError($response, $msg);
+	}
+	/**
+	 * Lista de subfamilias activas
+	 */
+	public function subfamilias($request, $response)
+	{
+		$model = new TableModel;
+		$model->setTable("ma_subfamilias_1");
+		$model->setId("idsubfamilia");
+		return $this->respondWithJson($response, $model->orderBy("idsubfamilia", "DESC")->get());
 	}
 }

@@ -3,7 +3,7 @@ import os
 import subprocess
 
 # Ruta del archivo Python
-archivo_python = os.path.dirname(__file__)+"/id.py "+sys.argv[1]
+archivo_python = os.path.dirname(__file__)+"/id.py "+sys.argv[1]+" "+sys.argv[2]
 
 # Comando a ejecutar
 comando = f"python {archivo_python}"

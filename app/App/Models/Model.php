@@ -19,7 +19,7 @@ class Model
 
     protected $sql, $data = [], $params = null;
 
-    protected $orderBy = "", $limit = "";
+    protected $join = "", $orderBy = "", $limit = "";
 
     public function __construct()
     {
@@ -53,6 +53,19 @@ class Model
         } else {
             $this->query = $this->connection->query($sql);
         }
+        return $this;
+    }
+
+    // funcion para vaciar querys
+    public function emptyQuery()
+    {
+        $this->query = null;
+        $this->sql = null;
+        $this->data = [];
+        $this->params = null;
+        $this->join = "";
+        $this->orderBy = "";
+        $this->limit = "";
         return $this;
     }
 
@@ -95,6 +108,8 @@ class Model
             if (empty($this->sql)) {
                 $this->sql = "SELECT * FROM {$this->table}";
             }
+
+            $this->sql .= $this->join;
 
             $this->sql .= $this->orderBy;
 
@@ -228,5 +243,28 @@ class Model
     public function multiQuery($sql)
     {
         return $this->connection->multi_query($sql);
+    }
+
+    // funcion inner join
+    public function join($table, $first, $operator = "=", $second = null)
+    {
+        if ($second === null) {
+            $second = $first;
+        }
+
+        $this->join .= " INNER JOIN {$table} ON {$table}.{$first} {$operator} {$this->table}.{$second}";
+        return $this;
+    }
+
+
+    // fuccion left join
+    public function leftJoin($table, $first, $operator = "=", $second = null)
+    {
+        if ($second === null) {
+            $second = $first;
+        }
+
+        $this->join .= " LEFT JOIN {$table} ON {$table}.{$first} {$operator} {$this->table}.{$second}";
+        return $this;
     }
 }

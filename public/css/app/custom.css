@@ -124,3 +124,7 @@
 .bx-1 {
     font-size: 28px;
 }
+
+.dropzone .dz-preview.dz-image-preview {
+    background-color: transparent !important;
+}

@@ -15,11 +15,11 @@
     <table id="tbl" class="table table-hover" width="100%">
         <thead>
             <tr>
-            	<th>idgenero</th>
-				<th>idfamilia</th>
-				<th>gen_nombres</th>
-				<th>gen_date</th>
-				<th>options</th>
+            	<th>N°</th>
+				<th>Genero</th>
+				<th>Subfamilia</th>
+				<th></th>
+				<th></th>
             </tr>
         </thead>
         <tbody>

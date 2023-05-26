@@ -10,14 +10,17 @@
             <div class="modal-body">
                 <input type="hidden" id="idfamilia" name="idfamilia" value="">
                 <div class="mb-3 col-lg-12 col-12">
-                	<label class="form-label text-capitalize" for="basic-default-fullname">idsuborden</label>
-                	<input type="text" class="form-control" id="idsuborden" name="idsuborden">
+                	<label class="form-label text-capitalize" for="basic-default-fullname">Orden</label>
+                	<!-- <input type="text" class="form-control" id="idsuborden" name="idsuborden"> -->
+                    <select name="idorden" id="idorden" class="form-control">
+                        <option value="0">Seleccione</option>
+                    </select>
                 </div>
 				<div class="mb-3 col-lg-12 col-12">
-                	<label class="form-label text-capitalize" for="basic-default-fullname">fam_nombre</label>
+                	<label class="form-label text-capitalize" for="basic-default-fullname">Nombre</label>
                 	<input type="text" class="form-control" id="fam_nombre" name="fam_nombre">
                 </div>
-				<div class="mb-3 col-lg-12 col-12">
+				<div class="mb-3 col-lg-12 col-12 d-none">
                 	<label class="form-label text-capitalize" for="basic-default-fullname">fam_date</label>
                 	<input type="text" class="form-control" id="fam_date" name="fam_date">
                 </div>

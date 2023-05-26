@@ -10,16 +10,22 @@
             <div class="modal-body">
                 <input type="hidden" id="idgenero" name="idgenero" value="">
                 <div class="mb-3 col-lg-12 col-12">
-                	<label class="form-label text-capitalize" for="basic-default-fullname">idfamilia</label>
-                	<input type="text" class="form-control" id="idfamilia" name="idfamilia">
+                    <label class="form-label text-capitalize" for="basic-default-fullname">Subfamilias</label>
+                    <select type="text" class="form-control" id="idsubfamilia" name="idsubfamilia">
+                        <option value="0">Seleccione una subfamilia</option>
+                    </select>
                 </div>
-				<div class="mb-3 col-lg-12 col-12">
-                	<label class="form-label text-capitalize" for="basic-default-fullname">gen_nombres</label>
-                	<input type="text" class="form-control" id="gen_nombres" name="gen_nombres">
+                <div class="mb-3 col-lg-12 col-12">
+                    <label class="form-label text-capitalize" for="basic-default-fullname">Nombre para el genero</label>
+                    <input type="text" class="form-control" id="gen_nombres" name="gen_nombres">
                 </div>
-				<div class="mb-3 col-lg-12 col-12">
-                	<label class="form-label text-capitalize" for="basic-default-fullname">gen_date</label>
-                	<input type="text" class="form-control" id="gen_date" name="gen_date">
+                <div class="mb-3 col-lg-12 col-12">
+                    <label class="form-label text-capitalize" for="basic-default-fullname">Descripcion</label>
+                    <input type="text" class="form-control" id="gen_descripcion" name="gen_descripcion">
+                </div>
+                <div class="mb-3 col-lg-12 col-12 d-none">
+                    <label class="form-label text-capitalize" for="basic-default-fullname">gen_date</label>
+                    <input type="text" class="form-control" id="gen_date" name="gen_date">
                 </div>
             </div>
             <div class="modal-footer">

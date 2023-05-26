@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Admin;
 
@@ -74,7 +74,7 @@ class OrdenesController extends Controller
 			if ($this->permisos['perm_u'] == 1) {
 				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idorden'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
 			}
-
+			$arrData[$i]['num'] = $num;
 			$arrData[$i]['options'] = '<div class="d-flex flex-row"><div class="ms-3 dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu">' . $btnEdit . $btnDelete . '</div></div></div>';
 		}
 		return $this->respondWithJson($response, $arrData);
@@ -216,7 +216,7 @@ class OrdenesController extends Controller
 		}
 		*/
 
-		$rq = $model->update($data['idorden'],[
+		$rq = $model->update($data['idorden'], [
 			'or_nombre' => $data['or_nombre'],
 			'or_descripcion' => $data['or_descripcion']
 		]);
@@ -268,6 +268,15 @@ class OrdenesController extends Controller
 
 		$rq = $model->find($data['idorden']);
 		if (!empty($rq)) {
+			// consultar a la tabla ma_familias_1 si existe algun registro con el idorden con una nueva instancia de la clase TableModel
+			$model2 = new TableModel;
+			$model2->setTable("ma_familias_1");
+			$model2->setId("idfamilia");
+			$rq2 = $model2->where("idorden", "=", $data["idorden"])->first();
+			if (!empty($rq2)) {
+				$msg = "No se puede eliminar el registro, existen datos relacionados";
+				return $this->respondWithError($response, $msg);
+			}
 			$rq = $model->delete($data["idorden"]);
 			if (!empty($rq)) {
 				$msg = "Datos eliminados correctamente";

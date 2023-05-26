@@ -12,24 +12,24 @@
         ?>
     </div>
     <div class="table-responsive text-nowrap mb-4">
-    <table id="tbl" class="table table-hover" width="100%">
-        <thead>
-            <tr>
-            	<th>idorden</th>
-				<th>or_nombre</th>
-				<th>or_descripcion</th>
-				<th>or_date</th>
-				<th>options</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+        <table id="tbl" class="table table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>or_nombre</th>
+                    <th>or_descripcion</th>
+                    <th>or_date</th>
+                    <th>options</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
 <?php
 if ($data['permisos']['perm_w'] == 1 || $data['permisos']['perm_u'] == 1) {
-    getModal('mdlOrdenes',$data);
+    getModal('mdlOrdenes', $data);
 }
 footerApp('Template/footer_dash', $data);
 ?>

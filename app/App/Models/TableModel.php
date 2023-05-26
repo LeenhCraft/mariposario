@@ -11,6 +11,8 @@ class TableModel extends Model
     protected $id;
 
     protected $query;
+    
+    protected $sql;
 
     public function getTable()
     {
@@ -35,6 +37,11 @@ class TableModel extends Model
     public function getQuery()
     {
         return $this->query;
+    }
+
+    public function getSql()
+    {
+        return $this->sql;
     }
 
     public function cantidadCarrito($idvisita = 0)

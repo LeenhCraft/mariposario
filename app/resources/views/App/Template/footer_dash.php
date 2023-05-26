@@ -70,6 +70,16 @@
             toast.addEventListener("mouseleave", Swal.resumeTimer);
         },
     });
+
+    function crearSlug(slug) {
+        slug = slug.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        slug = slug
+            .replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, " ")
+            .toLowerCase();
+        slug = slug.replace(/^\s+|\s+$/gm, "");
+        slug = slug.replace(/\s+/g, "-");
+        return slug;
+    }
 </script>
 <?php
 if (isset($data['js']) && !empty($data['js'])) {

@@ -1,106 +1,123 @@
-let arrImages = [];
-let dropzone = new Dropzone(".dropzone", {
-  url: "/admin/especies",
-  maxFilesize: 2,
-  maxFiles: 1,
-  addRemoveLinks: true,
-  dictRemoveFile: "Eliminar",
-  dictDefaultMessage: "Arrastre las imagenes aqui para subirlas",
-  dictResponseError: "Ha ocurrido un error en el servidor",
-  dictFallbackMessage: "Su navegador no soporta la carga de archivos",
-  dictInvalidFileType: "No puede subir archivos de este tipo",
-  dictFileTooBig:
-    "El archivo es muy grande ({{filesize}}MiB). Tamaño maximo: {{maxFilesize}}MiB.",
-  dictMaxFilesExceeded: "No puede subir mas de {{maxFiles}} archivos.",
-  // acceptedFiles: "image/*",
-  acceptedFiles: "image/jpeg, image/png, image/jpg",
-  // headers: {
-  //   "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-  // },
-});
-
-dropzone.on("addedfile", (file) => {
-  // console.log(file);
-  arrImages.push(file);
-});
-
-dropzone.on("removedfile", (file) => {
-  // console.log(file);
-  let index = arrImages.indexOf(file);
-  arrImages.splice(index, 1);
-});
-
-let tb;
+var view = $(".dz-message");
+var html = view.html();
 $(document).ready(function () {
-  loadOptions(
-    "/admin/especies/subordenes",
-    "#subordenes",
-    "sub_nombre",
-    "idsuborden"
-  );
+  // funcion que carga antes de mostrar el modal
+  $.fn.modal.Constructor.prototype._initializeFocusTrap = function () {
+    return {
+      activate: function () {},
+      deactivate: function () {},
+    };
+  };
 
-  // loadOptions("/admin/especies/generos", "#generos", "gen_nombres", "idgenero");
-  tb = $("#tbl").dataTable({
-    aProcessing: true,
-    aServerSide: true,
-    language: {
-      url: base_url + "js/app/plugins/dataTable.Spanish.json",
-    },
-    ajax: {
-      url: base_url + "admin/especies",
-      method: "POST",
-      dataSrc: "",
-    },
-    columns: [
-      { data: "idespecie" },
-      { data: "idgenero" },
-      { data: "es_nombre_cientifico" },
-      { data: "es_nombre_comun" },
-      { data: "es_habitad" },
-      { data: "es_alimentacion" },
-      { data: "es_plantas_hospederas" },
-      { data: "es_tiempo_de_vida" },
-      { data: "es_imagen_url" },
-      { data: "es_date" },
-      { data: "options" },
-    ],
-    resonsieve: "true",
-    bDestroy: true,
-    iDisplayLength: 10,
-    // order: [[0, "desc"]],
+  initSample();
+  $("#mdlEspecies").on("show.bs.modal", function (e) {
+    loadOptions(
+      "/admin/especies/familias",
+      "#idfamilia",
+      "fam_nombre",
+      "idfamilia"
+    );
   });
+
+  $("#mdlEspecies").on("hide.bs.modal", function (e) {
+    resetForm();
+  });
+
+  $("#es_imagen_url").change(function () {
+    var inputFile = this.files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      var imageSrc = e.target.result;
+      view
+        .html(
+          `<img class="card-img-top preview" src="` +
+            imageSrc +
+            `" alt="Card image cap">`
+        )
+        .addClass("m-0");
+      // comprobar si existe el boton btn-butter
+      if (!$("#btn-butter").length) {
+        $("#navs-dos").append(
+          `<button id="btn-butter" class="btn btn-sm btn-danger mt-3" type="button" onclick="btn_butter()">Eliminar</button>`
+        );
+      }
+    };
+    reader.readAsDataURL(inputFile);
+  });
+  $("#idfamilia").change(function () {
+    loadOptions(
+      "/admin/especies/subfamilias",
+      "#idsubfamilia",
+      "sub_nombre",
+      "idsubfamilia",
+      { idfamilia: this.value }
+    );
+    $(".idsubfamilia").show("slow");
+  });
+  $("#idsubfamilia").change(function () {
+    loadOptions(
+      "/admin/especies/generos",
+      "#idgenero",
+      "gen_nombres",
+      "idgenero",
+      { idsubfamilia: this.value }
+    );
+    $(".idgenero").show("slow");
+  });
+  loadCards();
 });
-function save(ths, e) {
-  // let men_nombre = $("#name").val();
-  let form = new FormData(ths);
-  // agregar imagenes a form
-  arrImages.forEach((file, index) => {
-    form.append("file[" + index + "]", file);
-  });
 
-  divLoading = $("#divLoading");
-  let ajaxUrl = base_url + "admin/especies/save";
-  // if (men_nombre == "") {
+function openModal() {
+  resetForm();
+  $("#btnActionForm")
+    .removeClass("btn-outline-info")
+    .addClass("btn-outline-primary")
+    .html("Guardar");
+  $(".modal-title").html("Agregar Nueva Especie");
+  $("#mdlEspecies").modal("show");
+}
+function resetForm(ths) {
+  $("#form").trigger("reset");
+  $(".idsubfamilia").hide("fast");
+  $(".idgenero").hide("fast");
+  CKEDITOR.instances.description.setData("");
+  btn_butter();
+}
+
+function btn_butter() {
+  view.html(html).removeClass("m-0");
+  $("#btn-butter").remove();
+  $("#es_imagen_url").val("");
+}
+
+function save(ths, e) {
+  // let sub_nombre = $("#name").val();
+  let dat = new FormData(ths);
+  let editor = CKEDITOR.instances.description.getData();
+  dat.append("description", editor);
+
+  // if (sub_nombre == "") {
   //   Swal.fire("Atención", "Es necesario un nombre para continuar.", "warning");
   //   return false;
   // }
+  divLoading.css("display", "flex");
+  let ajaxUrl = base_url + "admin/especies/save";
   $.ajax({
     type: "POST",
     url: ajaxUrl,
-    data: form,
+    data: dat,
     processData: false,
     contentType: false,
     success: function (data) {
       if (data.status) {
         resetForm();
-        $("#mdlEspecies").modal("hide");
-        // Swal.fire("Menu", data.message, "success");
-        tb.api().ajax.reload();
         Toast.fire({
           icon: "success",
           title: data.message,
         });
-        tb.api().ajax.reload();
+        loadCards();
       } else {
         Swal.fire("Error", data.message, "warning");
       }
@@ -112,120 +129,10 @@ function save(ths, e) {
   });
   return false;
 }
-function fntEdit(id) {
-  resetForm();
-  let ajaxUrl = base_url + "admin/especies/search";
-  $(".modal-title").html("Agregar Especies");
-  $("#btnText").html("Actualizar");
-  $("#btnActionForm")
-    .removeClass("btn-outline-primary")
-    .addClass("btn-outline-info");
-  $("#frmEspecies").attr("onsubmit", "return update(this,event)");
-  $("#mdlEspecies").modal("show");
-  //
-  $.post(ajaxUrl, { idespecie: id }, function (data) {
-    if (data.status) {
-      $("#idespecie").val(data.data.idespecie);
-      $("#idgenero").val(data.data.idgenero);
-      $("#es_nombre_cientifico").val(data.data.es_nombre_cientifico);
-      $("#es_nombre_comun").val(data.data.es_nombre_comun);
-      $("#es_habitad").val(data.data.es_habitad);
-      $("#es_alimentacion").val(data.data.es_alimentacion);
-      $("#es_plantas_hospederas").val(data.data.es_plantas_hospederas);
-      $("#es_tiempo_de_vida").val(data.data.es_tiempo_de_vida);
-      $("#es_imagen_url").val(data.data.es_imagen_url);
-      $("#es_date").val(data.data.es_date);
-    } else {
-      Swal.fire({
-        title: "Error",
-        text: data.message,
-        icon: "error",
-        confirmButtonText: "ok",
-      });
-    }
-  });
-}
-function update(ths, e) {
-  // let men_nombre = $("#name").val();
-  let form = $(ths).serialize();
-  // if (men_nombre == "") {
-  //   Swal.fire("Atención", "Es necesario un nombre para continuar.", "warning");
-  //   return false;
-  // }
-  divLoading.css("display", "flex");
-  let ajaxUrl = base_url + "admin/especies/update";
-  $.post(ajaxUrl, form, function (data) {
-    if (data.status) {
-      $("#mdlEspecies").modal("hide");
-      resetForm();
-      Swal.fire("Menu", data.message, "success");
-      tb.api().ajax.reload();
-    } else {
-      Swal.fire("Error", data.message, "warning");
-    }
-    divLoading.css("display", "none");
-  });
-  return false;
-}
-function fntDel(idp) {
-  Swal.fire({
-    title: "Eliminar Especies",
-    text: "¿Realmente quiere eliminar Especies?",
-    icon: "warning",
-    showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    confirmButtonText: "Si, eliminar!",
-    cancelButtonText: "No, cancelar!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      let ajaxUrl = base_url + "admin/especies/delete";
-      $.post(ajaxUrl, { idespecie: idp }, function (data) {
-        if (data.status) {
-          Swal.fire({
-            title: "Eliminado!",
-            text: data.message,
-            icon: "success",
-            confirmButtonText: "ok",
-          });
-          tb.DataTable().ajax.reload();
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: data.message,
-            icon: "error",
-            confirmButtonColor: "#007065",
-            confirmButtonText: "ok",
-          });
-        }
-      });
-    }
-  });
-}
-function openModal() {
-  resetForm();
-  $("#btnActionForm").removeClass("btn-outline-info");
-  $("#btnActionForm").addClass("btn-outline-primary");
-  $("#btnText").html("Guardar");
-  $("#titleModal").html("Nuevo Especies");
-  $("#idespecie").val("");
-  $("#frmEspecies").attr("onsubmit", "return save(this,event)");
-  $("#frmEspecies").trigger("reset");
-  $("#mdlEspecies").modal("show");
-}
-function resetForm(ths) {
-  dropzone.removeAllFiles();
-  $("#frmEspecies").trigger("reset");
-  $("#idespecie").val("");
-  $(ths).attr("onsubmit", "return save(this,event)");
-  $("#btnText").html("Guardar");
-  $("#btnActionForm").removeClass("btn-info").addClass("btn-outline-primary");
-  $(".modal-title").html("Agregar Especies");
-}
 
-// Función para cargar las opciones de un select utilizando Ajax
 function loadOptions(ruta, selectId, text, attr, param = "") {
-  console.log(param);
+  $(selectId).empty();
+  $(selectId).append($("<option>").text("Seleccione").attr("value", "0"));
   $.ajax({
     type: "POST",
     url: ruta,
@@ -241,16 +148,82 @@ function loadOptions(ruta, selectId, text, attr, param = "") {
   });
 }
 
-function loadFamilias(s) {
-  let id = {
-    id: $(s).val(),
-  };
-
-  loadOptions(
-    "/admin/especies/familias",
-    "#familias",
-    "fam_nombre",
-    "idfamilia",
-    id
-  );
+function loadCards() {
+  // divLoading.css("display", "flex");
+  $(".content-card-butter").html(`
+  <div class="col-6 col-md-2 mb-3 spinkit-content">
+      <div class="card h-100" style="min-height:239px;">
+          <div class="card-body h-100 d-flex flex-column justify-content-center align-items-center">
+              <div class="spinkit-ln mb-3">
+                  <div class="sk-chase sk-primary">
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                  </div>
+              </div>
+              <h5>Cargando...</h5>
+          </div>
+      </div>
+  </div>
+  `);
+  let cards = `<div class="col-6 col-md-2 mb-3">
+      <div class="card h-100" style="min-height:239px;">
+          <a href="#" class="h-100" onclick="openModal()">
+              <div class="card-body h-100">
+                  <div class="d-flex h-100 justity-content-center align-items-center text-center">
+                      <div class="w-100">
+                          <i class='bx bxs-plus-circle bx-lg mb-4'></i>
+                          <h5>Agregar Nueva Especie</h5>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      </div>
+  </div>`;
+  $.ajax({
+    type: "POST",
+    url: base_url + "admin/especies",
+    dataType: "json",
+    success: function (data) {
+      // console.log(data);
+      // verificar que no este vacio
+      if (data.length > 0) {
+        $.each(data, function (index, value) {
+          url = base_url+"img/placeholder/img-placeholder-dark.jpg";
+          if (value.es_imagen_url != "") {
+            url = base_url + value.es_imagen_url;
+          }
+          cards +=
+            `<div class="col-6 col-md-2 mb-3">
+                <div class="card h-100 overflow-hidden" style="max-height:239px;">
+                    <a class="text-center" href="` +
+            base_url +
+            "admin/especies/" +
+            value.es_slug +
+            `">
+                    <div class="text-center"><img class="w-100 butter-card-img" src="` +
+            url +
+            `" alt="` +
+            value.es_nombre_cientifico +
+            `"></div>
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate" title="` +
+            value.es_nombre_cientifico +
+            `">` +
+            value.es_nombre_cientifico +
+            `</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>`;
+        });
+        cards += `<hr>`;
+        $(".content-card-butter").html(cards);
+        // divLoading.css("display", "none");
+      }
+    },
+  });
 }

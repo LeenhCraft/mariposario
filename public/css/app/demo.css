@@ -242,3 +242,102 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 span.glyphicon {
   margin-left: 3px;
 }
+
+/* estilos de scroll */
+
+.container-scroll {
+  width: 100%;
+  height: 200px;
+  overflow-x: hidden;
+}
+
+.container-scroll:hover {
+  overflow-x: auto;
+}
+
+::-webkit-scrollbar {
+  width: .25rem;
+  height: .25rem;
+  /* Ancho del scroll */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, .438133);
+  /* Color del thumb (barra del scroll) */
+  border-radius: 4px;
+  /* Borde redondeado del thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, .3) !important;
+  /* Color del thumb al pasar el cursor sobre él */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  /* Color de la pista del scroll */
+  border-radius: 4px;
+  /* Borde redondeado de la pista del scroll */
+}
+
+/* fin estilos scroll */
+
+/* estilos de imagen de mariposa */
+.container-img {
+  border: 2px dashed #444564 !important;
+  padding: 1.5rem;
+  cursor: pointer;
+  border-radius: .5rem;
+  position: relative;
+}
+
+.container-img .file {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.container-img .dz-message {
+  color: #566a7f;
+  margin: 5rem 0;
+  font-size: 1.625rem;
+}
+
+.container-img .dz-message .note {
+  color: #a3a4cc;
+  font-weight: 400;
+  font-size: .9375rem;
+}
+
+.butter-card-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  /* Evita que el texto se divida en varias líneas */
+  overflow: hidden;
+  /* Oculta el contenido que excede el ancho del contenedor */
+  text-overflow: ellipsis;
+}
+
+.spinkit-lnh {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+  background: rgba(42, 42, 43, 0.65);
+  z-index: 9999;
+  display: flex
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
