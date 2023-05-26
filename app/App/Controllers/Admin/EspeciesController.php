@@ -99,7 +99,7 @@ class EspeciesController extends Controller
 		$model->setTable("ma_especies_1");
 		$model->setId("idespecie");
 
-		$arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->get();
+		$arrData = $model->where("es_status", "1")->orderBy("es_nombre_cientifico", "ASC")->get();
 		return $this->respondWithJson($response, $arrData);
 	}
 
@@ -472,7 +472,7 @@ class EspeciesController extends Controller
 		$model->setTable("ma_especies_1");
 		$model->setId("idespecie");
 		$rq = $model->find($data['idespecie']);
-		$nombre_carpeta = urls_amigables($rq["es_nombre_comun"]);
+		$nombre_carpeta = urls_amigables($rq["es_nombre_cientifico"]);
 
 		$model2 = new TableModel;
 		$model2->setTable("ma_configuracion");
@@ -509,7 +509,7 @@ class EspeciesController extends Controller
 		$model->setTable("ma_especies_1");
 		$model->setId("idespecie");
 		$rq = $model->find($data['idespecie']);
-		$nombre_carpeta = urls_amigables($rq["es_nombre_comun"]);
+		$nombre_carpeta = urls_amigables($rq["es_nombre_cientifico"]);
 
 		$model2 = new TableModel;
 		$model2->setTable("ma_configuracion");

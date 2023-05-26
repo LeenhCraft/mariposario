@@ -1,0 +1,1 @@
+["82 = Danaus Plexippus","93 = Heliconius Charitonius","61 = Heliconius Erato","90 = Junonia Coenia","88 = Lycaena Phlaeas","100 = Nymphalis Antiopa","89 = Papilio Cresphontes","55 = Pieris Rapae","90 = Vanessa Atalanta","84 = Vanessa Cardui"]

@@ -7,6 +7,9 @@ path_entrenamiento = sys.argv[1]
 nombre_entrenamiento = sys.argv[2]
 txt = sys.argv[3]
 
+print(sys.argv[3])
+exit()
+
 # Ruta del archivo Python
 archivo_python = os.path.dirname(__file__)+"/label.py "+path_entrenamiento+' '+nombre_entrenamiento+' '+txt
 

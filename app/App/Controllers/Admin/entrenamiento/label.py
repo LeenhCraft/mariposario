@@ -2,33 +2,37 @@ import json
 import sys
 import os
 import numpy as np
+import ast
 from datetime import datetime
 
 path_entrenamiento = sys.argv[1]
 nombre_archivo = sys.argv[2]
 txt = sys.argv[3]
 
-print(txt)
-exit()
+# print(json.dumps(sys.argv[3]))
+# print(sys.argv[3])
+# exit()
 
 # Leer el contenido del archivo de texto
 with open(txt, "r") as archivo:
     contenido = archivo.read()
 
-# Convertir la cadena de texto en una lista
-data = json.loads(contenido)
-
-# Generar el array con repeticiones
+# Convertir el contenido en una lista de pares clave-valor
+data = ast.literal_eval(contenido)
+# print(data)
+# exit()
+# Generar el array con las repeticiones
 result = []
-for entry in data:
-    parts = entry.split(' = ')
-    name = parts[1]
-    repetition = int(parts[0])
-    result.extend([name] * repetition)
+for item in data:
+    cantidad, palabra = item.split('=')
+    cantidad = int(cantidad.strip())
+    palabra = palabra.strip().replace('"', '')
+    result.extend([palabra] * cantidad)
 
 # Crea un diccionario para asignar un número único a cada especie
 species_dict = {species: i for i, species in enumerate(set(result))}
-
+# print(species_dict)
+# exit()
 # Crea una lista de etiquetas utilizando el diccionario de especies
 train_labels = [species_dict[species] for species in result]
 

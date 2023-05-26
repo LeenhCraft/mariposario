@@ -10,15 +10,11 @@ function save(ths, e) {
     processData: false,
     contentType: false,
     success: function (data) {
-      if (data.status) {
-        console.log(data);
-        Toast.fire({
-          icon: "success",
-          title: data.message,
-        });
-      } else {
-        Swal.fire("Error", data.message, "warning");
-      }
+      Swal.fire(
+        data.status ? "Excelente" : "Atención",
+        data.message,
+        data.status ? "success" : "warning"
+      );
       divLoading.css("display", "none");
     },
     error: function (error) {

@@ -90,11 +90,17 @@ class IaController extends Controller
         $data['files'] = $_FILES;
         // return $this->respondWithJson($response, $data);
 
-        // $validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
-        // if (!$validate) {
-        //     $msg = "Error de validación, por favor recargue la página";
-        //     return $this->respondWithError($response, $msg);
-        // }
+        // veriricar que $data['files']['photo'] no este vacio
+        if (empty($data['files']['photo']['tmp_name'])) {
+            $msg = "Debe seleccionar una imagen";
+            return $this->respondWithError($response, $msg);
+        }
+
+        $validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
+        if (!$validate) {
+            $msg = "Error de validación, por favor recargue la página";
+            return $this->respondWithError($response, $msg);
+        }
 
         $model = new TableModel;
         $model->setTable("ma_entrenamiento");
@@ -106,6 +112,10 @@ class IaController extends Controller
 
         // configuraciones
         $arrModelo = $model2->where("det_default", 1)->first();
+        if (empty($arrModelo)) {
+            $msg = "No hay modelo entrenado, por favor entrene un modelo para continuar";
+            return $this->respondWithError($response, $msg);
+        }
 
         $diccionario = $model->where("identrenamiento", $arrModelo["identrenamiento"])->first();
         $diccionario = json_decode($diccionario['ent_diccionario'],true);
@@ -117,18 +127,19 @@ class IaController extends Controller
         // Ejecutar el archivo Python y pasarle las variables
         $command = escapeshellcmd('python ' . __DIR__ . '/ia/ex.py ' . $data['files']['photo']['tmp_name'] . ' ' . $arrModelo["det_ruta"]);
         $output = shell_exec($command);
-        // $output = json_decode($output, true);
+        $output = json_decode($output, true);
+        $predic = $output["message"];
 
-        dep([$output, $diccionario], 1);
+        // dep([$output, $diccionario], 1);
 
         // buscar el $output["message"] en el diccionario
-        $especie = $diccionario[$output];
-        if (empty($especie)) {
+        $especie = $diccionario[$predic];
+        if (!array_key_exists($predic, $diccionario)) {
             $especie = "No se encontró la especie";
             return $this->respondWithError($response, $especie);
         }
 
-        return $this->respondWithJson($response, $especie);
+        return $this->respondWithSuccess($response, "La especie es: " . $especie);
 
 
         // $msg = "Error al guardar los datos";

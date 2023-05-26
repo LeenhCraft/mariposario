@@ -147,14 +147,14 @@ class ModeloController extends Controller
         $configData = json_decode($textData['valor'], true);
 
         // lista de especies
-        $arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->get();
+        $arrData = $model->where("es_status", "1")->orderBy("es_nombre_cientifico", "ASC")->get();
 
         $arrPy = [];
         $total = 0;
 
         for ($i = 0; $i < count($arrData); $i++) {
             // contar las imagenes de cada especie
-            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_comun"]);
+            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_cientifico"]);
             $total_especie = $this->contarImagenes($carpeta);
             $total += $total_especie;
             $arrPy[] = $total_especie . " = " . $arrData[$i]["es_nombre_cientifico"];
@@ -165,20 +165,20 @@ class ModeloController extends Controller
             mkdir($configData["ruta_datos_entrenamiento"], 0777, true);
         }
 
-        // $archivo = $configData["ruta_datos_entrenamiento"] . '/' . $configData["nombre_datos_entrenamiento"] . '-' . date('Ymdhis') . '.txt';
-        // $manejador = fopen($archivo, "w");
-        // fwrite($manejador, json_encode($arrPy));
-        // fclose($manejador);
+        $archivo = $configData["ruta_datos_entrenamiento"] . '/' . $configData["nombre_datos_entrenamiento"] . '-' . date('Ymdhis') . '.txt';
+        $manejador = fopen($archivo, "w");
+        fwrite($manejador, json_encode($arrPy));
+        fclose($manejador);
         /* */
 
         // crear labels
-        $jsonData = json_encode($arrPy);
+        // $jsonData = json_encode($arrPy);
         $command = escapeshellcmd(
-            'python ' . __DIR__ . '/entrenamiento/ex.py '
+            'python ' . __DIR__ . '/entrenamiento/label.py '
                 . $configData["ruta_datos_entrenamiento"] . ' '
                 . $configData["nombre_datos_entrenamiento"] . ' '
-                // . $archivo
-                . $jsonData
+                . $archivo
+                // . $jsonData
         );
         $output = shell_exec($command);
         // dep($output, 1);

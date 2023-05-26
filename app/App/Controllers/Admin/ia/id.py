@@ -59,10 +59,10 @@ prediction = classifier.predict(features[:, :first_fc_output])
 
 # Imprimir la etiqueta de clasificación predicha
 
-print(prediction)
-# dataa = {
-#     "status": True,
-#     "message": prediction
-# }
-# json_data = json.dumps(dataa)
-# print(json_data)
+# print(prediction)
+dataa = {
+    "status": True,
+    "message": prediction.item()
+}
+json_data = json.dumps(dataa)
+print(json_data)

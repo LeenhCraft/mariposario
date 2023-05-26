@@ -39,15 +39,16 @@ $(document).ready(function () {
         $.ajax({
           type: "POST",
           url: ajaxUrl,
-        //   data: data,
+          //   data: data,
           processData: false,
           contentType: false,
           success: function (data) {
             divLoading.css("display", "none");
-            Toast.fire({
-              icon: "success",
-              title: data.message,
-            });
+            Swal.fire(
+              data.status ? "Excelente" : "Atención",
+              data.message,
+              data.status ? "success" : "warning"
+            );
           },
           error: function (error) {
             divLoading.css("display", "none");

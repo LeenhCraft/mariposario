@@ -1,1 +1,0 @@
-["0 = Demo","84 = Vanessa Cardui","90 = Vanessa Atalanta","55 = Pieris Rapae","89 = Papilio Cresphontes","100 = Nymphalis Antiopa","88 = Lycaena Phlaeas","90 = Junonia Coenia","61 = Heliconius Erato","93 = Heliconius Charitonius","84 = Danaus Plexippus"]
