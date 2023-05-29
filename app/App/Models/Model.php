@@ -153,6 +153,45 @@ class Model
         ];
     }
 
+    public function paginate_int($cant = 15, $pg = 1, $srt = "", $ordr = "")
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $uri = trim($uri, '/');
+        if (strpos($uri, '?')) {
+            $uri = substr($uri, 0, strpos($uri, '?'));
+        }
+        // $cant = isset($_GET['limit']) && is_numeric($_GET['limit']) ? $_GET['limit'] : $cant;
+        $page = $pg != 1 && is_numeric($pg) ? $pg : 1;
+        $sort = $srt != "" ? "ORDER BY " . strClean($srt) : $this->orderBy;
+        $order = $ordr != "" ? strClean($ordr) : "";
+        $start = ($page - 1) * $cant;
+
+        if ($this->sql) {
+            $sql = $this->sql . ' ' . $sort . ' ' . $order . " LIMIT {$start}, {$cant}";
+            $data = $this->query($sql, $this->data, $this->params)->get();
+        } else {
+            $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . $sort . ' ' . $order . " LIMIT {$start}, {$cant}";
+            $data = $this->query($sql)->get();
+        }
+
+        $total = $this->query("SELECT FOUND_ROWS() as total")->first()['total'];
+        $last_page = ceil($total / $cant);
+        $next_page_url = $page < $last_page ?  "/{$uri}?page=" . ($page + 1) . "&limit=" . $cant : null;
+        $prev_page_url = $page > 1 ? "/{$uri}?page=" . ($page - 1) . "&limit=" . $cant  : null;
+        return [
+            'total' => $total,
+            'from' => $start + 1, //desde que registro se muestra
+            'to' => $start + count($data), // hasta que registro se muestra
+            'current_page' => $page, //pagina actual
+            'per_page' => $cant, //cantidad de registros por pagina
+            'next_page_url' => $next_page_url, //pagina siguiente
+            'prev_page_url' => $prev_page_url, //pagina anterior
+            'last_page' => $last_page, //ultimo numero de pagina
+            'data' => $data,
+        ];
+    }
+
+
     //consulttas preparadas
     public function all()
     {

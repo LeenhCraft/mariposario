@@ -469,7 +469,7 @@ class ModeloController extends Controller
         for ($i = 0; $i < count($arrData); $i++) {
             // contar las imagenes de cada especie
 
-            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_comun"]);
+            $carpeta = $configData["carpeta_img_entrenamiento"] . "/" . urls_amigables($arrData[$i]["es_nombre_cientifico"]);
             $arrData[$i]["total_imagenes"] = $this->contarImagenes($carpeta);
             $arrData[$i]["ruta"] = $carpeta;
         }

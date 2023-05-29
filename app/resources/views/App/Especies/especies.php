@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-12 col-md-6 d-flex">
                     <div class="form-check m-0 my-auto me-3">
-                        <label class="form-check-label">
+                        <label class="form-check-label fw-bold">
                             Ver por:
                         </label>
                     </div>
@@ -44,6 +44,79 @@
                         <label class="form-check-label" for="especie">
                             Especie
                         </label>
+                    </div>
+                </div>
+                <div class="col-12 d-flex my-4 filters">
+                    <div class="form-check m-0 p-0">
+                        <label class="form-check-label fw-bold me-3">
+                            Ordenar por:
+                        </label>
+                    </div>
+                    <div class="form-check m-0 my-auto me-3">
+                        <input name="sort" class="form-check-input" type="radio" value="idespecie" id="order" checked>
+                        <label class="form-check-label" for="order">
+                            ID
+                        </label>
+                    </div>
+                    <div class="form-check m-0 my-auto me-3">
+                        <input name="sort" class="form-check-input" type="radio" value="es_nombre_cientifico" id="nombre_cientifico">
+                        <label class="form-check-label" for="nombre_cientifico">
+                            Nombre Cientifico
+                        </label>
+                    </div>
+                    <div class="form-check m-0 p-0 my-auto">
+                        <label class="form-check-label fw-bold mx-4">
+                            De forma:
+                        </label>
+                    </div>
+                    <div class="form-check m-0 my-auto me-3">
+                        <input name="order" class="form-check-input" type="radio" value="asc" id="asc">
+                        <label class="form-check-label" for="asc">
+                            Asc
+                        </label>
+                    </div>
+                    <div class="form-check m-0 my-auto me-3">
+                        <input name="order" class="form-check-input" type="radio" value="desc" id="desc" checked>
+                        <label class="form-check-label" for="desc">
+                            Desc
+                        </label>
+                    </div>
+                    <div class="form-check m-0 p-0 my-auto">
+                        <label class="form-check-label fw-bold mx-4">
+                            Ver por pagina:
+                        </label>
+                    </div>
+
+                    <div class="form-check m-0 p-0 my-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-bs-expanded="false">
+                                Seleccione
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="?limit=5">5</a>
+                                <a class="dropdown-item" href="?limit=10">10</a>
+                                <a class="dropdown-item" href="?limit=15">15</a>
+                                <a class="dropdown-item" href="?limit=20">20</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-10">
+                    <h6 class="m-0 p-0 mb-3">Paginación</h6>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
+                            <li class="page-item"><a class="page-link disabled" href="#">Siguiente</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-2 total-especies">
+                    <h6 class="text-center m-0 p-0 mb-2">Total de Especies</h6>
+                    <div class="text-center val">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </div>
                 </div>
             </div>

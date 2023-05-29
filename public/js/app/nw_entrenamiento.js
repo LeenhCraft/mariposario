@@ -74,7 +74,11 @@ $("#verEspecies").click(function () {
       let html = "";
       // verificar que data no este vacio
       if (data.length > 0) {
+        // contador de imagenes
+        let total = 0;
         $.each(data, function (index, value) {
+          // sumar el total de imagenes
+          total += parseInt(value.total_imagenes);
           html +=
             `<div class="border-bottom py-2"><div class="row"><div class="col-6">` +
             value.es_nombre_comun +
@@ -82,8 +86,10 @@ $("#verEspecies").click(function () {
             value.total_imagenes +
             ` imagenes</div></div></div>`;
         });
+        // agregar el total de imagenes
+        html += `<div class="border-bottom py-2"><div class="row"><div class="col-6 h5 m-0">Total de imagenes:</div><div class="col-6 h5 m-0">` + total + ` imagenes</div></div></div>`;
       } else {
-        html = `<div class="border-bottom py-2"><div class="row"><div class="col-12">Sin especies e imagenes</div></div></div>`;
+        html = `<div class="border-bottom py-2 fw-bold"><div class="row"><div class="col-12">Sin especies e imagenes</div></div></div>`;
       }
       $("#modalCenter .modal-body").html(html);
     },
