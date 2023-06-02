@@ -19,5 +19,6 @@
 /app/App/Controllers/Admin/ia/*.jpg
 /app/App/Controllers/Admin/ia/*.txt
 *.npy
+*.pkl
 /Rubbish
 public/modelo
