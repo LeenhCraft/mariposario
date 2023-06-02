@@ -66,30 +66,48 @@ class EntrenarController extends Controller
 	public function list($request, $response)
 	{
 		$model = new TableModel;
-		$model->setTable("ma_ordenes_1");
-		$model->setId("idorden");
+		$model->setTable("ma_detalle_modelo");
+		$model->setId("iddetallemodelo");
 
-		$arrData = $model->orderBy("idorden", "DESC")->get();
+		$model2 = new TableModel;
+		$model2->setTable("ma_modelo");
+		$model2->setId("idmodelo");
+
+		// $arrData = $model->where("det_default", 1)->get();
+		$arrData = $model->get();
+		// dep($arrData,1);
+		$arrModelo = [];
+
 		$data = [];
-		$num = 0;
+		$act = "";
 
 		for ($i = 0; $i < count($arrData); $i++) {
-
-			$btnDelete = "";
-			$btnEdit = "";
-			$num++;
-
-			if ($this->permisos['perm_d'] == 1) {
-				$btnDelete = '<a class="dropdown-item" href="javascript:fntDel(' . $arrData[$i]['idorden'] . ');"><i class="bx bx-trash me-1"></i> Eliminar</a>';
+			if (!empty($arrData)) {
+				$arrModelo = $model2->where("idmodelo", $arrData[$i]["idmodelo"])->first();
 			}
-
-			if ($this->permisos['perm_u'] == 1) {
-				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idorden'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
+			if ($arrData[$i]["det_default"]) {
+				$act = "checked";
 			}
-			$arrData[$i]['num'] = $num;
-			$arrData[$i]['options'] = '<div class="d-flex flex-row"><div class="ms-3 dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu">' . $btnEdit . $btnDelete . '</div></div></div>';
+			$data[$i]["accion"] = '<label class="switch">
+				<input type="radio" name="accionModelo" class="switch-input" onchange="return accionModelo(this,' . "'{$arrData[$i]["iddetallemodelo"]}'" . ')"' . $act . '>
+				<span class="switch-toggle-slider">
+				<span class="switch-on">
+					<i class="bx bx-check"></i>
+				</span>
+				<span class="switch-off">
+					<i class="bx bx-x"></i>
+				</span>
+				</span>
+			</label>';
+			$act = "";
+			$data[$i]["nombre"] = $arrModelo["mo_nombre"] ?? "";
+			$data[$i]["ruta"] = $arrData[$i]['det_ruta'];
+			$data[$i]["fecha"] = date("d/m/Y", strtotime($arrData[$i]['det_fecha']));
+			// reseteamos arrdata
+			$arrModelo = [];
+			$model2->emptyQuery();
 		}
-		return $this->respondWithJson($response, $arrData);
+		return $this->respondWithJson($response, $data);
 	}
 
 	/**
@@ -169,6 +187,28 @@ class EntrenarController extends Controller
 		$rq = $model->query("UPDATE ma_entrenamiento SET ent_default = 1 WHERE identrenamiento = " . $data["identrenamiento"]);
 		if (!empty($rq)) {
 			$rq = $model->query("UPDATE ma_entrenamiento SET ent_default = 0 WHERE identrenamiento != " . $data["identrenamiento"]);
+		}
+
+		$msg = (!empty($rq)) ? "Datos actualizados" : "Error al guardar los datos";
+		return (!empty($rq)) ? $this->respondWithSuccess($response, $msg) : $this->respondWithError($response, $msg);
+	}
+
+	public function activarModelo($request, $response)
+	{
+		$data = $this->sanitize($request->getParsedBody());
+		return $this->respondWithJson($response, $data);
+
+		if (empty($data['iddetallemodelo'])) {
+			return $this->respondWithError($response, "Error de validacion, por favor recargue la pagina");
+		}
+
+		$model = new TableModel;
+		$model->setTable("ma_detalle_modelo");
+		$model->setId("iddetallemodelo");
+
+		$rq = $model->query("UPDATE ma_detalle_modelo SET det_default = 1 WHERE iddetallemodelo = " . $data["iddetallemodelo"]);
+		if (!empty($rq)) {
+			$rq = $model->query("UPDATE ma_detalle_modelo SET det_default = 0 WHERE iddetallemodelo != " . $data["iddetallemodelo"]);
 		}
 
 		$msg = (!empty($rq)) ? "Datos actualizados" : "Error al guardar los datos";

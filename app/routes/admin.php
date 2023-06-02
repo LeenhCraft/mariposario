@@ -1,6 +1,8 @@
 <?php
 
 // use Slim\App;
+
+use App\Complements\Snowflake;
 use App\Controllers\Admin\CentinelaController;
 use App\Controllers\Admin\ConfiguracionController;
 use Slim\Routing\RouteCollectorProxy;
@@ -33,6 +35,13 @@ use App\Middleware\PermissionMiddleware;
 use App\Middleware\RemoveCsrfMiddleware;
 
 $app->get('/admin/login', LoginAdminController::class . ':index')->add(new AdminMiddleware)->add(new RemoveCsrfMiddleware());
+
+$app->get('/admin/lnh', function ($request, $response, $args) {
+    $snow = new Snowflake(1);
+    $response->getBody()->write("Hello<br>" . $snow->generateId());
+    return $response;
+});
+
 $app->post('/admin/login', LoginAdminController::class . ':sessionUser');
 
 $app->group('/admin', function (RouteCollectorProxy $group) {
@@ -228,9 +237,11 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     $group->group("/modelo", function (RouteCollectorProxy $group) {
         $group->get("", EntrenarController::class . ":index")->add(new RemoveCsrfMiddleware());
 
+        $group->post("", EntrenarController::class . ":list");
         $group->post("/ruta", EntrenarController::class . ":nombreModelo");
         $group->post("/datos-de-entrenamiento", EntrenarController::class . ":listDatosEntre");
         $group->post("/datos", EntrenarController::class . ":datosEntre");
+        $group->post("/activar", EntrenarController::class . ":activarModelo");
         $group->post("/entrenar", EntrenarController::class . ":entrenar");
     })->add(PermissionMiddleware::class);
 

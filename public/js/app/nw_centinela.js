@@ -27,6 +27,8 @@ tb = $("#tbl").dataTable({
     bDestroy: true,
     iDisplayLength: 10,
     // order: [[0, "desc"]],
+    // scroll horizontal
+    scrollX: true,
     });
 });
 function save(ths, e) {

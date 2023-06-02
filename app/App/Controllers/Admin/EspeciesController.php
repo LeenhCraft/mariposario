@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Controllers\Error\ErrorController;
 use App\Http\ImageGPT;
 use App\Models\TableModel;
 use Slim\Csrf\Guard;
@@ -65,10 +66,16 @@ class EspeciesController extends Controller
 		$slug = explode("/", $url);
 		$data = $model->where("es_slug", end($slug))->first();
 
+		if (empty($data)) {
+			$error = new ErrorController;
+			return $error->notFound($request, $response, true);
+		}
+
 		$model->emptyQuery();
 		$model->setTable("ma_configuracion");
 		$model->setId("idconfig");
 
+		$url = '/'.$slug[1] . '/' . $slug[2];
 		return $this->render($response, 'App.Especies.viewespecie', [
 			'titulo_web' => 'Especies',
 			'url' => $url,

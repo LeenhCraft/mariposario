@@ -89,6 +89,8 @@ if (isset($data['js']) && !empty($data['js'])) {
 }
 ?>
 <!-- configuracion de apariencia  -->
+<script src="/js/template-customizer.js"></script>
+
 <style>
     #template-customizer {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
@@ -373,10 +375,10 @@ if (isset($data['js']) && !empty($data['js'])) {
         padding-right: 0 !important
     }
 </style>
-<div id="template-customizer" class="invert-bg-white" style="visibility: visible"> <a href="javascript:void(0)" class="template-customizer-open-btn" tabindex="-1"></a>
+<div id="template-customizer" class="invert-bg-white" style="visibility: visible"> <a href="javascript:customizer()" class="template-customizer-open-btn" tabindex="-1"></a>
     <div class="p-4 m-0 lh-1 border-bottom template-customizer-header">
         <h4 class="template-customizer-t-panel_header mb-2">TEMPLATE CUSTOMIZER</h4>
-        <p class="template-customizer-t-panel_sub_header mb-0">Customize and preview in real time</p> <a href="javascript:void(0)" class="btn-close template-customizer-close-btn fw-light px-4 py-2 text-body" tabindex="-1"></a>
+        <p class="template-customizer-t-panel_sub_header mb-0">Customize and preview in real time</p> <a href="javascript:close()" class="btn-close template-customizer-close-btn fw-light px-4 py-2 text-body" tabindex="-1"></a>
     </div>
     <div class="template-customizer-inner pt-4">
         <div class="template-customizer-theming">

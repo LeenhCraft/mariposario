@@ -46,7 +46,7 @@
                     <table id="tbl" class="table table-hover w-100" width="100%">
                         <thead>
                             <tr>
-                                <th>a</th>
+                                <th></th>
                                 <th>Fecha</th>
                                 <th>Ruta</th>
                             </tr>

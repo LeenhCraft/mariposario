@@ -20,3 +20,4 @@
 /app/App/Controllers/Admin/ia/*.txt
 *.npy
 /Rubbish
+public/modelo

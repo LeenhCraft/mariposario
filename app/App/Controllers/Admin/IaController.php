@@ -96,11 +96,11 @@ class IaController extends Controller
             return $this->respondWithError($response, $msg);
         }
 
-        $validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
-        if (!$validate) {
-            $msg = "Error de validación, por favor recargue la página";
-            return $this->respondWithError($response, $msg);
-        }
+        // $validate = $this->guard->validateToken($data['csrf_name'], $data['csrf_value']);
+        // if (!$validate) {
+        //     $msg = "Error de validación, por favor recargue la página";
+        //     return $this->respondWithError($response, $msg);
+        // }
 
         $model = new TableModel;
         $model->setTable("ma_entrenamiento");
@@ -118,7 +118,7 @@ class IaController extends Controller
         }
 
         $diccionario = $model->where("identrenamiento", $arrModelo["identrenamiento"])->first();
-        $diccionario = json_decode($diccionario['ent_diccionario'],true);
+        $diccionario = json_decode($diccionario['ent_diccionario'], true);
         // invertir los valores a que sean las llaves y las llaves los valores
         $diccionario = array_flip($diccionario);
 
@@ -139,7 +139,17 @@ class IaController extends Controller
             return $this->respondWithError($response, $especie);
         }
 
-        return $this->respondWithSuccess($response, "La especie es: " . $especie);
+        $model3 = new TableModel;
+        $model3->setTable("ma_especies_1");
+        $model3->setId("idespecie");
+        $dataEspecie = ["status" => false, "message" => "No se encontró la especie", "data" => []];
+        $data = $model3->where("es_nombre_cientifico", $especie)->first();
+        if (!empty($data)) {
+            $dataEspecie = ["status" => true, "message" => "La especie es: " . $especie, "data" => $data];
+        }
+        return $this->respondWithJson($response, $dataEspecie);
+
+        // return $this->respondWithSuccess($response, "La especie es: " . $especie);
 
 
         // $msg = "Error al guardar los datos";

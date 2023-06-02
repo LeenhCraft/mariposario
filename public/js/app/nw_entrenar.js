@@ -1,4 +1,4 @@
-let tb;
+let tb, tblmodelo;
 $(document).ready(function () {
   tb = $("#tbl").dataTable({
     aProcessing: true,
@@ -12,6 +12,35 @@ $(document).ready(function () {
       dataSrc: "",
     },
     columns: [{ data: "accion" }, { data: "fecha" }, { data: "ruta" }],
+    resonsieve: "true",
+    bDestroy: true,
+    iDisplayLength: 10,
+    // ocultar busqueda
+    bFilter: false,
+    // ocultar la cantidad de registros a mostrar
+    bLengthChange: false,
+    // tabla scrollX
+    scrollX: true,
+    // order: [[0, "desc"]],
+  });
+
+  tblmodelo = $("#tblModelos").dataTable({
+    aProcessing: true,
+    aServerSide: true,
+    language: {
+      url: base_url + "js/app/plugins/dataTable.Spanish.json",
+    },
+    ajax: {
+      url: base_url + "admin/modelo",
+      method: "POST",
+      dataSrc: "",
+    },
+    columns: [
+      { data: "accion" },
+      { data: "nombre" },
+      { data: "ruta" },
+      { data: "fecha" },
+    ],
     resonsieve: "true",
     bDestroy: true,
     iDisplayLength: 10,
@@ -57,6 +86,11 @@ $(document).ready(function () {
         });
       }
     });
+  });
+
+  // funcion que se ejecuta antes de abrir el modal
+  $("#modalModelos").on("show.bs.modal", function (e) {
+    tblmodelo.api().ajax.reload();
   });
 });
 
@@ -119,6 +153,34 @@ function accion(ths, id) {
   let data = new FormData();
   data.append("identrenamiento", id);
   let ajaxUrl = base_url + "admin/modelo/datos";
+  $.ajax({
+    type: "POST",
+    url: ajaxUrl,
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      divLoading.css("display", "none");
+      Toast.fire({
+        icon: "success",
+        title: data.message,
+      });
+      //   actualizar tabla
+      tb.api().ajax.reload();
+    },
+    error: function (error) {
+      divLoading.css("display", "none");
+      console.log(error);
+    },
+  });
+  return false;
+}
+
+function accionModelo(ths, id) {
+  divLoading.css("display", "flex");
+  let data = new FormData();
+  data.append("iddetallemodelo", id);
+  let ajaxUrl = base_url + "admin/modelo/activar";
   $.ajax({
     type: "POST",
     url: ajaxUrl,
