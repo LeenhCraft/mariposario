@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="ligth-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
+<html lang="es" class="dark-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="/css/app/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="/css/app/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/css/app/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/css/app/vendor/css/core-dark.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/css/app/vendor/css/theme-default-dark.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="/css/app/custom.css" />
 
     <!-- Vendors CSS -->
