@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Controllers\Admin;
 
@@ -8,9 +8,9 @@ use Slim\Csrf\Guard;
 use Slim\Psr7\Factory\ResponseFactory;
 
 /**
- * Class Configuracion Controller
+ * Class Historial Controller
  */
-class ConfiguracionController extends Controller
+class HistorialController extends Controller
 {
 	protected $permisos = [];
 	protected $responseFactory;
@@ -34,18 +34,11 @@ class ConfiguracionController extends Controller
 	 */
 	public function index($request, $response)
 	{
-		return $this->render($response, 'App.Configuracion.Configuracion', [
-			'titulo_web' => 'Configuracion',
+		return $this->render($response, 'App.Historial.Historial', [
+			'titulo_web' => 'Historial',
 			'url' => $request->getUri()->getPath(),
 			'permisos' => $this->permisos,
-			'css'=> ['node_modules/monaco-editor/min/vs/editor/editor.main.css'],
-			'js' => [
-				'js/app/monaco.js',
-				'node_modules/monaco-editor/min/vs/loader.js',
-				'node_modules/monaco-editor/min/vs/editor/editor.main.nls.js',
-				'node_modules/monaco-editor/min/vs/editor/editor.main.js',
-				'js/app/nw_configuracion.js'
-			],
+			'js' => ['js/app/nw_historial.js'],
 			'tk' => [
 				'name' => $this->guard->getTokenNameKey(),
 				'value' => $this->guard->getTokenValueKey(),
@@ -61,10 +54,10 @@ class ConfiguracionController extends Controller
 	public function list($request, $response)
 	{
 		$model = new TableModel;
-		$model->setTable("ma_configuracion");
-		$model->setId("idconfig");
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
 
-		$arrData = $model->orderBy("idconfig", "DESC")->get();
+		$arrData = $model->orderBy("idhistorial", "DESC")->get();
 		$data = [];
 		$num = 0;
 
@@ -75,11 +68,11 @@ class ConfiguracionController extends Controller
 			$num++;
 
 			if ($this->permisos['perm_d'] == 1) {
-				$btnDelete = '<a class="dropdown-item" href="javascript:fntDel(' . $arrData[$i]['idconfig'] . ');"><i class="bx bx-trash me-1"></i> Eliminar</a>';
+				$btnDelete = '<a class="dropdown-item" href="javascript:fntDel(' . $arrData[$i]['idhistorial'] . ');"><i class="bx bx-trash me-1"></i> Eliminar</a>';
 			}
 
 			if ($this->permisos['perm_u'] == 1) {
-				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idconfig'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
+				$btnEdit = '<a class="dropdown-item" href="javascript:fntEdit(' . $arrData[$i]['idhistorial'] . ');"><i class="bx bx-edit-alt me-1"></i> Editar</a>';
 			}
 
 			$arrData[$i]['options'] = '<div class="d-flex flex-row"><div class="ms-3 dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu">' . $btnEdit . $btnDelete . '</div></div></div>';
@@ -109,8 +102,8 @@ class ConfiguracionController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_configuracion");
-		$model->setId("idconfig");
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
 
 		/*
 		$existe = $model->where("field", "LIKE", $data['field'])->first();
@@ -119,12 +112,15 @@ class ConfiguracionController extends Controller
 			return $this->respondWithError($response, $msg);
 		}
 		*/
-		// $valor = json_encode([$data["nombre"] => $data["valor"]]);
 
 		$rq = $model->create([
-			'nombre' => $data['nombre'],
-			'valor' => $data["valor"],
-			// 'date' => $data['date'],
+			'iddetallemodelo' => $data['iddetallemodelo'],
+			'his_tiempo' => $data['his_tiempo'],
+			'his_inicio' => $data['his_inicio'],
+			'his_fin' => $data['his_fin'],
+			'his_index' => $data['his_index'],
+			'his_prediccion' => $data['his_prediccion'],
+			'his_fecha' => $data['his_fecha'],
 		]);
 
 		if (!empty($rq)) {
@@ -143,15 +139,27 @@ class ConfiguracionController extends Controller
 	 */
 	public function validar($data)
 	{
-		if (empty($data['nombre'])) {
+		if (empty($data['iddetallemodelo'])) {
 			return false;
 		}
-		if (empty($data['valor'])) {
+		if (empty($data['his_tiempo'])) {
 			return false;
 		}
-		// if (empty($data['date'])) {
-		// 	return false;
-		// }
+		if (empty($data['his_inicio'])) {
+			return false;
+		}
+		if (empty($data['his_fin'])) {
+			return false;
+		}
+		if (empty($data['his_index'])) {
+			return false;
+		}
+		if (empty($data['his_prediccion'])) {
+			return false;
+		}
+		if (empty($data['his_fecha'])) {
+			return false;
+		}
 		return true;
 	}
 
@@ -171,10 +179,10 @@ class ConfiguracionController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_configuracion");
-		$model->setId("idconfig");
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
 
-		$rq = $model->find($data['idconfig']);
+		$rq = $model->find($data['idhistorial']);
 		if (!empty($rq)) {
 			return $this->respondWithJson($response, ["status" => true, "data" => $rq]);
 		}
@@ -189,7 +197,7 @@ class ConfiguracionController extends Controller
 	 */
 	public function validarSearch($data)
 	{
-		if (empty($data['idconfig'])) {
+		if (empty($data['idhistorial'])) {
 			return false;
 		}
 		return true;
@@ -217,8 +225,8 @@ class ConfiguracionController extends Controller
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_configuracion");
-		$model->setId("idconfig");
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
 
 		/*
 		$existe = $model->where("field", "LIKE", $data['field'])->first();
@@ -228,10 +236,14 @@ class ConfiguracionController extends Controller
 		}
 		*/
 
-		$rq = $model->update($data['idconfig'], [
-			'nombre' => $data['nombre'],
-			'valor' => $data['valor'],
-			'date' => $data['date'],
+		$rq = $model->update($data['idhistorial'],[
+			'iddetallemodelo' => $data['iddetallemodelo'],
+			'his_tiempo' => $data['his_tiempo'],
+			'his_inicio' => $data['his_inicio'],
+			'his_fin' => $data['his_fin'],
+			'his_index' => $data['his_index'],
+			'his_prediccion' => $data['his_prediccion'],
+			'his_fecha' => $data['his_fecha'],
 		]);
 
 		if (!empty($rq)) {
@@ -250,18 +262,30 @@ class ConfiguracionController extends Controller
 	 */
 	public function validarUpdate($data)
 	{
-		if (empty($data['idconfig'])) {
+		if (empty($data['idhistorial'])) {
 			return false;
 		}
-		if (empty($data['nombre'])) {
+		if (empty($data['iddetallemodelo'])) {
 			return false;
 		}
-		if (empty($data['valor'])) {
+		if (empty($data['his_tiempo'])) {
 			return false;
 		}
-		// if (empty($data['date'])) {
-		// 	return false;
-		// }
+		if (empty($data['his_inicio'])) {
+			return false;
+		}
+		if (empty($data['his_fin'])) {
+			return false;
+		}
+		if (empty($data['his_index'])) {
+			return false;
+		}
+		if (empty($data['his_prediccion'])) {
+			return false;
+		}
+		if (empty($data['his_fecha'])) {
+			return false;
+		}
 		return true;
 	}
 
@@ -274,17 +298,17 @@ class ConfiguracionController extends Controller
 		$data = $this->sanitize($request->getParsedBody());
 		// return $this->respondWithJson($response, $data);
 
-		if (empty($data["idconfig"])) {
+		if (empty($data["idhistorial"])) {
 			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
 		}
 
 		$model = new TableModel;
-		$model->setTable("ma_configuracion");
-		$model->setId("idconfig");
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
 
-		$rq = $model->find($data['idconfig']);
+		$rq = $model->find($data['idhistorial']);
 		if (!empty($rq)) {
-			$rq = $model->delete($data["idconfig"]);
+			$rq = $model->delete($data["idhistorial"]);
 			if (!empty($rq)) {
 				$msg = "Datos eliminados correctamente";
 				return $this->respondWithSuccess($response, $msg);

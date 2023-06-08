@@ -132,7 +132,7 @@ class ModeloController extends Controller
     public function generarDatosEntrenamiento($request, $response)
     {
         // $data = $this->sanitize($request->getParsedBody());
-
+        $inicio = microtime(true);
         /* */
         $model = new TableModel;
         $model->setTable("ma_especies_1");
@@ -178,7 +178,7 @@ class ModeloController extends Controller
                 . $configData["ruta_datos_entrenamiento"] . ' '
                 . $configData["nombre_datos_entrenamiento"] . ' '
                 . $archivo
-                // . $jsonData
+            // . $jsonData
         );
         $output = shell_exec($command);
         // dep($output, 1);
@@ -207,6 +207,10 @@ class ModeloController extends Controller
         $model3->setTable("ma_entrenamiento");
         $model3->setId("identrenamiento");
 
+        // Calcular el tiempo transcurrido
+        $fin = microtime(true);
+        $tiempo = $fin - $inicio;
+
         $rq = $model3->create([
             // "ent_fecha" => date("Y-m-d H:i:s"),
             "ent_ruta_datos_generados" => json_encode([$output["npy"], $output2["npy"]]),
@@ -214,11 +218,15 @@ class ModeloController extends Controller
             "ent_total_imagenes" => $total,
             "ent_descripcion" => "",
             "ent_diccionario" => $output["dicc"],
+            "ent_tiempo" => $tiempo,
+            "ent_inicio" => $inicio,
+            "ent_fin" => $fin,
             // "ent_default" => "0"
         ]);
         $model->query("UPDATE ma_entrenamiento SET ent_default = 0 WHERE identrenamiento != " . $rq["identrenamiento"]);
+        // $model->query("UPDATE ma_entrenamiento SET ent_tiempo = {$tiempo}, ent_inicio = {$inicio}, ent_fin = {$fin} WHERE identrenamiento = " . $rq["identrenamiento"]);
         if ($rq) {
-            $msg = "Datos de entrenamiento generados correctamente";
+            $msg = "Datos de entrenamiento generados correctamente. El proceso tardó " . $tiempo . " segundos";
             return $this->respondWithSuccess($response, $msg);
         }
 

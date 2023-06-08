@@ -12,25 +12,28 @@
         ?>
     </div>
     <div class="table-responsive text-nowrap mb-4">
-        
-        <table id="tbl" class="table table-hover" width="100%">
-            <thead>
-                <tr>
-                    <th>idconfig</th>
-                    <th>nombre</th>
-                    <th>valor</th>
-                    <th>date</th>
-                    <th>options</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+    <table id="tbl" class="table table-hover" width="100%">
+        <thead>
+            <tr>
+            	<th>idhistorial</th>
+				<th>iddetallemodelo</th>
+				<th>his_tiempo</th>
+				<th>his_inicio</th>
+				<th>his_fin</th>
+				<th>his_index</th>
+				<th>his_prediccion</th>
+				<th>his_fecha</th>
+				<th>options</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 </div>
 <?php
 if ($data['permisos']['perm_w'] == 1 || $data['permisos']['perm_u'] == 1) {
-    getModal('mdlConfiguracion', $data);
+    getModal('mdlHistorial',$data);
 }
 footerApp('Template/footer_dash', $data);
 ?>

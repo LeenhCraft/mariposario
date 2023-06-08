@@ -15,6 +15,7 @@ use App\Controllers\Admin\EntrenarController;
 use App\Controllers\Admin\EspeciesController;
 use App\Controllers\Admin\FamiliasController;
 use App\Controllers\Admin\GenerosController;
+use App\Controllers\Admin\HistorialController;
 use App\Controllers\Admin\IaController;
 use App\Controllers\Admin\LoginAdminController;
 use App\Controllers\Admin\MenusController;
@@ -254,6 +255,17 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", ConfiguracionController::class . ":search");
         $group->post("/update", ConfiguracionController::class . ":update");
         $group->post("/delete", ConfiguracionController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
+    // ruta para configurar variables genereales del sistema
+    $group->group("/historial", function (RouteCollectorProxy $group) {
+        $group->get("", HistorialController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", HistorialController::class . ":list");
+        $group->post("/save", HistorialController::class . ":store");
+        $group->post("/search", HistorialController::class . ":search");
+        $group->post("/update", HistorialController::class . ":update");
+        $group->post("/delete", HistorialController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
     $group->group("/centinela", function (RouteCollectorProxy $group) {

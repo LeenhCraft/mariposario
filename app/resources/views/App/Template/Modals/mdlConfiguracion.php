@@ -15,7 +15,8 @@
                 </div>
 				<div class="mb-3 col-lg-12 col-12">
                 	<label class="form-label text-capitalize" for="basic-default-fullname">valor</label>
-                    <textarea id="valor" name="valor" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea id="valor" name="valor" cols="30" rows="10" class="form-control d-none"></textarea>
+                    <div id="containerr" style="height: 200px; border: 1px solid #d9dee3;" class="w-100"></div>
                 </div>
 				<div class="mb-3 col-lg-12 col-12">
                 	<label class="form-label text-capitalize" for="basic-default-fullname">date</label>

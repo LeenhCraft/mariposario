@@ -217,6 +217,7 @@ class EntrenarController extends Controller
 
 	public function entrenar($request, $response)
 	{
+		$inicio = microtime(true);
 		$model = new TableModel;
 		$model->setTable("ma_entrenamiento");
 		$model->setId("identrenamiento");
@@ -259,6 +260,10 @@ class EntrenarController extends Controller
 		$model5->setTable("ma_detalle_modelo");
 		$model5->setId("iddetallemodelo");
 
+		// Calcular el tiempo transcurrido
+		$fin = microtime(true);
+		$tiempo = $fin - $inicio;
+
 		$rq = $model5->create([
 			// "iddetallemodelo" => "",
 			"idmodelo" => $svm["idmodelo"],
@@ -266,11 +271,14 @@ class EntrenarController extends Controller
 			"det_ruta" => $output["pkl"],
 			"det_nombre" => $output["name"],
 			"det_default" => "1",
+			"det_tiempo" => $tiempo,
+			"det_inicio" => $inicio,
+			"det_fin" => $fin,
 			// "det_fecha" => ""
 		]);
 		$model->query("UPDATE ma_detalle_modelo SET det_default = 0 WHERE iddetallemodelo != " . $rq["iddetallemodelo"]);
 		if ($rq) {
-			$msg = "Modelo entrenado con exito";
+			$msg = "Modelo entrenado con exito. El proceso tardo " . $tiempo . " segundos";
 			return $this->respondWithSuccess($response, $msg);
 		}
 

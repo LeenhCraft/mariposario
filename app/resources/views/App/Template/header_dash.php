@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="ligth-style layout-menu-fixed layout-navbar-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
+<html lang="es" class="light-style layout-menu-fixed layout-navbar-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="UTF-8" />

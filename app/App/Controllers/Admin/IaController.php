@@ -86,6 +86,8 @@ class IaController extends Controller
      */
     public function store($request, $response)
     {
+        // Obtener la marca de tiempo antes de iniciar el proceso
+        $inicio = microtime(true);
         $data = $this->sanitize($request->getParsedBody());
         $data['files'] = $_FILES;
         // return $this->respondWithJson($response, $data);
@@ -112,8 +114,15 @@ class IaController extends Controller
 
         // configuraciones
         $arrModelo = $model2->where("det_default", 1)->first();
+
         if (empty($arrModelo)) {
             $msg = "No hay modelo entrenado, por favor entrene un modelo para continuar";
+            return $this->respondWithError($response, $msg);
+        }
+
+        // verificar si existe la carpeta
+        if (!file_exists($arrModelo["det_ruta"])) {
+            $msg = "No existe el archivo entrenado, por favor entrene un modelo para continuar";
             return $this->respondWithError($response, $msg);
         }
 
@@ -121,8 +130,6 @@ class IaController extends Controller
         $diccionario = json_decode($diccionario['ent_diccionario'], true);
         // invertir los valores a que sean las llaves y las llaves los valores
         $diccionario = array_flip($diccionario);
-
-        // dep($diccionario, 1);
 
         // Ejecutar el archivo Python y pasarle las variables
         $command = escapeshellcmd('python ' . __DIR__ . '/ia/ex.py ' . $data['files']['photo']['tmp_name'] . ' ' . $arrModelo["det_ruta"]);
@@ -144,8 +151,28 @@ class IaController extends Controller
         $model3->setId("idespecie");
         $dataEspecie = ["status" => false, "message" => "No se encontró la especie", "data" => []];
         $data = $model3->where("es_nombre_cientifico", $especie)->first();
+
+        // Obtener la marca de tiempo después de completar el proceso
+        $fin = microtime(true);
+
+        // Calcular el tiempo transcurrido
+        $tiempo = $fin - $inicio;
+        $model4 = new TableModel;
+        $model4->setTable("ma_historial_identificacion");
+        $model4->setId("idhistorial");
+
+        $rq = $model4->create([
+            'iddetallemodelo' => $arrModelo['iddetallemodelo'],
+            'his_tiempo' => $tiempo,
+            'his_inicio' => $inicio,
+            'his_fin' => $fin,
+            'his_index' => $predic,
+            'his_prediccion' => $especie,
+            // 'his_fecha' => $data['his_fecha'],
+        ]);
+
         if (!empty($data)) {
-            $dataEspecie = ["status" => true, "message" => "La especie es: " . $especie, "data" => $data];
+            $dataEspecie = ["status" => true, "message" => "La especie es: " . $especie . " - " . "El proceso tardó: " . $tiempo . " segundos.", "data" => $data];
         }
         return $this->respondWithJson($response, $dataEspecie);
 
