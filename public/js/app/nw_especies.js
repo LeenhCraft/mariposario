@@ -109,7 +109,7 @@ $(document).ready(function () {
     // verificar ´sort´ si idespecie o es_nombre_cientifico esta seleccionado
     if (sort == "idespecie") {
       // ordenar por idespecie
-      dataEspecies.sort(function (a, b) {
+      arrEspecies.data.sort(function (a, b) {
         if (order == "asc") {
           return a.idespecie - b.idespecie;
         } else {
@@ -118,7 +118,7 @@ $(document).ready(function () {
       });
     } else {
       // ordenar por es_nombre_cientifico
-      dataEspecies.sort(function (a, b) {
+      arrEspecies.data.sort(function (a, b) {
         if (order == "asc") {
           return a.es_nombre_cientifico.localeCompare(b.es_nombre_cientifico);
         } else {
@@ -126,7 +126,7 @@ $(document).ready(function () {
         }
       });
     }
-    $.each(dataEspecies, function (index, value) {
+    $.each(arrEspecies.data, function (index, value) {
       url = base_url + "img/placeholder/img-placeholder-dark.jpg";
       if (value.es_imagen_url != "") {
         url = base_url + value.es_imagen_url;

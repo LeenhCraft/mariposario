@@ -59,7 +59,7 @@ function fntEdit(idp) {
     if (data.status) {
       $("#id").val(data.data.idusuario);
       $("#user").val(data.data.usu_usuario);
-      $("#status").val(data.data.usu_estado);
+      $("#status").val(data.data.usu_activo);
       $("#idrol").val(data.data.idrol);
       $("#idpersona").val(data.data.idpersona);
     } else {

@@ -243,7 +243,9 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
               <div class="h-100 d-flex flex-row">
                   <img class="border rounded" src="` +
         url +
-        `" alt="" style="max-width: 250px;object-fit: cover;">
+        `" alt="` +
+        crearSlug(value.his_prediccion) +
+        `" style="max-width: 250px;object-fit: cover;">
                   <div class="col mx-5">
                       <label for="defaultFormControlInput" class="form-label">Especie Predicha</label>
                       <label class="form-control">` +

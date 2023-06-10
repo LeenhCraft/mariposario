@@ -122,27 +122,49 @@ class Model
 
     public function paginate($cant = 15)
     {
+        $start = $last_page = 0;
         $uri = $_SERVER['REQUEST_URI'];
         $uri = trim($uri, '/');
         if (strpos($uri, '?')) {
             $uri = substr($uri, 0, strpos($uri, '?'));
         }
-        $cant = isset($_GET['perpage']) && is_numeric($_GET['perpage']) ? $_GET['perpage'] : $cant;
+        // $cant = isset($_GET['perpage']) && is_numeric($_GET['perpage']) ? $_GET['perpage'] : $cant;
+        if (isset($_GET['perpage'])) {
+            $cant = is_numeric($_GET["perpage"]) ? $_GET["perpage"] : 'all';
+        }
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        $start = ($page - 1) * $cant;
+        if (is_numeric($cant))
+            $start = ($page - 1) * $cant;
 
         if ($this->sql) {
-            $sql = $this->sql . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+            if (!is_numeric($cant))
+                $sql = $this->sql . ($this->orderBy ?? '');
+
+            if (is_numeric($cant))
+                $sql = $this->sql . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+
             $data = $this->query($sql, $this->data, $this->params)->get();
         } else {
-            $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+            if (!is_numeric($cant))
+                $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '');
+
+            if (is_numeric($cant))
+                $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+
+            // $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
             $data = $this->query($sql)->get();
         }
 
+
         $total = $this->query("SELECT FOUND_ROWS() as total")->first()['total'];
-        $last_page = ceil($total / $cant);
-        $next_page_url = $page < $last_page ?  "/{$uri}?page=" . ($page + 1) . "&perpage=" . $cant : null;
-        $prev_page_url = $page > 1 ? "/{$uri}?page=" . ($page - 1) . "&perpage=" . $cant  : null;
+        if (is_numeric($cant)) {
+            $last_page = ceil($total / $cant);
+            $next_page_url = $page < $last_page ?  "/{$uri}?page=" . ($page + 1) . "&perpage=" . $cant : null;
+            $prev_page_url = $page > 1 ? "/{$uri}?page=" . ($page - 1) . "&perpage=" . $cant  : null;
+        } else {
+            $next_page_url = null;
+            $prev_page_url = null;
+        }
         return [
             'total' => $total,
             'from' => $start + 1, //desde que registro se muestra

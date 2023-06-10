@@ -12,6 +12,9 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+            <div class="">
+                <button class="btn btn-outline-secondary">generar reporte</button>
+            </div>
         </div>
         <hr>
         <div class="row mt-4 content-card-butter">

@@ -97,6 +97,7 @@
                                 <a class="dropdown-item" href="?perpage=10">10</a>
                                 <a class="dropdown-item" href="?perpage=15">15</a>
                                 <a class="dropdown-item" href="?perpage=20">20</a>
+                                <a class="dropdown-item" href="?perpage=all">Ver todas</a>
                             </div>
                         </div>
                     </div>

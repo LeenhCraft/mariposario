@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-4 mb-4">
+    <div class="col-12 col-md-6 mb-4">
         <div class="card h-100">
             <div class="card-header">
                 <h4>Visitar el Catalogo de la Vida</h4>
