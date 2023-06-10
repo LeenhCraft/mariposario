@@ -50,7 +50,8 @@ class EspeciesController extends Controller
 				'name' => $this->guard->getTokenNameKey(),
 				'value' => $this->guard->getTokenValueKey(),
 				'key' => $this->guard->generateToken(),
-			]
+			],
+			'list' => $this->listGet()
 		]);
 	}
 
@@ -75,7 +76,7 @@ class EspeciesController extends Controller
 		$model->setTable("ma_configuracion");
 		$model->setId("idconfig");
 
-		$url = '/'.$slug[1] . '/' . $slug[2];
+		$url = '/' . $slug[1] . '/' . $slug[2];
 		return $this->render($response, 'App.Especies.viewespecie', [
 			'titulo_web' => 'Especies',
 			'url' => $url,
@@ -110,6 +111,17 @@ class EspeciesController extends Controller
 		// $arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->paginate_int($data["limit"], $data["page"],  $data['sort'], $data['order']);
 		$arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->paginate_int($data["limit"], $data["page"]);
 		return $this->respondWithJson($response, $arrData);
+	}
+
+	/**
+	 * Lista los datos de la tabla
+	 */
+	private function listGet()
+	{
+		$model = new TableModel;
+		$model->setTable("ma_especies_1");
+		$model->setId("idespecie");
+		return $model->where("es_status", "1")->orderBy("idespecie", "DESC")->paginate(10);
 	}
 
 
@@ -502,7 +514,7 @@ class EspeciesController extends Controller
 			->upload();
 
 		if ($img) {
-			sleep(1);
+			// sleep(1);
 			$msg = " Imagen guardada correctamente.";
 			return $this->respondWithSuccess($response, $msg);
 		}

@@ -49,7 +49,7 @@ now = datetime.now()
 timestamp = now.strftime("%Y%m%d%H%M%S")
 
 # Concatenar la fecha y hora actual al nombre de los datos de entrenamiento
-nombre_datos_entrenamiento = f"label-{nombre_archivo}_{timestamp}"
+nombre_datos_entrenamiento = f"label-{nombre_archivo}-{timestamp}"
 
 # Guarda el array NumPy en un archivo 'etiquetas_de_entrenamiento.npy'
 np.save(os.path.join(path_entrenamiento, f"{nombre_datos_entrenamiento}.npy"), train_labels)

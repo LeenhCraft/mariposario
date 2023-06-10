@@ -127,6 +127,7 @@ class Model
         if (strpos($uri, '?')) {
             $uri = substr($uri, 0, strpos($uri, '?'));
         }
+        $cant = isset($_GET['perpage']) && is_numeric($_GET['perpage']) ? $_GET['perpage'] : $cant;
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
         $start = ($page - 1) * $cant;
 
@@ -140,14 +141,16 @@ class Model
 
         $total = $this->query("SELECT FOUND_ROWS() as total")->first()['total'];
         $last_page = ceil($total / $cant);
+        $next_page_url = $page < $last_page ?  "/{$uri}?page=" . ($page + 1) . "&perpage=" . $cant : null;
+        $prev_page_url = $page > 1 ? "/{$uri}?page=" . ($page - 1) . "&perpage=" . $cant  : null;
         return [
             'total' => $total,
             'from' => $start + 1, //desde que registro se muestra
             'to' => $start + count($data), // hasta que registro se muestra
             'current_page' => $page, //pagina actual
             'per_page' => $cant, //cantidad de registros por pagina
-            'next_page_url' => $page < $last_page ?  "/{$uri}?page=" . ($page + 1) : null, //pagina siguiente
-            'prev_page_url' => $page > 1 ? "/{$uri}?page=" . ($page - 1) : null, //pagina anterior
+            'next_page_url' => $next_page_url, //pagina siguiente
+            'prev_page_url' => $prev_page_url, //pagina anterior
             'last_page' => $last_page, //ultimo numero de pagina
             'data' => $data,
         ];

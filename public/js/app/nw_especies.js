@@ -240,14 +240,18 @@ function loadOptions(ruta, selectId, text, attr, param = "") {
   });
 }
 
-function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
+function loadCards_old(
+  params = { sort: "es_nombre_cientifico", order: "asc" }
+) {
   // capturar el parametro page de la url y loa agrego a params
   let url = new URL(window.location.href);
   let page = url.searchParams.get("page");
   let limit = url.searchParams.get("limit");
   params.page = page != null ? page : 1;
   params.limit = limit != null ? limit : 10;
-  $(".total-especies .val").html(`<div class="spinner-border text-primary m-0" role="status"><span class="visually-hidden">Loading...</span></div>`);
+  $(".total-especies .val").html(
+    `<div class="spinner-border text-primary m-0" role="status"><span class="visually-hidden">Loading...</span></div>`
+  );
 
   // divLoading.css("display", "flex");
   $(".content-card-butter").html(`
@@ -314,7 +318,9 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
           );
 
           pagination.html(html.reduce((acc, curr) => acc + curr, ""));
-          $(".total-especies .val").html(`<h2 class="m-0 p-0">`+data.total+`</h2>`).fadeIn("slow");
+          $(".total-especies .val")
+            .html(`<h2 class="m-0 p-0">` + data.total + `</h2>`)
+            .fadeIn("slow");
 
           url = base_url + "img/placeholder/img-placeholder-dark.jpg";
           if (value.es_imagen_url != "") {
@@ -350,4 +356,122 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
       }
     },
   });
+}
+
+function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
+  // capturar el parametro page de la url y loa agrego a params
+  let url = new URL(window.location.href);
+  let page = url.searchParams.get("page");
+  let limit = url.searchParams.get("limit");
+  params.page = page != null ? page : 1;
+  params.limit = limit != null ? limit : 10;
+  $(".total-especies .val").html(
+    `<div class="spinner-border text-primary m-0" role="status"><span class="visually-hidden">Loading...</span></div>`
+  );
+
+  $(".content-card-butter").html(`
+  <div class="col-6 col-md-2 mb-3 spinkit-content">
+      <div class="card h-100" style="min-height:239px;">
+          <div class="card-body h-100 d-flex flex-column justify-content-center align-items-center">
+              <div class="spinkit-ln mb-3">
+                  <div class="sk-chase sk-primary">
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                      <div class="sk-chase-dot"></div>
+                  </div>
+              </div>
+              <h5>Cargando...</h5>
+          </div>
+      </div>
+  </div>
+  `);
+  let cards = `<div class="col-6 col-md-2 mb-3">
+      <div class="card h-100" style="min-height:239px;">
+          <a href="#" class="h-100" onclick="openModal()">
+              <div class="card-body h-100">
+                  <div class="d-flex h-100 justity-content-center align-items-center text-center">
+                      <div class="w-100">
+                          <i class='bx bxs-plus-circle bx-lg mb-4'></i>
+                          <h5>Agregar Nueva Especie</h5>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      </div>
+  </div>`;
+  if (arrEspecies.data.length > 0) {
+    // dataEspecies = data.data;
+    $.each(arrEspecies.data, function (index, value) {
+      // paginacion
+      let pagination = $(".pagination");
+      pagination.empty();
+      let prevLink = arrEspecies.prev_page_url
+        ? `<a class="page-link" href="${arrEspecies.prev_page_url}">Anterior</a>`
+        : `<a class="page-link disabled" href="#">Anterior</a>`;
+      let nextLink = arrEspecies.next_page_url
+        ? `<a class="page-link" href="${arrEspecies.next_page_url}">Siguiente</a>`
+        : `<a class="page-link disabled" href="#">Siguiente</a>`;
+      let pageLinks = "";
+      for (let i = 1; i <= arrEspecies.last_page; i++) {
+        let pageLink = `<a class="page-link" href="/admin/especies?page=${i}&perpage=${arrEspecies.per_page}">${i}</a>`;
+        let listItem = `<li class="page-item">${pageLink}</li>`;
+
+        // Marcar la página actual como activa
+        if (i === Number(arrEspecies.current_page)) {
+          listItem = `<li class="page-item active">${pageLink}</li>`;
+        }
+
+        pageLinks += listItem;
+      }
+      let html = [
+        `<li class="page-item">${prevLink}</li>`,
+        pageLinks,
+        `<li class="page-item">${nextLink}</li>`,
+      ];
+
+      // agregar el active a la pagina actual
+      $(
+        '.dropdown-menu a[href="?perpage=' + arrEspecies.per_page + '"]'
+      ).addClass("active");
+
+      pagination.html(html.reduce((acc, curr) => acc + curr, ""));
+      $(".total-especies .val")
+        .html(`<h2 class="m-0 p-0">` + arrEspecies.total + `</h2>`)
+        .fadeIn("slow");
+
+      url = base_url + "img/placeholder/img-placeholder-dark.jpg";
+      if (value.es_imagen_url != "") {
+        url = base_url + value.es_imagen_url;
+      }
+      cards +=
+        `<div class="col-6 col-md-2 mb-3">
+            <div class="card h-100 overflow-hidden" style="max-height:239px;">
+                <a class="text-center" href="` +
+        base_url +
+        "admin/especies/" +
+        value.es_slug +
+        `">
+                <div class="text-center"><img class="w-100 butter-card-img" src="` +
+        url +
+        `" alt="` +
+        value.es_nombre_cientifico +
+        `"></div>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate" title="` +
+        value.es_nombre_cientifico +
+        `">` +
+        value.es_nombre_cientifico +
+        `</h5>
+                    </div>
+                </a>
+            </div>
+        </div>`;
+    });
+    cards += `<hr>`;
+    $(".content-card-butter").html(cards);
+    // divLoading.css("display", "none");
+  }
 }

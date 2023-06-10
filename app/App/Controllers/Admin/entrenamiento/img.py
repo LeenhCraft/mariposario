@@ -66,7 +66,7 @@ now = datetime.now()
 timestamp = now.strftime("%Y%m%d%H%M%S")
 
 # Concatenar la fecha y hora actual al nombre de los datos de entrenamiento
-nombre_datos_entrenamiento = f"img-{nombre_archivo}_{timestamp}"
+nombre_datos_entrenamiento = f"img-{nombre_archivo}-{timestamp}"
 
 # Guardar las características extraídas en un archivo 'datos_de_entrenamiento.npy'
 np.save(os.path.join(path_entrenamiento, f"{nombre_datos_entrenamiento}.npy"),train_features_array)

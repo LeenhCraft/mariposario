@@ -93,10 +93,10 @@
                                 Seleccione
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="?limit=5">5</a>
-                                <a class="dropdown-item" href="?limit=10">10</a>
-                                <a class="dropdown-item" href="?limit=15">15</a>
-                                <a class="dropdown-item" href="?limit=20">20</a>
+                                <a class="dropdown-item" href="?perpage=5">5</a>
+                                <a class="dropdown-item" href="?perpage=10">10</a>
+                                <a class="dropdown-item" href="?perpage=15">15</a>
+                                <a class="dropdown-item" href="?perpage=20">20</a>
                             </div>
                         </div>
                     </div>
@@ -143,6 +143,9 @@
         </div>
     </div>
 </div>
+<script>
+    var arrEspecies = <?= json_encode($data["list"]) ?>;
+</script>
 <?php
 if ($data['permisos']['perm_w'] == 1 || $data['permisos']['perm_u'] == 1) {
     getModal('mdlEspecies', $data);

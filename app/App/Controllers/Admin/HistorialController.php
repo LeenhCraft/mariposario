@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Admin;
 
@@ -38,15 +38,28 @@ class HistorialController extends Controller
 			'titulo_web' => 'Historial',
 			'url' => $request->getUri()->getPath(),
 			'permisos' => $this->permisos,
+			'css' => ['css/app/spinkit.css'],
 			'js' => ['js/app/nw_historial.js'],
 			'tk' => [
 				'name' => $this->guard->getTokenNameKey(),
 				'value' => $this->guard->getTokenValueKey(),
 				'key' => $this->guard->generateToken(),
-			]
+			],
+			'list' => $this->listGet()
 		]);
 	}
 
+
+	/**
+	 * Lista los datos de la tabla
+	 */
+	private function listGet()
+	{
+		$model = new TableModel;
+		$model->setTable("ma_historial_identificacion");
+		$model->setId("idhistorial");
+		return $model->orderBy("his_fecha", "DESC")->paginate(3);
+	}
 
 	/**
 	 * Lista los datos de la tabla
@@ -236,7 +249,7 @@ class HistorialController extends Controller
 		}
 		*/
 
-		$rq = $model->update($data['idhistorial'],[
+		$rq = $model->update($data['idhistorial'], [
 			'iddetallemodelo' => $data['iddetallemodelo'],
 			'his_tiempo' => $data['his_tiempo'],
 			'his_inicio' => $data['his_inicio'],

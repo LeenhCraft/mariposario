@@ -1,0 +1,8 @@
+html {
+    opacity: 0;
+    transition: opacity linear 300ms;
+}
+
+html.visible {
+    opacity: 1;
+}

@@ -227,7 +227,6 @@
         </di>
     </div>
 </div>
-
 <?php
 if ($data['permisos']['perm_w'] == 1 || $data['permisos']['perm_u'] == 1) {
     getModal('mdlEspecies', $data);

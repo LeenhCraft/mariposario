@@ -88,8 +88,6 @@ if (isset($data['js']) && !empty($data['js'])) {
     }
 }
 ?>
-<!-- configuracion de apariencia  -->
-<script src="/js/template-customizer.js"></script>
 
 <style>
     #template-customizer {
@@ -396,7 +394,18 @@ if (isset($data['js']) && !empty($data['js'])) {
                     </div>
                 </div>
             </div>
-            <div class="m-0 px-4 pb-3 pt-1 template-customizer-style w-100"> <label for="customizerStyle" class="form-label d-block template-customizer-t-style_label">Style (Mode)</label> <label class="switch switch-sm"> <span class="switch-label template-customizer-t-style_switch_light">Light</span> <input type="checkbox" class="switch-input" checked="checked"> <span class="switch-toggle-slider"> <span class="switch-on"></span> <span class="switch-off"></span> </span> <span class="switch-label template-customizer-t-style_switch_dark">Dark</span> </label> </div>
+            <div class="m-0 px-4 pb-3 pt-1 template-customizer-style w-100">
+                <label for="customizerStyle" class="form-label d-block template-customizer-t-style_label">Style (Mode)</label>
+                <label class="switch switch-sm">
+                    <span class="switch-label template-customizer-t-style_switch_light">Light</span>
+                    <input id="dark-mode-button" type="checkbox" class="switch-input">
+                    <span class="switch-toggle-slider">
+                        <span class="switch-on"></span>
+                        <span class="switch-off"></span>
+                    </span>
+                    <span class="switch-label template-customizer-t-style_switch_dark">Dark</span>
+                </label>
+            </div>
         </div>
         <div class="template-customizer-layout">
             <hr class="m-0">

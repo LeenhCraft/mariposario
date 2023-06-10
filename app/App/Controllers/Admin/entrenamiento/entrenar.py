@@ -49,7 +49,7 @@ if not os.path.exists(ruta_modelo):
 # Obtener la fecha y hora actual
 now = datetime.now()
 timestamp = now.strftime("%Y%m%d%H%M%S")
-nuevo_nombre=f"mdl-{nombre_modelo}_{timestamp}"
+nuevo_nombre=f"mdl-{nombre_modelo}-{timestamp}"
 # Guardar el clasificador entrenado
 joblib.dump(classifier, os.path.join(ruta_modelo, f"{nuevo_nombre}.pkl"))  
 

@@ -2,7 +2,9 @@
 
 namespace App\Controllers\Admin;
 
+use App\Complements\Snowflake;
 use App\Controllers\Controller;
+use App\Http\ImageGPT;
 use App\Models\TableModel;
 use Slim\Csrf\Guard;
 use Slim\Psr7\Factory\ResponseFactory;
@@ -161,8 +163,29 @@ class IaController extends Controller
         $model4->setTable("ma_historial_identificacion");
         $model4->setId("idhistorial");
 
+        // mover la imagen a la carpeta de historial
+        $ma_conf = new TableModel;
+        $ma_conf->setTable("ma_configuracion");
+        $ma_conf->setId("idconfig");
+
+        $textConfig = $ma_conf->first();
+        $arrConfig = json_decode($textConfig['valor'], true);
+
+        $snowflake = new Snowflake(1);
+        $nombre_img_predic = $snowflake->generateId();
+        $carpeta = $arrConfig['ruta_img_id'];
+        $bulletproof = new ImageGPT($_FILES['photo']);
+        $img = $bulletproof
+            ->setName($nombre_img_predic) // Nombre del archivo
+            ->setSize(1, 5242880) // Tamaño mínimo de 1024 bytes, tamaño máximo de 5242880 bytes = 5MB
+            ->setMime(['image/jpeg', 'image/png']) // Tipos MIME permitidos
+            // ->setDimension(800, 600) // Ancho y altura maximos permitidos de 800x600 píxeles
+            ->setStorage($carpeta, 0755) // Carpeta de destino y permisos opcionales, si no existe se creará
+            ->upload();
+
         $rq = $model4->create([
             'iddetallemodelo' => $arrModelo['iddetallemodelo'],
+            'his_img' => $bulletproof->getPath(),
             'his_tiempo' => $tiempo,
             'his_inicio' => $inicio,
             'his_fin' => $fin,
@@ -172,7 +195,7 @@ class IaController extends Controller
         ]);
 
         if (!empty($data)) {
-            $dataEspecie = ["status" => true, "message" => "La especie es: " . $especie . " - " . "El proceso tardó: " . $tiempo . " segundos.", "data" => $data];
+            $dataEspecie = ["status" => true, "message" => "La especie es: " . $especie, "data" => $data];
         }
         return $this->respondWithJson($response, $dataEspecie);
 
