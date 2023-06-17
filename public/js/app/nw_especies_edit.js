@@ -1,4 +1,4 @@
-var view = $(".dz-message");
+var view = $(".dz-message.img-edit");
 var html = `Haga click aqui para cargar una imagen<br><span class="note needsclick">(Esta imagen es la <strong>referencia</strong> para la especie.)</span>`;
 $(document).ready(function () {
   $(".especie-edit").hide("fast");
@@ -247,6 +247,7 @@ $(document).ready(function () {
       this.on("complete", function (file) {
         myDropzone.removeAllFiles(); // Limpiar el área de Dropzone
         // console.log(file);
+        $(".btn-especie-entre").eq(0).trigger("click"); // Activará el evento "click" en el primer elemento
       });
     },
   });

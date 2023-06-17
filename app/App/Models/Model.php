@@ -42,6 +42,7 @@ class Model
 
     public function query($sql, $data = [], $params = null)
     {
+        $this->sql = $sql;
         if ($data) { //si data es diferente de null
             if ($params == null) {
                 $params = str_repeat("s", count($data));

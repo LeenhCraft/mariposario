@@ -112,6 +112,7 @@ function fntDel(idp) {
             confirmButtonColor: "#007065",
             confirmButtonText: "ok",
           });
+          tb.api().ajax.reload();
         }
       });
     }

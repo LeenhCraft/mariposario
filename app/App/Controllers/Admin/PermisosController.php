@@ -163,6 +163,10 @@ class PermisosController extends Controller
         //     $msg = "Error de validación, por favor recargue la página";
         //     return $this->respondWithError($response, $msg);
         // }
+        if($this->permisos['perm_u'] != 1){
+            $msg = "No tiene permisos para realizar esta acción";
+            return $this->respondWithError($response, $msg);
+        }
 
         $model = new PermisosModel;
         $dataPermisos = $model->find($data['id']);
@@ -200,6 +204,10 @@ class PermisosController extends Controller
 
     public function delete($reqeust, $response, $args)
     {
+        if($this->permisos['perm_d'] != 1){
+            $msg = "No tiene permisos para realizar esta acción";
+            return $this->respondWithError($response, $msg);
+        }
         $data = $this->sanitize($reqeust->getParsedBody());
         if (empty($data["id"])) {
             return $this->respondWithError($response, "Error de validación, por favor recargue la página");

@@ -39,7 +39,7 @@ class RolController extends Controller
     public function list($request, $response)
     {
         $model = new TableModel;
-        $where = "WHERE rol_estado 1= 1";
+        $where = "WHERE rol_estado = 1";
         if ($_SESSION['app_id'] == '1') {
             $where = "";
         }
@@ -59,13 +59,9 @@ class RolController extends Controller
             }
             if ($this->permisos['perm_u'] == '1') {
                 $btnEdit = '<button class="btn btn-success btn-sm" onClick="fntEdit(' . $arrData[$i]['id'] . ')" title="Editar Autor"><i class="bx bx-pencil"></i></button>';
-            } else {
-                $btnEdit = '<button class="btn btn-success btn-sm" title="Editar Autor" disabled><i class="bx bx-penceil"></i></button>';
             }
             if ($this->permisos['perm_d'] == '1') {
                 $btnDelete = '<button class="btn btn-danger btn-sm" onclick="fntDel(' . $arrData[$i]['id'] . ')" title="Eliminar Autor"><i class="bx bxs-trash-alt"></i></button>';
-            } else {
-                $btnDelete = '<button class="btn btn-danger btn-sm" title="Eliminar Autor" disabled><i class="bx bxs-trash-alt"></i></button>';
             }
             $arrData[$i]['opciones'] = '<div class="btn-group" role="group" aria-label="Basic example">' . $btnEdit . ' ' . $btnDelete . '</div>';
         }

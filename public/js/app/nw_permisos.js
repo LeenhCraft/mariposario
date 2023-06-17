@@ -39,7 +39,7 @@ $(document).ready(function () {
     $.post(ajaxUrl, form, function (data, textStatus, jqXHR) {
       divLoading.css("display", "none");
       if (data.status) {
-        $("#modalpermisos").modal("hide");
+        // $("#modalpermisos").modal("hide");
         Swal.fire({
           title: "Exito",
           text: data.message,
@@ -58,6 +58,7 @@ $(document).ready(function () {
           confirmButtonColor: "#007065",
           confirmButtonText: "ok",
         });
+        tb.api().ajax.reload();
       }
     });
   });
@@ -105,6 +106,7 @@ function fntEdit(id) {
         icon: objData.icon,
         confirmButtonText: "ok",
       });
+      tb.api().ajax.reload();
     }
   });
 }
@@ -124,13 +126,18 @@ function fntDel(idp) {
       let ajaxUrl = base_url + "admin/permisos/delete";
       $.post(ajaxUrl, { id: idp }, function (data) {
         if (data.status) {
-          Swal.fire({
-            title: "Exito",
-            text: data.message,
+          // Swal.fire({
+          //   title: "Exito",
+          //   text: data.message,
+          //   icon: "success",
+          //   confirmButtonText: "ok",
+          // });
+          // tb.DataTable().ajax.reload();
+          Toast.fire({
             icon: "success",
-            confirmButtonText: "ok",
+            title: data.message,
           });
-          tb.DataTable().ajax.reload();
+          tb.api().ajax.reload();
         } else {
           Swal.fire({
             title: "Advertencia",
@@ -139,6 +146,7 @@ function fntDel(idp) {
             confirmButtonColor: "#007065",
             confirmButtonText: "ok",
           });
+          tb.api().ajax.reload();
         }
       });
     }
@@ -212,6 +220,7 @@ function fntActv(elem, id, ac) {
           confirmButtonColor: "#007065",
           confirmButtonText: "ok",
         });
+        tb.api().ajax.reload();
       }
     }
   );

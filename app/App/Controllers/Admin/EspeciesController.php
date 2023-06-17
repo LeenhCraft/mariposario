@@ -36,16 +36,24 @@ class EspeciesController extends Controller
 	 */
 	public function index($request, $response)
 	{
+		$js = [];
+		if ($this->permisos['perm_w'] == 1 || $this->permisos['perm_u'] == 1) {
+			$js = [
+				'js/app/plugins/ckeditor/ckeditor.js',
+				'js/app/sample.js',
+				'js/app/nw_especies.js'
+			];
+		}
+
+		$js[] = 'js/app/nw_especies_2.js';
+
 		return $this->render($response, 'App.Especies.Especies', [
 			'titulo_web' => 'Especies',
 			'url' => $request->getUri()->getPath(),
 			'permisos' => $this->permisos,
 			'css' => ['css/app/spinkit.css'],
-			'js' => [
-				'js/app/plugins/ckeditor/ckeditor.js',
-				'js/app/sample.js',
-				'js/app/nw_especies.js'
-			],
+			'js' => $js,
+
 			'tk' => [
 				'name' => $this->guard->getTokenNameKey(),
 				'value' => $this->guard->getTokenValueKey(),
@@ -65,7 +73,7 @@ class EspeciesController extends Controller
 		$model->setId("idespecie");
 		$url = $request->getUri()->getPath();
 		$slug = explode("/", $url);
-		$data = $model->where("es_slug", end($slug))->first();
+		$data = $model->where("es_status", 1)->where("es_slug", end($slug))->first();
 
 		if (empty($data)) {
 			$error = new ErrorController;
@@ -130,6 +138,10 @@ class EspeciesController extends Controller
 	 */
 	public function store($request, $response)
 	{
+		if ($this->permisos["perm_w"] != 1) {
+			return $this->respondWithError($response, "No tiene permisos para realizar esta acción");
+		}
+
 		$data = $this->sanitize($request->getParsedBody());
 		// return $this->respondWithJson($response, $data);
 
@@ -312,16 +324,26 @@ class EspeciesController extends Controller
 		$model->setId("idespecie");
 
 		$existe = $model
-			->orWhere("es_nombre_comun", "LIKE", $data['es_nombre_comun'])
-			->orWhere("es_nombre_cientifico", "LIKE", $data["es_nombre_cientifico"])
-			->first();
+			->query("SELECT SQL_CALC_FOUND_ROWS * FROM ma_especies_1 WHERE (es_nombre_comun LIKE ? OR es_nombre_cientifico LIKE ?) AND es_status = ?", [
+				$data['es_nombre_comun'],
+				$data["es_nombre_cientifico"],
+				1
+			]);
+		// ->orWhere("es_nombre_comun", "LIKE", $data['es_nombre_comun'])
+		// ->orWhere("es_nombre_cientifico", "LIKE", $data["es_nombre_cientifico"])
+		// ->first();
 
-		if (!empty($existe)) {
-			if ($existe['idgenero'] == $data['idgenero'] && $existe['idespecie'] != $data['idespecie']) {
+		// return $this->respondWithJson($response, $existe);
+		// verificar que $existe no este vacio
+
+		if (empty($existe)) {
+			if ($existe['idgenero'] == $data['idgenero'] && $existe['idespecie'] != $data['idespecie'] && $existe["es_status"] == 1) {
 				$msg = "Ya tiene una especie registrado con ese nombre";
 				return $this->respondWithError($response, $msg);
 			}
 		}
+
+		$original = $model->find($data['idespecie']);
 
 		$rq = $model->update($data['idespecie'], [
 			'idgenero' => $data['idgenero'],
@@ -336,8 +358,6 @@ class EspeciesController extends Controller
 		if (!empty($rq)) {
 			$msg = "Datos actualizados.";
 			// 0 en php es igual a false
-
-
 			if ($data["eliminar_img"] == 1) {
 				$msg .= " dentro";
 				$rq = $model->update($data['idespecie'], [
@@ -364,6 +384,28 @@ class EspeciesController extends Controller
 					}
 				}
 			}
+			// cambiar el nombre de la carpea con las imagenes de entrenamiento
+			if ($original["es_nombre_cientifico"] != $data["es_nombre_cientifico"]) {
+				// cambiar el nombre de la carpeta
+				$mConf = new TableModel;
+				$mConf->setTable("ma_configuracion");
+				$mConf->setId("idconfig");
+				$arrConf = json_decode($mConf->first()['valor'], true);
+
+				$carpetaOrigen = $arrConf['carpeta_img_entrenamiento'] . '/' . urls_amigables($original["es_nombre_cientifico"]);
+				$carpetaDestino = $arrConf['carpeta_img_entrenamiento'] . '/' . urls_amigables($data["es_nombre_cientifico"]);
+
+				// veriricar si existe el directorio
+				if (!file_exists($arrConf['carpeta_img_entrenamiento'])) {
+					mkdir($arrConf['carpeta_img_entrenamiento'], 0777, true);
+				}
+
+				// mover la carpeta de imagenes a la carpeta de eliminados
+				if (is_dir($carpetaOrigen)) {
+					rename($carpetaOrigen, $carpetaDestino);
+				}
+			}
+
 			return $this->respondWithSuccess($response, $msg);
 		}
 
@@ -419,6 +461,9 @@ class EspeciesController extends Controller
 	{
 		$data = $this->sanitize($request->getParsedBody());
 		// return $this->respondWithJson($response, $data);
+		if ($this->permisos['perm_d'] != 1) {
+			return $this->respondWithError($response, "No tiene permisos para realizar esta acción");
+		}
 
 		if (empty($data["idespecie"])) {
 			return $this->respondWithError($response, "Error de validación, por favor recargue la página");
@@ -431,8 +476,8 @@ class EspeciesController extends Controller
 		$model = new TableModel;
 		$model->setTable("ma_especies_1");
 		$model->setId("idespecie");
-
 		$rq = $model->find($data['idespecie']);
+
 		if (!empty($rq)) {
 			if ($_ENV["APP_ENV"] === "local") {
 				$rq = $model->delete($data["idespecie"]);
@@ -441,6 +486,25 @@ class EspeciesController extends Controller
 					'es_status' => 0
 				]);
 			}
+			// mover la carpeta de imagenes a la carpeta de eliminados
+			$mConf = new TableModel;
+			$mConf->setTable("ma_configuracion");
+			$mConf->setId("idconfig");
+			$arrConf = json_decode($mConf->first()['valor'], true);
+
+			$carpetaOrigen = $arrConf['carpeta_img_entrenamiento'] . '/' . urls_amigables($rq["es_nombre_cientifico"]);
+			$carpetaDestino = $arrConf['ruta_train_delete'] . urls_amigables($rq["es_nombre_cientifico"]);
+
+			// veriricar si existe el directorio
+			if (!file_exists($arrConf['ruta_train_delete'])) {
+				mkdir($arrConf['ruta_train_delete'], 0777, true);
+			}
+
+			// mover la carpeta de imagenes a la carpeta de eliminados
+			if (is_dir($carpetaOrigen)) {
+				rename($carpetaOrigen, $carpetaDestino);
+			}
+
 			if (!empty($rq)) {
 				$msg = "Datos eliminados correctamente";
 				return $this->respondWithSuccess($response, $msg);

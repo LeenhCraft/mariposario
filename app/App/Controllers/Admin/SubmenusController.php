@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Models\Admin\PermisosModel;
 use App\Models\Admin\SubmenuModel;
 use App\Models\MenuModel;
 use Slim\Csrf\Guard;
@@ -238,12 +239,19 @@ class SubmenusController extends Controller
     {
         $data = $this->sanitize($request->getParsedBody());
         if (empty($data["id"])) {
-            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
+            return $this->respondWithError($response, "No se reconoce la operación, por favor recargue la página");
         }
 
         $model = new SubmenuModel;
         $rq = $model->find($data["id"]);
         if (!empty($rq)) {
+            // comprobar si tiene permisos asignados
+            $modelPermisos = new PermisosModel;
+            $permisos = $modelPermisos->where("idsubmenu", $data["id"])->first();
+            if (!empty($permisos)) {
+                $msg = "No se puede eliminar el submenu, tiene permisos asignados";
+                return $this->respondWithError($response, $msg);
+            }
             $rq = $model->delete($data["id"]);
             if (!empty($rq)) {
                 $msg = "Datos eliminados correctamente";

@@ -139,7 +139,7 @@
                         <div class="sk-chase-dot"></div>
                     </div>
                 </div>
-                <h5>Cargando...</h5>
+                <h5>Cargando</h5>
             </div>
         </div>
     </div>
