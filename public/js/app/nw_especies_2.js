@@ -89,9 +89,6 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
       ).addClass("active");
 
       pagination.html(html.reduce((acc, curr) => acc + curr, ""));
-      $(".total-especies .val")
-        .html(`<h2 class="m-0 p-0">` + arrEspecies.total + `</h2>`)
-        .fadeIn("slow");
 
       url = base_url + "img/placeholder/img-placeholder-dark.jpg";
       if (value.es_imagen_url != "") {
@@ -122,7 +119,10 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
           </div>`;
     });
     cards += `<hr>`;
-    $(".content-card-butter").html(cards);
     // divLoading.css("display", "none");
   }
+  $(".total-especies .val")
+    .html(`<h2 class="m-0 p-0">` + arrEspecies.total + `</h2>`)
+    .fadeIn("slow");
+  $(".content-card-butter").html(cards);
 }

@@ -137,24 +137,31 @@ class Model
         if (is_numeric($cant))
             $start = ($page - 1) * $cant;
 
-        if ($this->sql) {
-            if (!is_numeric($cant))
-                $sql = $this->sql . ($this->orderBy ?? '');
+        // if ($this->sql) {
+        //     if (!is_numeric($cant))
+        //         $sql = $this->sql . ($this->orderBy ?? '');
 
-            if (is_numeric($cant))
-                $sql = $this->sql . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+        //     if (is_numeric($cant))
+        //         $sql = $this->sql . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
 
-            $data = $this->query($sql, $this->data, $this->params)->get();
+        //     $data = $this->query($sql, $this->data, $this->params)->get();
+        // } else {
+        //     if (!is_numeric($cant))
+        //         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '');
+
+        //     if (is_numeric($cant))
+        //         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . $this->join . " " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
+        //     $data = $this->query($sql)->get();
+        // }
+
+        if (!is_numeric($cant)) {
+            $sql = ($this->sql ? $this->sql : "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table}" . $this->join) . ($this->orderBy ?? '');
         } else {
-            if (!is_numeric($cant))
-                $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '');
-
-            if (is_numeric($cant))
-                $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
-
-            // $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table} " . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
-            $data = $this->query($sql)->get();
+            $sql = ($this->sql ? $this->sql : "SELECT SQL_CALC_FOUND_ROWS * FROM {$this->table}" . $this->join) . ($this->orderBy ?? '') . " LIMIT {$start}, {$cant}";
         }
+
+        $data = $this->query($sql, $this->data, $this->params)->get();
+
 
 
         $total = $this->query("SELECT FOUND_ROWS() as total")->first()['total'];
@@ -318,6 +325,21 @@ class Model
         }
 
         $this->join .= " INNER JOIN {$table} ON {$table}.{$first} {$operator} {$this->table}.{$second}";
+        return $this;
+    }
+
+    // funcion inner join
+    public function otherJoin($table, $first, $operator = "=", $table_seconn = null, $second = null)
+    {
+        if ($second === null) {
+            $second = $first;
+        }
+
+        if ($table_seconn === null) {
+            $table_second = $this->table;
+        }
+
+        $this->join .= " INNER JOIN {$table} ON {$table}.{$first} {$operator} {$table_seconn}.{$second}";
         return $this;
     }
 

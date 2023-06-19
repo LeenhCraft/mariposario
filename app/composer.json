@@ -7,7 +7,8 @@
     "slim/csrf": "^1.3",
     "nette/php-generator": "^3.6",
     "intervention/image": "^2.7",
-    "samayo/bulletproof": "^5.0"
+    "samayo/bulletproof": "^5.0",
+    "mpdf/mpdf": "^8.1"
   },
   "autoload": {
     "psr-4": {
