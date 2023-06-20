@@ -256,6 +256,10 @@ class EntrenarController extends Controller
 		$output = shell_exec($command);
 		$output = json_decode($output, true);
 
+		if (!$output["status"]) {
+            return $this->respondWithError($response, $output["message"]);
+        }
+
 		$model5 = new TableModel;
 		$model5->setTable("ma_detalle_modelo");
 		$model5->setId("iddetallemodelo");

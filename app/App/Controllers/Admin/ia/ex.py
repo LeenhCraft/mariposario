@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import json
 
 # Ruta del archivo Python
 archivo_python = os.path.dirname(__file__)+"/id.py "+sys.argv[1]+" "+sys.argv[2]
@@ -17,6 +18,13 @@ try:
     print(salida)
 except subprocess.CalledProcessError as e:
     # Ocurrió un error al ejecutar el comando
-    print("Ocurrió un error al ejecutar el comando:")
-    print("Código de salida:", e.returncode)
-    print("Error:", e.output)
+    data = {
+        "status": False,
+        "message": "Ocurrió un error al ejecutar el comando.",
+        "name":"",
+        "pkl":"",
+        "reporte":""
+    }
+    # Convertir el objeto en una cadena JSON
+    json_data = json.dumps(data)
+    print(json_data)

@@ -23,10 +23,20 @@ try:
     print(salida)
 except subprocess.CalledProcessError as e:
     # Ocurrió un error al ejecutar el comando
-    print("Ocurrió un error al ejecutar el comando:")
-    print("Código de salida:", e.returncode)
-    print("Error:", e.output)
-
+    # print("Ocurrió un error al ejecutar el comando:")
+    # print("Código de salida:", e.returncode)
+    # print("Error:", e.output)
+    # leenh
+    data = {
+        "status": False,
+        "message": "Ocurrió un error al ejecutar el comando.",
+        "name":"",
+        "pkl":"",
+        "reporte":""
+    }
+    # Convertir el objeto en una cadena JSON
+    json_data = json.dumps(data)
+    print(json_data)
 
 # metodo 2
 

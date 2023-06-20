@@ -58,7 +58,7 @@ class HistorialController extends Controller
 		$model = new TableModel;
 		$model->setTable("ma_historial_identificacion");
 		$model->setId("idhistorial");
-		return $model->orderBy("his_fecha", "DESC")->paginate(3);
+		return $model->join("sis_usuarios", "idusuario")->otherJoin("sis_personal", "idpersona", "=", "sis_usuarios", "idpersona")->orderBy("his_fecha", "DESC")->paginate(3);
 	}
 
 	/**

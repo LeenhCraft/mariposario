@@ -23,6 +23,7 @@ use App\Controllers\Admin\ModeloController;
 use App\Controllers\Admin\OrdenesController;
 use App\Controllers\Admin\PermisosController;
 use App\Controllers\Admin\PersonController;
+use App\Controllers\Admin\ReportesController;
 use App\Controllers\Admin\RolController;
 use App\Controllers\Admin\SubmenusController;
 use App\Controllers\Admin\SubfamiliasController;
@@ -256,6 +257,17 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post("/search", ConfiguracionController::class . ":search");
         $group->post("/update", ConfiguracionController::class . ":update");
         $group->post("/delete", ConfiguracionController::class . ":delete");
+    })->add(PermissionMiddleware::class);
+
+    // ruta para configurar variables genereales del sistema
+    $group->group("/reportes", function (RouteCollectorProxy $group) {
+        $group->get("", ReportesController::class . ":index")->add(new RemoveCsrfMiddleware());
+
+        $group->post("", ReportesController::class . ":list");
+        $group->post("/save", ReportesController::class . ":store");
+        $group->post("/search", ReportesController::class . ":search");
+        $group->post("/update", ReportesController::class . ":update");
+        $group->post("/delete", ReportesController::class . ":delete");
     })->add(PermissionMiddleware::class);
 
     // ruta para configurar variables genereales del sistema
