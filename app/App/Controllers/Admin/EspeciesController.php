@@ -111,6 +111,7 @@ class EspeciesController extends Controller
 	 */
 	public function list($request, $response)
 	{
+		/*
 		// sleep(10);
 		$data = $this->sanitize($request->getParsedBody());
 		$model = new TableModel;
@@ -119,6 +120,8 @@ class EspeciesController extends Controller
 		// $arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->paginate_int($data["limit"], $data["page"],  $data['sort'], $data['order']);
 		$arrData = $model->where("es_status", "1")->orderBy("idespecie", "DESC")->paginate_int($data["limit"], $data["page"]);
 		return $this->respondWithJson($response, $arrData);
+		*/
+		return $this->respondWithJson($response, $this->listGet());
 	}
 
 	/**

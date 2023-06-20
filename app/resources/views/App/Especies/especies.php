@@ -3,6 +3,9 @@
     <div class="card-header">
         <div class="row">
             <h3 class="col-6 m-0">Lista de Mariposas</h3>
+            <div class="col">
+                <button class="btn btn-primary float-end recargar-esepcies">Recargar</button>
+            </div>
         </div>
         <hr>
     </div>

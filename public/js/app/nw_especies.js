@@ -202,12 +202,12 @@ function save(ths, e) {
     contentType: false,
     success: function (data) {
       if (data.status) {
+        loadCards(true);
         resetForm();
         Toast.fire({
           icon: "success",
           title: data.message,
         });
-        loadCards();
       } else {
         Swal.fire("Error", data.message, "warning");
       }

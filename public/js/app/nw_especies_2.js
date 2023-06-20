@@ -4,9 +4,16 @@ var dataEspecies = "";
 
 $(document).ready(function () {
   loadCards();
+  // evento clik del boton con clase recargar-esepcies
+  $(".recargar-esepcies").click(function () {
+    loadCards(true);
+  });
 });
 
-function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
+function loadCards(
+  pedirDatos = false,
+  params = { sort: "es_nombre_cientifico", order: "asc" }
+) {
   // capturar el parametro page de la url y loa agrego a params
   let url = new URL(window.location.href);
   let page = url.searchParams.get("page");
@@ -52,6 +59,18 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
             </a>
         </div>
     </div>`;
+  }
+  if (pedirDatos == true) {
+    $.ajax({
+      type: "POST",
+      url: base_url + "admin/especies",
+      data: params,
+      dataType: "json",
+      success: function (data) {
+        arrEspecies = data;
+        loadCards(false);
+      },
+    });
   }
   if (arrEspecies.data.length > 0) {
     // dataEspecies = data.data;

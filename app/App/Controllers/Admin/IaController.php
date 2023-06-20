@@ -185,6 +185,7 @@ class IaController extends Controller
 
         $rq = $model4->create([
             'iddetallemodelo' => $arrModelo['iddetallemodelo'],
+            'idusuario' => $_SESSION['app_id'],
             'his_img' => $bulletproof->getPath(),
             'his_tiempo' => $tiempo,
             'his_inicio' => $inicio,
