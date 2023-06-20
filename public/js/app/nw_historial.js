@@ -1,33 +1,5 @@
 let tb;
 $(document).ready(function () {
-  // tb = $("#tbl").dataTable({
-  //   aProcessing: true,
-  //   aServerSide: true,
-  //   language: {
-  //     url: base_url + "js/app/plugins/dataTable.Spanish.json",
-  //   },
-  //   ajax: {
-  //     url: base_url + "admin/historial",
-  //     method: "POST",
-  //     dataSrc: "",
-  //   },
-  //   columns: [
-  //     { data: "idhistorial" },
-  //     { data: "iddetallemodelo" },
-  //     { data: "his_tiempo" },
-  //     { data: "his_inicio" },
-  //     { data: "his_fin" },
-  //     { data: "his_index" },
-  //     { data: "his_prediccion" },
-  //     { data: "his_fecha" },
-  //     { data: "options" },
-  //   ],
-  //   resonsieve: "true",
-  //   bDestroy: true,
-  //   iDisplayLength: 10,
-  //   // order: [[0, "desc"]],
-  //   scrollX: true,
-  // });
   loadCards();
 });
 function save(ths, e) {
@@ -229,7 +201,7 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
       pagination.html(html.reduce((acc, curr) => acc + curr, ""));
 
       $(".total-historial .val")
-        .html(`<h2 class="m-0 p-0">` + arrHistorial.total + `</h2>`)
+        .html(`<h2 class="m-0 p-0 text-primary fw-bold">` + arrHistorial.total + `</h2>`)
         .fadeIn("slow");
 
       url = base_url + "img/placeholder/img-placeholder.png";
@@ -248,13 +220,18 @@ function loadCards(params = { sort: "es_nombre_cientifico", order: "asc" }) {
         `" style="max-width: 250px;object-fit: cover;">
                   <div class="col mx-5">
                       <label for="defaultFormControlInput" class="form-label">Especie Predicha</label>
-                      <label class="form-control">` +
+                      <label class="form-control border-0 px-0 text-primary fw-bold">` +
         value.his_prediccion +
         `</label>
                       <div class="form-text">Identificación en ` +
         Number(value.his_tiempo).toFixed(2) +
         ` segundos</div>
-                      <button class="btn btn-outline-primary mt-4">Exportar</button>
+                      <div class="form-text">Usuario ` +
+        value.per_nombre +
+        `</div>
+                      <button class="btn btn-outline-primary mt-4 d-none">Ver Resultados</button>
+                      <a href="#" class="btn btn-outline-primary mt-4">Ver</a>
+                      <button class="btn btn-outline-secondary mt-4">Exportar</button>
                   </div>
               </div>
           </div>
