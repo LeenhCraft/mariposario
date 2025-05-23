@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 22-06-2023 a las 23:06:47
--- Versión del servidor: 5.7.33
+-- Tiempo de generación: 23-05-2025 a las 05:47:40
+-- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `crud_modulo` (
-  `idmod` int(11) NOT NULL,
+  `idmod` int NOT NULL,
   `mod_nombre` varchar(255) NOT NULL,
   `mod_descripcion` text NOT NULL,
   `mod_estado` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `crud_modulo`
@@ -72,10 +72,10 @@ INSERT INTO `crud_modulo` (`idmod`, `mod_nombre`, `mod_descripcion`, `mod_estado
 --
 
 CREATE TABLE `ma_clases` (
-  `idclase` int(11) NOT NULL,
-  `idfilo` int(11) NOT NULL,
+  `idclase` int NOT NULL,
+  `idfilo` int NOT NULL,
   `cla_nombre` varchar(200) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -84,9 +84,9 @@ CREATE TABLE `ma_clases` (
 --
 
 CREATE TABLE `ma_configuracion` (
-  `idconfig` int(11) NOT NULL,
-  `nombre` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `valor` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idconfig` int NOT NULL,
+  `nombre` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `valor` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -104,15 +104,15 @@ INSERT INTO `ma_configuracion` (`idconfig`, `nombre`, `valor`, `date`) VALUES
 --
 
 CREATE TABLE `ma_detalle_modelo` (
-  `iddetallemodelo` int(11) NOT NULL,
-  `idmodelo` int(11) NOT NULL,
-  `identrenamiento` int(11) NOT NULL,
-  `det_ruta` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `det_nombre` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `iddetallemodelo` int NOT NULL,
+  `idmodelo` int NOT NULL,
+  `identrenamiento` int NOT NULL,
+  `det_ruta` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `det_nombre` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `det_default` tinyint(1) NOT NULL DEFAULT '0',
-  `det_tiempo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `det_inicio` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `det_fin` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_tiempo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_inicio` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_fin` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `det_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -130,16 +130,16 @@ INSERT INTO `ma_detalle_modelo` (`iddetallemodelo`, `idmodelo`, `identrenamiento
 --
 
 CREATE TABLE `ma_entrenamiento` (
-  `identrenamiento` int(11) NOT NULL,
+  `identrenamiento` int NOT NULL,
   `ent_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ent_ruta_datos_generados` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ent_nombre_datos_generados` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ent_total_imagenes` int(11) NOT NULL,
-  `ent_descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ent_diccionario` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ent_tiempo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ent_inicio` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ent_fin` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ent_ruta_datos_generados` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ent_nombre_datos_generados` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ent_total_imagenes` int NOT NULL,
+  `ent_descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ent_diccionario` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ent_tiempo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ent_inicio` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ent_fin` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ent_default` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -157,8 +157,8 @@ INSERT INTO `ma_entrenamiento` (`identrenamiento`, `ent_fecha`, `ent_ruta_datos_
 --
 
 CREATE TABLE `ma_especies` (
-  `idespecie` int(11) NOT NULL,
-  `idgenero` int(11) NOT NULL,
+  `idespecie` int NOT NULL,
+  `idgenero` int NOT NULL,
   `es_nombre_cientifico` varchar(255) NOT NULL,
   `es_nombre_comun` varchar(255) NOT NULL,
   `es_habitad` varchar(255) NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE `ma_especies` (
   `es_plantas_hospederas` varchar(255) NOT NULL,
   `es_tiempo_de_vida` varchar(255) NOT NULL,
   `es_imagen_url` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -175,8 +175,8 @@ CREATE TABLE `ma_especies` (
 --
 
 CREATE TABLE `ma_especies_1` (
-  `idespecie` int(11) NOT NULL,
-  `idgenero` int(11) NOT NULL,
+  `idespecie` int NOT NULL,
+  `idgenero` int NOT NULL,
   `es_nombre_cientifico` varchar(255) NOT NULL,
   `es_nombre_comun` varchar(255) NOT NULL,
   `es_tamanio` varchar(255) NOT NULL,
@@ -185,7 +185,7 @@ CREATE TABLE `ma_especies_1` (
   `es_slug` varchar(255) NOT NULL,
   `es_status` tinyint(1) NOT NULL DEFAULT '1',
   `es_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `ma_especies_1`
@@ -222,8 +222,8 @@ INSERT INTO `ma_especies_1` (`idespecie`, `idgenero`, `es_nombre_cientifico`, `e
 --
 
 CREATE TABLE `ma_especies_2` (
-  `idespecie` int(11) NOT NULL,
-  `idgenero` int(11) NOT NULL,
+  `idespecie` int NOT NULL,
+  `idgenero` int NOT NULL,
   `es_nombre_cientifico` varchar(255) NOT NULL,
   `es_nombre_comun` varchar(255) NOT NULL,
   `es_tamanio` varchar(255) NOT NULL,
@@ -232,7 +232,7 @@ CREATE TABLE `ma_especies_2` (
   `es_slug` varchar(255) NOT NULL,
   `es_status` tinyint(1) NOT NULL DEFAULT '1',
   `es_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -241,10 +241,10 @@ CREATE TABLE `ma_especies_2` (
 --
 
 CREATE TABLE `ma_familias` (
-  `idfamilia` int(11) NOT NULL,
-  `idsuperfamilia` int(11) NOT NULL,
+  `idfamilia` int NOT NULL,
+  `idsuperfamilia` int NOT NULL,
   `fam_nombre` varchar(255) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -253,10 +253,10 @@ CREATE TABLE `ma_familias` (
 --
 
 CREATE TABLE `ma_familias_1` (
-  `idfamilia` int(11) NOT NULL,
-  `idorden` int(11) NOT NULL,
-  `fam_nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
-  `fam_descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
+  `idfamilia` int NOT NULL,
+  `idorden` int NOT NULL,
+  `fam_nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
+  `fam_descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
   `fam_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -278,10 +278,10 @@ INSERT INTO `ma_familias_1` (`idfamilia`, `idorden`, `fam_nombre`, `fam_descripc
 --
 
 CREATE TABLE `ma_filos` (
-  `idfilo` int(11) NOT NULL,
-  `idreino` int(11) NOT NULL,
+  `idfilo` int NOT NULL,
+  `idreino` int NOT NULL,
   `fi_nombre` varchar(200) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -290,10 +290,10 @@ CREATE TABLE `ma_filos` (
 --
 
 CREATE TABLE `ma_generos` (
-  `idgenero` int(11) NOT NULL,
-  `idgeneros` int(11) NOT NULL,
+  `idgenero` int NOT NULL,
+  `idgeneros` int NOT NULL,
   `gen_nombres` varchar(255) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -302,12 +302,12 @@ CREATE TABLE `ma_generos` (
 --
 
 CREATE TABLE `ma_generos_1` (
-  `idgenero` int(11) NOT NULL,
-  `idsubfamilia` int(11) NOT NULL,
+  `idgenero` int NOT NULL,
+  `idsubfamilia` int NOT NULL,
   `gen_nombres` varchar(255) NOT NULL DEFAULT 'undefined',
   `gen_descripcion` text NOT NULL,
   `gen_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `ma_generos_1`
@@ -341,15 +341,15 @@ INSERT INTO `ma_generos_1` (`idgenero`, `idsubfamilia`, `gen_nombres`, `gen_desc
 --
 
 CREATE TABLE `ma_historial_identificacion` (
-  `idhistorial` int(11) NOT NULL,
-  `iddetallemodelo` int(11) NOT NULL,
-  `idusuario` int(11) NOT NULL DEFAULT '0',
-  `his_img` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `his_tiempo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `his_inicio` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `his_fin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `his_index` int(11) NOT NULL,
-  `his_prediccion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idhistorial` int NOT NULL,
+  `iddetallemodelo` int NOT NULL,
+  `idusuario` int NOT NULL DEFAULT '0',
+  `his_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `his_tiempo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `his_inicio` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `his_fin` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `his_index` int NOT NULL,
+  `his_prediccion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `his_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -373,7 +373,9 @@ INSERT INTO `ma_historial_identificacion` (`idhistorial`, `iddetallemodelo`, `id
 (13, 1, 1, 'predicciones/446646973785088.jpg', '4.4123468399048', '1686881466.9194', '1686881471.3318', 15, 'Caligo Eurilochus', '2023-06-15 21:11:12'),
 (14, 1, 1, 'predicciones/446647223518208.jpg', '4.0244970321655', '1686881528.2768', '1686881532.3013', 18, 'Papilio Crino Fabricius', '2023-06-15 21:12:12'),
 (15, 1, 0, 'predicciones/448341966537728.jpg', '12.94433093071', '1687295274.9307', '1687295287.8751', 3, 'Papilio Cresphontes', '2023-06-20 16:08:08'),
-(16, 1, 1, 'predicciones/448344066360320.jpg', '3.6286358833313', '1687295796.9448', '1687295800.5734', 3, 'Papilio Cresphontes', '2023-06-20 16:16:40');
+(16, 1, 1, 'predicciones/448344066360320.jpg', '3.6286358833313', '1687295796.9448', '1687295800.5734', 3, 'Papilio Cresphontes', '2023-06-20 16:16:40'),
+(17, 1, 1, 'predicciones/696871854326784.jpg', '2.1543328762054', '1747971527.8899', '1747971530.0442', 14, 'Diaethria Anna', '2025-05-22 22:38:50'),
+(18, 1, 1, 'predicciones/696901851972608.jpg', '8.3478960990906', '1747978845.325', '1747978853.6729', 14, 'Diaethria Anna', '2025-05-23 00:40:53');
 
 -- --------------------------------------------------------
 
@@ -382,10 +384,10 @@ INSERT INTO `ma_historial_identificacion` (`idhistorial`, `iddetallemodelo`, `id
 --
 
 CREATE TABLE `ma_modelo` (
-  `idmodelo` int(11) NOT NULL,
-  `mo_nombre` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mo_clasificador` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mo_descriptor` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idmodelo` int NOT NULL,
+  `mo_nombre` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mo_clasificador` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mo_descriptor` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mo_default` tinyint(1) NOT NULL DEFAULT '0',
   `mo_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -404,10 +406,10 @@ INSERT INTO `ma_modelo` (`idmodelo`, `mo_nombre`, `mo_clasificador`, `mo_descrip
 --
 
 CREATE TABLE `ma_ordenes` (
-  `idorden` int(11) NOT NULL,
+  `idorden` int NOT NULL,
   `or_nombre` varchar(200) NOT NULL DEFAULT 'undefined',
-  `idclase` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idclase` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -416,11 +418,11 @@ CREATE TABLE `ma_ordenes` (
 --
 
 CREATE TABLE `ma_ordenes_1` (
-  `idorden` int(11) NOT NULL,
+  `idorden` int NOT NULL,
   `or_nombre` varchar(200) NOT NULL,
   `or_descripcion` varchar(200) NOT NULL,
   `or_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `ma_ordenes_1`
@@ -437,9 +439,9 @@ INSERT INTO `ma_ordenes_1` (`idorden`, `or_nombre`, `or_descripcion`, `or_date`)
 --
 
 CREATE TABLE `ma_reinos` (
-  `idreino` int(11) NOT NULL,
+  `idreino` int NOT NULL,
   `re_nombre` varchar(200) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -448,10 +450,10 @@ CREATE TABLE `ma_reinos` (
 --
 
 CREATE TABLE `ma_subfamilias` (
-  `idsubfamilia` int(11) NOT NULL,
-  `idfamilia` int(11) NOT NULL,
+  `idsubfamilia` int NOT NULL,
+  `idfamilia` int NOT NULL,
   `sub_nombre` varchar(255) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -460,10 +462,10 @@ CREATE TABLE `ma_subfamilias` (
 --
 
 CREATE TABLE `ma_subfamilias_1` (
-  `idsubfamilia` int(11) NOT NULL,
-  `idfamilia` int(11) NOT NULL,
-  `sub_nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
-  `sub_descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idsubfamilia` int NOT NULL,
+  `idfamilia` int NOT NULL,
+  `sub_nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'undefined',
+  `sub_descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -493,10 +495,10 @@ INSERT INTO `ma_subfamilias_1` (`idsubfamilia`, `idfamilia`, `sub_nombre`, `sub_
 --
 
 CREATE TABLE `ma_superfamilias` (
-  `idsuperfamilia` int(11) NOT NULL,
-  `idorden` int(11) NOT NULL,
+  `idsuperfamilia` int NOT NULL,
+  `idorden` int NOT NULL,
   `sp_nombre` varchar(255) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -505,10 +507,10 @@ CREATE TABLE `ma_superfamilias` (
 --
 
 CREATE TABLE `ma_tribus` (
-  `idgeneros` int(11) NOT NULL,
-  `idsubfamilia` int(11) NOT NULL,
+  `idgeneros` int NOT NULL,
+  `idsubfamilia` int NOT NULL,
   `tri_nombres` varchar(255) NOT NULL DEFAULT 'undefined'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -517,15 +519,460 @@ CREATE TABLE `ma_tribus` (
 --
 
 CREATE TABLE `sis_centinela` (
-  `idvisita` int(11) NOT NULL,
-  `vis_cod` int(11) NOT NULL,
-  `idwebusuario` int(11) DEFAULT '0',
+  `idvisita` int NOT NULL,
+  `vis_cod` int NOT NULL,
+  `idwebusuario` int DEFAULT '0',
   `vis_ip` varchar(200) NOT NULL,
   `vis_agente` varchar(255) NOT NULL,
   `vis_method` varchar(10) DEFAULT NULL,
   `vis_url` text,
   `vis_fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `sis_centinela`
+--
+
+INSERT INTO `sis_centinela` (`idvisita`, `vis_cod`, `idwebusuario`, `vis_ip`, `vis_agente`, `vis_method`, `vis_url`, `vis_fechahora`) VALUES
+(1, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-28 22:24:42'),
+(2, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-28 22:24:46'),
+(3, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-28 22:24:47'),
+(4, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-28 22:24:47'),
+(5, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-28 22:24:52'),
+(6, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 22:24:54'),
+(7, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 22:24:54'),
+(8, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 22:24:54'),
+(9, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 22:24:55'),
+(10, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento/especies', '2024-10-28 22:25:43'),
+(11, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/menus', '2024-10-28 22:53:09'),
+(12, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/menus', '2024-10-28 22:53:09'),
+(13, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/menus/search', '2024-10-28 22:53:12'),
+(14, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/submenus', '2024-10-28 22:53:36'),
+(15, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus', '2024-10-28 22:53:36'),
+(16, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/menus', '2024-10-28 22:53:54'),
+(17, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/search', '2024-10-28 22:53:54'),
+(18, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/menus', '2024-10-28 22:54:25'),
+(19, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/search', '2024-10-28 22:54:25'),
+(20, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/menus', '2024-10-28 22:55:39'),
+(21, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/search', '2024-10-28 22:55:39'),
+(22, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/menus', '2024-10-28 22:55:48'),
+(23, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/search', '2024-10-28 22:55:48'),
+(24, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/menus', '2024-10-28 22:56:12'),
+(25, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/submenus/search', '2024-10-28 22:56:12'),
+(26, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-10-28 22:57:37'),
+(27, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:04:41'),
+(28, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:04:52'),
+(29, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:04:52'),
+(30, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:04:52'),
+(31, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:04:57'),
+(32, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-10-28 23:05:01'),
+(33, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:05:03'),
+(34, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:05:04'),
+(35, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:05:04'),
+(36, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:05:05'),
+(37, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-28 23:05:05'),
+(38, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:05:11'),
+(39, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:16:10'),
+(40, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:16:10'),
+(41, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:16:10'),
+(42, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:16:26'),
+(43, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:16:27'),
+(44, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:16:27'),
+(45, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:16:28'),
+(46, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:16:33'),
+(47, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:16:34'),
+(48, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:16:34'),
+(49, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-28 23:16:35'),
+(50, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:20:58'),
+(51, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:21:20'),
+(52, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-28 23:25:14'),
+(53, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-28 23:25:15'),
+(54, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-28 23:25:15'),
+(55, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:25:22'),
+(56, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:26:16'),
+(57, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/favicon.ico', '2024-10-28 23:26:16'),
+(58, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:26:22'),
+(59, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:26:35'),
+(60, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:27:12'),
+(61, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:28:09'),
+(62, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:28:48'),
+(63, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-28 23:29:13'),
+(64, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-28 23:29:13'),
+(65, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-28 23:29:13'),
+(66, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-28 23:29:13'),
+(67, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-28 23:29:14'),
+(68, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-28 23:29:14'),
+(69, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-28 23:29:14'),
+(70, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-28 23:31:24'),
+(71, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-28 23:31:24'),
+(72, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-28 23:31:24'),
+(73, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento', '2024-10-28 23:38:44'),
+(74, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento', '2024-10-28 23:39:39'),
+(75, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento', '2024-10-28 23:40:02'),
+(76, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento', '2024-10-28 23:41:00'),
+(77, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento', '2024-10-28 23:42:13'),
+(78, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 07:53:51'),
+(79, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-29 07:53:55'),
+(80, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 07:53:56'),
+(81, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-29 07:53:56'),
+(82, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 07:54:00'),
+(83, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 07:55:47'),
+(84, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 07:55:47'),
+(85, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 07:55:47'),
+(86, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 07:58:55'),
+(87, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 07:58:56'),
+(88, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 07:58:56'),
+(89, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 07:58:56'),
+(90, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 08:04:29'),
+(91, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 08:04:30'),
+(92, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 08:04:30'),
+(93, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 08:04:30'),
+(94, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 08:07:51'),
+(95, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 08:07:51'),
+(96, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 08:07:51'),
+(97, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 08:07:52'),
+(98, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 08:27:36'),
+(99, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 08:27:36'),
+(100, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 08:27:37'),
+(101, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 08:27:37'),
+(102, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 09:16:23'),
+(103, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 09:16:23'),
+(104, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 09:16:23'),
+(105, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 09:16:24'),
+(106, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-29 12:16:30'),
+(107, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-29 12:16:31'),
+(108, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-29 12:16:31'),
+(109, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-29 13:03:23'),
+(110, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-29 14:16:23'),
+(111, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-29 14:16:24'),
+(112, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-29 14:16:24'),
+(113, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-29 15:12:02'),
+(114, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-29 15:12:03'),
+(115, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-29 15:12:03'),
+(116, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-29 15:20:33'),
+(117, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-29 15:24:28'),
+(118, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-10-29 15:43:02'),
+(119, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/logout', '2024-10-29 15:43:25'),
+(120, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 15:43:25'),
+(121, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 18:13:03'),
+(122, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-29 18:13:07'),
+(123, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 18:13:08'),
+(124, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-29 18:13:08'),
+(125, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-29 18:13:20'),
+(126, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-29 18:29:13'),
+(127, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-29 18:29:14'),
+(128, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-29 18:29:14'),
+(129, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 18:29:32'),
+(130, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 18:29:33'),
+(131, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 18:29:33'),
+(132, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ordenes', '2024-10-29 19:03:21'),
+(133, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/ordenes', '2024-10-29 19:03:21'),
+(134, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/familias', '2024-10-29 19:03:23'),
+(135, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/familias', '2024-10-29 19:03:23'),
+(136, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 19:03:24'),
+(137, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies', '2024-10-29 19:03:29'),
+(138, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies/diaethria-anna', '2024-10-29 19:03:35'),
+(139, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/view', '2024-10-29 19:03:40'),
+(140, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 19:08:40'),
+(141, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/familias', '2024-10-29 19:08:43'),
+(142, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 19:16:37'),
+(143, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 19:16:37'),
+(144, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 19:16:37'),
+(145, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?page=2&perpage=10', '2024-10-29 19:18:31'),
+(146, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 19:18:32'),
+(147, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 19:18:32'),
+(148, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 19:18:32'),
+(149, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?page=1&perpage=10', '2024-10-29 19:18:34'),
+(150, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 19:18:36'),
+(151, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 19:18:48'),
+(152, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 19:18:48'),
+(153, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 19:18:48'),
+(154, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 19:20:55'),
+(155, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 19:20:55'),
+(156, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 19:20:55'),
+(157, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 19:20:56'),
+(158, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?perpage=all', '2024-10-29 19:21:42'),
+(159, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/familias', '2024-10-29 19:27:34'),
+(160, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?perpage=5', '2024-10-29 19:44:25'),
+(161, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 20:42:29'),
+(162, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?page=2&perpage=10', '2024-10-29 20:47:46'),
+(163, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?page=1&perpage=10', '2024-10-29 20:47:48'),
+(164, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 20:51:10'),
+(165, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 20:51:10'),
+(166, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 20:51:10'),
+(167, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2024-10-29 20:56:31'),
+(168, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?page=1&perpage=10', '2024-10-29 20:56:41'),
+(169, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-29 20:56:46'),
+(170, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?perpage=15', '2024-10-29 21:22:57'),
+(171, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/familias', '2024-10-29 22:57:40'),
+(172, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/familias', '2024-10-29 23:17:10'),
+(173, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-29 23:17:18'),
+(174, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-29 23:17:18'),
+(175, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-29 23:17:18'),
+(176, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2024-10-30 00:14:41'),
+(177, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies?perpage=15', '2024-10-30 00:14:44'),
+(178, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-30 00:14:46'),
+(179, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2024-10-30 00:14:51'),
+(180, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/especies/search', '2024-10-30 00:24:54'),
+(181, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-30 20:37:20'),
+(182, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-30 20:37:23'),
+(183, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-30 20:37:24'),
+(184, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-30 20:37:24'),
+(185, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-30 20:37:32'),
+(186, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-30 20:40:07'),
+(187, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-30 20:40:07'),
+(188, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-30 20:40:07'),
+(189, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 05:27:46'),
+(190, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-31 05:31:33'),
+(191, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-10-31 05:31:38'),
+(192, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 05:31:39'),
+(193, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-31 05:31:39'),
+(194, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-31 05:31:42'),
+(195, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-31 05:59:43'),
+(196, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-10-31 05:59:45'),
+(197, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-10-31 05:59:45'),
+(198, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-10-31 05:59:45'),
+(199, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-31 11:57:54'),
+(200, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ordenes', '2024-10-31 11:58:06'),
+(201, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/ordenes', '2024-10-31 11:58:07'),
+(202, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2024-10-31 11:58:07'),
+(203, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2024-10-31 11:58:09'),
+(204, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-31 11:58:17'),
+(205, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-31 11:58:19'),
+(206, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2024-10-31 11:58:24'),
+(207, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-10-31 11:58:45'),
+(208, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-10-31 11:58:45'),
+(209, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-10-31 11:58:45'),
+(210, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-10-31 13:03:54'),
+(211, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 13:50:19'),
+(212, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-10-31 13:50:19'),
+(213, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-10-31 13:50:26'),
+(214, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/entrenamiento/especies', '2024-10-31 13:50:37'),
+(215, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/logout', '2024-10-31 13:50:45'),
+(216, 7378, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 13:50:45'),
+(217, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-02 14:27:23'),
+(218, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-11-02 14:27:27'),
+(219, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-02 14:27:29'),
+(220, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin', '2024-11-02 14:27:29'),
+(221, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-11-02 14:27:35'),
+(222, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-11-02 14:27:39'),
+(223, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-11-02 14:27:39'),
+(224, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-11-02 14:27:39'),
+(225, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2024-11-02 14:27:55'),
+(226, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-19 00:40:07'),
+(227, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-11-19 00:40:11'),
+(228, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-11-19 00:40:13'),
+(229, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-19 00:40:14'),
+(230, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin', '2024-11-19 00:40:14'),
+(231, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-11-19 00:40:18'),
+(232, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-11-19 00:40:24'),
+(233, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-11-19 00:41:09'),
+(234, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-11-19 00:41:12'),
+(235, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-11-19 00:41:20'),
+(236, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2024-11-19 00:42:44'),
+(237, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2024-11-19 00:42:57'),
+(238, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2024-11-19 00:42:57'),
+(239, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2024-11-19 00:42:57'),
+(240, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/logout', '2024-11-19 00:44:12'),
+(241, 3037, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-19 00:44:12'),
+(242, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-12-26 16:34:07'),
+(243, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-12-26 16:34:11'),
+(244, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-12-26 16:34:15'),
+(245, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-12-26 16:34:17'),
+(246, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/login', '2024-12-26 16:34:20'),
+(247, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-12-26 16:34:21'),
+(248, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin', '2024-12-26 16:34:21'),
+(249, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-12-26 16:34:41'),
+(250, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2024-12-26 16:34:48'),
+(251, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2024-12-26 16:34:48'),
+(252, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2024-12-26 16:34:48'),
+(253, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2024-12-26 16:34:49'),
+(254, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-03-25 19:17:30');
+INSERT INTO `sis_centinela` (`idvisita`, `vis_cod`, `idwebusuario`, `vis_ip`, `vis_agente`, `vis_method`, `vis_url`, `vis_fechahora`) VALUES
+(255, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'POST', '/admin/login', '2025-03-25 19:17:33'),
+(256, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-03-25 19:17:35'),
+(257, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin', '2025-03-25 19:17:35'),
+(258, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-03-25 19:17:38'),
+(259, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/ordenes', '2025-03-25 19:33:42'),
+(260, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'POST', '/admin/ordenes', '2025-03-25 19:33:43'),
+(261, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2025-03-25 19:33:45'),
+(262, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-03-25 19:33:50'),
+(263, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2025-03-25 19:33:59'),
+(264, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2025-03-25 19:34:06'),
+(265, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/especies/mariposa-buho', '2025-03-25 19:34:14'),
+(266, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/favicon.ico', '2025-03-25 19:34:19'),
+(267, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-03-25 19:34:43'),
+(268, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-03-25 19:34:43'),
+(269, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-03-25 19:34:43'),
+(270, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-03-25 19:34:51'),
+(271, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-03-25 19:34:58'),
+(272, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-03-25 19:34:59'),
+(273, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-03-25 19:34:59'),
+(274, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-03-25 19:34:59'),
+(275, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-04-01 18:11:46'),
+(276, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'POST', '/admin/login', '2025-04-01 18:11:52'),
+(277, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-04-01 18:11:53'),
+(278, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin', '2025-04-01 18:11:53'),
+(279, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-04-01 18:11:58'),
+(280, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2025-04-01 18:12:05'),
+(281, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/logout', '2025-04-01 18:12:29'),
+(282, 7186, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-04-01 18:12:29'),
+(283, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 19:40:51'),
+(284, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/login', '2025-05-22 19:41:10'),
+(285, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 19:41:11'),
+(286, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin', '2025-05-22 19:41:11'),
+(287, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-22 19:41:22'),
+(288, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 19:41:25'),
+(289, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 19:41:25'),
+(290, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 19:41:25'),
+(291, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 19:41:25'),
+(292, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 19:41:45'),
+(293, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 22:04:09'),
+(294, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/login', '2025-05-22 22:04:36'),
+(295, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 22:04:38'),
+(296, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin', '2025-05-22 22:04:38'),
+(297, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/reportes', '2025-05-22 22:04:45'),
+(298, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:04:48'),
+(299, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:04:48'),
+(300, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:04:48'),
+(301, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:04:48'),
+(302, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/reportes', '2025-05-22 22:04:48'),
+(303, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:04:49'),
+(304, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:04:49'),
+(305, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:04:49'),
+(306, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:04:49'),
+(307, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/rol', '2025-05-22 22:04:52'),
+(308, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:04:52'),
+(309, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:04:52'),
+(310, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:04:53'),
+(311, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:04:53'),
+(312, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/rol', '2025-05-22 22:04:53'),
+(313, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ordenes', '2025-05-22 22:04:54'),
+(314, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:04:54'),
+(315, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:04:55'),
+(316, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:04:55'),
+(317, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:04:55'),
+(318, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ordenes', '2025-05-22 22:04:55'),
+(319, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/especies', '2025-05-22 22:04:56'),
+(320, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:04:56'),
+(321, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:04:56'),
+(322, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:04:56'),
+(323, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:04:56'),
+(324, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/generos', '2025-05-22 22:05:01'),
+(325, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:01'),
+(326, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:01'),
+(327, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:01'),
+(328, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:01'),
+(329, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/generos', '2025-05-22 22:05:01'),
+(330, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/subfamilias', '2025-05-22 22:05:05'),
+(331, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:05'),
+(332, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:05'),
+(333, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:05'),
+(334, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:05'),
+(335, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/subfamilias', '2025-05-22 22:05:05'),
+(336, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/familias', '2025-05-22 22:05:07'),
+(337, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:07'),
+(338, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:07'),
+(339, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:07'),
+(340, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:07'),
+(341, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/familias', '2025-05-22 22:05:07'),
+(342, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ordenes', '2025-05-22 22:05:09'),
+(343, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:09'),
+(344, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:09'),
+(345, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:09'),
+(346, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:09'),
+(347, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ordenes', '2025-05-22 22:05:09'),
+(348, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2025-05-22 22:05:11'),
+(349, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:12'),
+(350, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:12'),
+(351, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:12'),
+(352, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:12'),
+(353, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/entrenamiento', '2025-05-22 22:05:15'),
+(354, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:16'),
+(355, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:16'),
+(356, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:16'),
+(357, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:16'),
+(358, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/modelo', '2025-05-22 22:05:24'),
+(359, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:24'),
+(360, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:24'),
+(361, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:24'),
+(362, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:24'),
+(363, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/modelo/datos-de-entrenamiento', '2025-05-22 22:05:24'),
+(364, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2025-05-22 22:05:24'),
+(365, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/modelo', '2025-05-22 22:05:34'),
+(366, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-22 22:05:37'),
+(367, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:05:38'),
+(368, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:05:38'),
+(369, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:05:38'),
+(370, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:05:38'),
+(371, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/historial', '2025-05-22 22:05:43'),
+(372, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/favicon.ico', '2025-05-22 22:05:47'),
+(373, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:06:19'),
+(374, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-22 22:06:52'),
+(375, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:06:52'),
+(376, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:06:52'),
+(377, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:06:52'),
+(378, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:06:52'),
+(379, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:06:57'),
+(380, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:09:43'),
+(381, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:10:02'),
+(382, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:10:25'),
+(383, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:10:44'),
+(384, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:24:52'),
+(385, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:32:29'),
+(386, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:33:23'),
+(387, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:34:05'),
+(388, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:34:22'),
+(389, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:34:36'),
+(390, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-22 22:36:04'),
+(391, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 22:36:04'),
+(392, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 22:36:04'),
+(393, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 22:36:04'),
+(394, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 22:36:04'),
+(395, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:36:18'),
+(396, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:36:38'),
+(397, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:38:07'),
+(398, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 22:38:47'),
+(399, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-22 23:54:47'),
+(400, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-22 23:54:48'),
+(401, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-22 23:54:48'),
+(402, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-22 23:54:48'),
+(403, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-22 23:54:48'),
+(404, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-22 23:54:53'),
+(405, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:02:00'),
+(406, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-23 00:02:23'),
+(407, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-23 00:02:23'),
+(408, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-23 00:02:23'),
+(409, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-23 00:02:23'),
+(410, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-23 00:02:23'),
+(411, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:02:27'),
+(412, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:26:17'),
+(413, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:27:04'),
+(414, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:27:20'),
+(415, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:27:49'),
+(416, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:29:29'),
+(417, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:29:43'),
+(418, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:30:54'),
+(419, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:31:49'),
+(420, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:32:55'),
+(421, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:34:54'),
+(422, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:37:27'),
+(423, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:37:41'),
+(424, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:38:16'),
+(425, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:39:51'),
+(426, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-23 00:40:07'),
+(427, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-23 00:40:07'),
+(428, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-23 00:40:07'),
+(429, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-23 00:40:07'),
+(430, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-23 00:40:08'),
+(431, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:40:14'),
+(432, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/ia', '2025-05-23 00:40:41'),
+(433, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/.well-known/appspecific/com.chrome.devtools.json', '2025-05-23 00:40:41'),
+(434, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/popper.min.js.map', '2025-05-23 00:40:41'),
+(435, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/css/app/plugins/dropzone.css.map', '2025-05-23 00:40:41'),
+(436, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/js/app/plugins/dropzone-min.js.map', '2025-05-23 00:40:41'),
+(437, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:40:45'),
+(438, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'POST', '/admin/ia/save', '2025-05-23 00:41:33');
 
 -- --------------------------------------------------------
 
@@ -534,14 +981,14 @@ CREATE TABLE `sis_centinela` (
 --
 
 CREATE TABLE `sis_imagenes` (
-  `idimagen` int(11) NOT NULL,
+  `idimagen` int NOT NULL,
   `idgalery` varchar(10) NOT NULL DEFAULT '0',
-  `img_externo` int(11) NOT NULL DEFAULT '0',
+  `img_externo` int NOT NULL DEFAULT '0',
   `img_url` varchar(200) DEFAULT NULL,
-  `img_propietario` int(11) NOT NULL DEFAULT '0',
+  `img_propietario` int NOT NULL DEFAULT '0',
   `img_type` varchar(45) NOT NULL,
   `img_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_imagenes`
@@ -558,16 +1005,16 @@ INSERT INTO `sis_imagenes` (`idimagen`, `idgalery`, `img_externo`, `img_url`, `i
 --
 
 CREATE TABLE `sis_menus` (
-  `idmenu` int(11) NOT NULL,
+  `idmenu` int NOT NULL,
   `men_nombre` varchar(20) NOT NULL,
   `men_url` varchar(100) NOT NULL,
   `men_controlador` varchar(15) DEFAULT NULL,
   `men_icono` varchar(20) NOT NULL,
   `men_url_si` tinyint(1) NOT NULL DEFAULT '0',
-  `men_orden` int(11) DEFAULT NULL,
+  `men_orden` int DEFAULT NULL,
   `men_visible` tinyint(1) NOT NULL DEFAULT '1',
   `men_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_menus`
@@ -588,14 +1035,14 @@ INSERT INTO `sis_menus` (`idmenu`, `men_nombre`, `men_url`, `men_controlador`, `
 --
 
 CREATE TABLE `sis_permisos` (
-  `idpermisos` int(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
-  `idsubmenu` int(11) NOT NULL,
-  `perm_r` int(11) DEFAULT NULL,
-  `perm_w` int(11) DEFAULT NULL,
-  `perm_u` int(11) DEFAULT NULL,
-  `perm_d` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `idpermisos` int NOT NULL,
+  `idrol` int NOT NULL,
+  `idsubmenu` int NOT NULL,
+  `perm_r` int DEFAULT NULL,
+  `perm_w` int DEFAULT NULL,
+  `perm_u` int DEFAULT NULL,
+  `perm_d` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_permisos`
@@ -645,15 +1092,15 @@ INSERT INTO `sis_permisos` (`idpermisos`, `idrol`, `idsubmenu`, `perm_r`, `perm_
 --
 
 CREATE TABLE `sis_personal` (
-  `idpersona` int(11) NOT NULL,
-  `per_dni` int(11) NOT NULL,
+  `idpersona` int NOT NULL,
+  `per_dni` int NOT NULL,
   `per_nombre` varchar(200) NOT NULL,
-  `per_celular` int(11) NOT NULL,
+  `per_celular` int NOT NULL,
   `per_email` varchar(255) DEFAULT NULL,
   `per_direcc` varchar(200) NOT NULL,
   `per_estado` tinyint(1) NOT NULL DEFAULT '1',
   `per_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_personal`
@@ -671,13 +1118,13 @@ INSERT INTO `sis_personal` (`idpersona`, `per_dni`, `per_nombre`, `per_celular`,
 --
 
 CREATE TABLE `sis_rol` (
-  `idrol` int(11) NOT NULL,
+  `idrol` int NOT NULL,
   `rol_cod` varchar(10) DEFAULT NULL,
   `rol_nombre` varchar(255) NOT NULL,
   `rol_descripcion` varchar(255) DEFAULT NULL,
   `rol_estado` tinyint(1) NOT NULL DEFAULT '0',
   `rol_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_rol`
@@ -696,16 +1143,16 @@ INSERT INTO `sis_rol` (`idrol`, `rol_cod`, `rol_nombre`, `rol_descripcion`, `rol
 --
 
 CREATE TABLE `sis_server_email` (
-  `idserveremail` int(11) NOT NULL,
-  `em_host` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `em_usermail` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `em_pass` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `em_port` int(11) NOT NULL,
+  `idserveremail` int NOT NULL,
+  `em_host` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `em_usermail` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `em_pass` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `em_port` int NOT NULL,
   `em_estado` tinyint(1) NOT NULL DEFAULT '1',
   `em_default` tinyint(1) DEFAULT NULL,
   `em_fupdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `em_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `sis_server_email`
@@ -722,17 +1169,17 @@ INSERT INTO `sis_server_email` (`idserveremail`, `em_host`, `em_usermail`, `em_p
 --
 
 CREATE TABLE `sis_submenus` (
-  `idsubmenu` int(11) NOT NULL,
-  `idmenu` int(11) NOT NULL,
+  `idsubmenu` int NOT NULL,
+  `idmenu` int NOT NULL,
   `sub_nombre` varchar(200) NOT NULL,
   `sub_url` varchar(100) NOT NULL,
   `sub_controlador` varchar(50) DEFAULT NULL,
   `sub_metodo` varchar(200) DEFAULT 'index',
   `sub_icono` varchar(20) DEFAULT NULL,
-  `sub_orden` int(11) DEFAULT NULL,
+  `sub_orden` int DEFAULT NULL,
   `sub_visible` tinyint(1) NOT NULL DEFAULT '1',
   `sub_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_submenus`
@@ -768,12 +1215,12 @@ INSERT INTO `sis_submenus` (`idsubmenu`, `idmenu`, `sub_nombre`, `sub_url`, `sub
 --
 
 CREATE TABLE `sis_tareas_ejecutables` (
-  `idtarea` int(11) NOT NULL,
+  `idtarea` int NOT NULL,
   `ta_name` varchar(200) NOT NULL DEFAULT 'undefined',
   `ta_description` text,
   `ta_execute` text,
   `ta_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_tareas_ejecutables`
@@ -791,9 +1238,9 @@ INSERT INTO `sis_tareas_ejecutables` (`idtarea`, `ta_name`, `ta_description`, `t
 --
 
 CREATE TABLE `sis_usuarios` (
-  `idusuario` int(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
-  `idpersona` int(11) NOT NULL,
+  `idusuario` int NOT NULL,
+  `idrol` int NOT NULL,
+  `idpersona` int NOT NULL,
   `usu_usuario` varchar(255) NOT NULL,
   `usu_pass` varchar(255) NOT NULL,
   `usu_token` varchar(255) DEFAULT NULL,
@@ -803,7 +1250,7 @@ CREATE TABLE `sis_usuarios` (
   `usu_twoauth` tinyint(1) NOT NULL DEFAULT '0',
   `usu_code_twoauth` varchar(200) NOT NULL DEFAULT '0',
   `usu_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `sis_usuarios`
@@ -822,15 +1269,15 @@ INSERT INTO `sis_usuarios` (`idusuario`, `idrol`, `idpersona`, `usu_usuario`, `u
 --
 
 CREATE TABLE `web_carritos` (
-  `idcarrito` int(11) NOT NULL,
+  `idcarrito` int NOT NULL,
   `vis_cod` varchar(20) NOT NULL,
-  `idwebusuario` int(11) DEFAULT NULL,
-  `idarticulo` int(11) NOT NULL,
+  `idwebusuario` int DEFAULT NULL,
+  `idarticulo` int NOT NULL,
   `codPedido` varchar(20) NOT NULL DEFAULT '0',
-  `car_cantidad` int(11) NOT NULL DEFAULT '1',
+  `car_cantidad` int NOT NULL DEFAULT '1',
   `car_anulado` tinyint(1) NOT NULL DEFAULT '0',
   `car_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `web_carritos`
@@ -848,13 +1295,13 @@ INSERT INTO `web_carritos` (`idcarrito`, `vis_cod`, `idwebusuario`, `idarticulo`
 --
 
 CREATE TABLE `web_menus` (
-  `idmenu` int(11) NOT NULL,
+  `idmenu` int NOT NULL,
   `me_name` varchar(20) NOT NULL,
   `me_url` varchar(20) DEFAULT NULL,
   `me_publico` tinyint(1) NOT NULL DEFAULT '0',
   `me_status` tinyint(1) NOT NULL DEFAULT '0',
   `me_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `web_menus`
@@ -873,14 +1320,14 @@ INSERT INTO `web_menus` (`idmenu`, `me_name`, `me_url`, `me_publico`, `me_status
 --
 
 CREATE TABLE `web_submenus` (
-  `idsubmenu` int(11) NOT NULL,
-  `idmenu` int(11) DEFAULT '0',
+  `idsubmenu` int NOT NULL,
+  `idmenu` int DEFAULT '0',
   `me_name` varchar(20) NOT NULL,
   `me_url` varchar(20) NOT NULL,
   `me_publico` tinyint(1) NOT NULL DEFAULT '0',
   `me_status` tinyint(1) NOT NULL DEFAULT '0',
   `me_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `web_submenus`
@@ -899,7 +1346,7 @@ INSERT INTO `web_submenus` (`idsubmenu`, `idmenu`, `me_name`, `me_url`, `me_publ
 --
 
 CREATE TABLE `web_usuarios` (
-  `idwebusuario` int(11) NOT NULL,
+  `idwebusuario` int NOT NULL,
   `usu_ndoc` varchar(12) DEFAULT NULL,
   `usu_nombre` varchar(45) NOT NULL,
   `usu_cuenta` tinyint(1) NOT NULL DEFAULT '0',
@@ -915,7 +1362,7 @@ CREATE TABLE `web_usuarios` (
   `usu_activo` tinyint(1) NOT NULL DEFAULT '0',
   `usu_factivo` datetime DEFAULT NULL,
   `usu_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `web_usuarios`
@@ -932,15 +1379,15 @@ INSERT INTO `web_usuarios` (`idwebusuario`, `usu_ndoc`, `usu_nombre`, `usu_cuent
 --
 
 CREATE TABLE `web_visitas` (
-  `idvisita` int(11) NOT NULL,
-  `vis_cod` int(11) NOT NULL,
-  `idwebusuario` int(11) DEFAULT '0',
+  `idvisita` int NOT NULL,
+  `vis_cod` int NOT NULL,
+  `idwebusuario` int DEFAULT '0',
   `vis_ip` varchar(200) NOT NULL,
   `vis_agente` varchar(255) NOT NULL,
   `vis_method` varchar(10) DEFAULT NULL,
   `vis_url` varchar(200) DEFAULT NULL,
   `vis_fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `web_visitas`
@@ -950,7 +1397,22 @@ INSERT INTO `web_visitas` (`idvisita`, `vis_cod`, `idwebusuario`, `vis_ip`, `vis
 (1, 9614, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'GET', '/admin/login', '2023-06-18 20:24:43'),
 (2, 9402, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'GET', '/admin/login', '2023-06-20 16:07:15'),
 (3, 1678, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'GET', '/admin/login', '2023-06-21 00:09:51'),
-(4, 3638, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'GET', '/admin/login', '2023-06-21 11:55:01');
+(4, 3638, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'GET', '/admin/login', '2023-06-21 11:55:01'),
+(5, 7194, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-28 22:24:42'),
+(6, 2687, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 07:53:51'),
+(7, 8508, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-29 15:43:25'),
+(8, 6673, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-30 20:37:20'),
+(9, 9231, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 05:27:46'),
+(10, 7378, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-10-31 13:50:45'),
+(11, 4930, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-02 14:27:23'),
+(12, 9329, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-19 00:40:07'),
+(13, 3037, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-11-19 00:44:12'),
+(14, 3304, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/login', '2024-12-26 16:34:07'),
+(15, 3868, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-03-25 19:17:30'),
+(16, 4240, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-04-01 18:11:46'),
+(17, 7186, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-04-01 18:12:29'),
+(18, 4020, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 19:40:51'),
+(19, 3300, 0, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'GET', '/admin/login', '2025-05-22 22:04:09');
 
 --
 -- Índices para tablas volcadas
@@ -1191,223 +1653,223 @@ ALTER TABLE `web_visitas`
 -- AUTO_INCREMENT de la tabla `crud_modulo`
 --
 ALTER TABLE `crud_modulo`
-  MODIFY `idmod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=390;
+  MODIFY `idmod` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=390;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_clases`
 --
 ALTER TABLE `ma_clases`
-  MODIFY `idclase` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idclase` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_configuracion`
 --
 ALTER TABLE `ma_configuracion`
-  MODIFY `idconfig` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idconfig` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_detalle_modelo`
 --
 ALTER TABLE `ma_detalle_modelo`
-  MODIFY `iddetallemodelo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iddetallemodelo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_entrenamiento`
 --
 ALTER TABLE `ma_entrenamiento`
-  MODIFY `identrenamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `identrenamiento` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_especies`
 --
 ALTER TABLE `ma_especies`
-  MODIFY `idespecie` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idespecie` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_especies_1`
 --
 ALTER TABLE `ma_especies_1`
-  MODIFY `idespecie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idespecie` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_especies_2`
 --
 ALTER TABLE `ma_especies_2`
-  MODIFY `idespecie` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idespecie` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_familias`
 --
 ALTER TABLE `ma_familias`
-  MODIFY `idfamilia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idfamilia` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_familias_1`
 --
 ALTER TABLE `ma_familias_1`
-  MODIFY `idfamilia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idfamilia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_filos`
 --
 ALTER TABLE `ma_filos`
-  MODIFY `idfilo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idfilo` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_generos`
 --
 ALTER TABLE `ma_generos`
-  MODIFY `idgenero` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idgenero` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_generos_1`
 --
 ALTER TABLE `ma_generos_1`
-  MODIFY `idgenero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idgenero` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_historial_identificacion`
 --
 ALTER TABLE `ma_historial_identificacion`
-  MODIFY `idhistorial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idhistorial` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_modelo`
 --
 ALTER TABLE `ma_modelo`
-  MODIFY `idmodelo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idmodelo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_ordenes`
 --
 ALTER TABLE `ma_ordenes`
-  MODIFY `idorden` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idorden` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_ordenes_1`
 --
 ALTER TABLE `ma_ordenes_1`
-  MODIFY `idorden` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idorden` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_reinos`
 --
 ALTER TABLE `ma_reinos`
-  MODIFY `idreino` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idreino` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_subfamilias`
 --
 ALTER TABLE `ma_subfamilias`
-  MODIFY `idsubfamilia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idsubfamilia` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_subfamilias_1`
 --
 ALTER TABLE `ma_subfamilias_1`
-  MODIFY `idsubfamilia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idsubfamilia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_superfamilias`
 --
 ALTER TABLE `ma_superfamilias`
-  MODIFY `idsuperfamilia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idsuperfamilia` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ma_tribus`
 --
 ALTER TABLE `ma_tribus`
-  MODIFY `idgeneros` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idgeneros` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idvisita` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idvisita` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_imagenes`
 --
 ALTER TABLE `sis_imagenes`
-  MODIFY `idimagen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idimagen` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`
 --
 ALTER TABLE `sis_menus`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idmenu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_permisos`
 --
 ALTER TABLE `sis_permisos`
-  MODIFY `idpermisos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `idpermisos` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_personal`
 --
 ALTER TABLE `sis_personal`
-  MODIFY `idpersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idpersona` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_rol`
 --
 ALTER TABLE `sis_rol`
-  MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idrol` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_server_email`
 --
 ALTER TABLE `sis_server_email`
-  MODIFY `idserveremail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idserveremail` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_submenus`
 --
 ALTER TABLE `sis_submenus`
-  MODIFY `idsubmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `idsubmenu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_tareas_ejecutables`
 --
 ALTER TABLE `sis_tareas_ejecutables`
-  MODIFY `idtarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idtarea` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_usuarios`
 --
 ALTER TABLE `sis_usuarios`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idusuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `web_carritos`
 --
 ALTER TABLE `web_carritos`
-  MODIFY `idcarrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idcarrito` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `web_menus`
 --
 ALTER TABLE `web_menus`
-  MODIFY `idmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idmenu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `web_submenus`
 --
 ALTER TABLE `web_submenus`
-  MODIFY `idsubmenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idsubmenu` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `web_usuarios`
 --
 ALTER TABLE `web_usuarios`
-  MODIFY `idwebusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idwebusuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `web_visitas`
 --
 ALTER TABLE `web_visitas`
-  MODIFY `idvisita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idvisita` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
