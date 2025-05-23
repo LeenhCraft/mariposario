@@ -35,6 +35,7 @@ class ReportesController extends Controller
 	 */
 	public function index($request, $response)
 	{
+		/*
 		$mpdf = new Mpdf();
 		// iniciar alamcenamiento en buffer
 		ob_start();
@@ -58,11 +59,12 @@ class ReportesController extends Controller
 		$mpdf->WriteHTML($html);
 		// $mpdf->WriteHTML('<h1>Hello world!</h1>');
 		$mpdf->Output('filename.pdf', "I");
+		*/
 		return $this->render($response, 'App.Reportes.Reportes', [
 			'titulo_web' => 'Reportes',
 			'url' => $request->getUri()->getPath(),
 			'permisos' => $this->permisos,
-			'css' => ['css/app/spinkit.css'],
+			// 'css' => ['css/app/spinkit.css'],
 			// 'js' => ['js/app/nw_historial.js'],
 			'tk' => [
 				'name' => $this->guard->getTokenNameKey(),

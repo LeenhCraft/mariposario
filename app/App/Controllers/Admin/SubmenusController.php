@@ -99,8 +99,8 @@ class SubmenusController extends Controller
 
         $rq = $model->create([
             "idmenu" => $data["idmenu"],
-            "sub_nombre" => ucfirst($data["name"]),
-            "sub_url" => $data['url'],
+            "sub_nombre" => ucwords($data["name"]),
+            "sub_url" => strtolower($data['url']),
             "sub_controlador" => $data['controller'],
             "sub_metodo" => $data['method'],
             "sub_icono" => $data['icon'] ?: "bx-circle",

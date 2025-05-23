@@ -134,11 +134,11 @@ class IaController extends Controller
         $diccionario = array_flip($diccionario);
 
         // Ejecutar el archivo Python y pasarle las variables
-        $command = escapeshellcmd('python ' . __DIR__ . '/ia/ex.py ' . $data['files']['photo']['tmp_name'] . ' ' . $arrModelo["det_ruta"]);
+         $command = escapeshellcmd('C:\Users\LEENH\anaconda3\envs\mariposario\python.exe ' . __DIR__ . '/ia/ex.py ' . $data['files']['photo']['tmp_name'] . ' ' . $arrModelo["det_ruta"]);
         $output = shell_exec($command);
         $output = json_decode($output, true);
         $predic = $output["message"];
-
+        
         // dep([$output, $diccionario], 1);
 
         // buscar el $output["message"] en el diccionario

@@ -48,8 +48,8 @@ $app->group('/me', function (RouteCollectorProxy $group) {
     $group->post('/forgot-password', AccountController::class . ':changePassword');
 })->add(new RegisterMiddleware());
 
-$app->group('/carrito', function (RouteCollectorProxy $group) {
-    $group->get("", CarritoController::class . ':index');
+// $app->group('/carrito', function (RouteCollectorProxy $group) {
+//     $group->get("", CarritoController::class . ':index');
 
-    $group->post("/add", CarritoController::class . ':agregar');
-});
+//     $group->post("/add", CarritoController::class . ':agregar');
+// });

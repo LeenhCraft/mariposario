@@ -7,7 +7,7 @@ import json
 archivo_python = os.path.dirname(__file__)+"/id.py "+sys.argv[1]+" "+sys.argv[2]
 
 # Comando a ejecutar
-comando = f"python {archivo_python}"
+comando = rf"C:\Users\LEENH\anaconda3\envs\mariposario\python.exe {archivo_python}"
 
 try:
     # Ejecutar el comando y capturar la salida
@@ -17,6 +17,11 @@ try:
     # print("Ejecución exitosa. Salida:")
     print(salida)
 except subprocess.CalledProcessError as e:
+    
+    # mostrar el error
+    # print("Error al ejecutar el comando. Código de salida:", e.returncode)
+    # print("Salida de error:", e.output)
+    
     # Ocurrió un error al ejecutar el comando
     data = {
         "status": False,

@@ -38,7 +38,7 @@ use App\Middleware\RemoveCsrfMiddleware;
 
 $app->get('/admin/login', LoginAdminController::class . ':index')->add(new AdminMiddleware)->add(new RemoveCsrfMiddleware());
 
-$app->get('/admin/lnh', function ($request, $response, $args) {
+$app->get('/admin/snowflake', function ($request, $response, $args) {
     $snow = new Snowflake(1);
     $response->getBody()->write("Hello<br>" . $snow->generateId());
     return $response;

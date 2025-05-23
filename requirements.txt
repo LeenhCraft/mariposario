@@ -4,5 +4,5 @@ joblib
 Pillow
 scikit-learn
 numpy
-ast
-opencv-python
+# ast
+opencv-python==4.5.3.56
