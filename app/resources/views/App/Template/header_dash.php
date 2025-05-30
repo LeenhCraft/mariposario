@@ -95,7 +95,7 @@
                         <div class="w-100">
                             <div class="navbar-nav align-items-center w-100">
                                 <div class="nav-item d-flex align-items-center w-100">
-                                    <a class="w-100 border-0 app-header__logo text-dark text-start text-break" onclick="window.location.reload()"><?php echo $_ENV['APP_NAME'] . ' - ' . $_ENV['APP_DESCRIPTION']; ?></a>
+                                    <a class="w-100 border-0 app-header__logo text-dark text-start text-break" onclick="window.location.reload()"><?php echo $_ENV['APP_NAME']; ?></a>
                                 </div>
                             </div>
                         </div>

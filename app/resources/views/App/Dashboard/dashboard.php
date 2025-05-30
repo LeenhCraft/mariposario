@@ -16,36 +16,13 @@
             </div>
         </div>
     </div>
-    <?php if ($_ENV['APP_ENV'] === "local") : ?>
-        <div class="col-12 col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <a href="https://themeselection.com/item/sneat-bootstrap-html-admin-template/" target="_blank">
-                        <img class="rounded-3" src="https://themeselection.com/wp-content/uploads/edd/2022/07/sneat-bootstrap-html-admin-dashboard-dark.png" alt="" height="140">
-                    </a>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
     <div class="col-12 col-sm-10 col-md-6 col-lg-6 mb-4">
         <div class="card h-100">
             <div class="card-header">
-                <h1>Identificar Mariposa</h1>
+                <h1>Identificar</h1>
             </div>
             <div class="card-body">
                 <a class="btn btn-primary" href="<?= base_url() . 'admin/ia' ?>">Empezar</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <h4>Visitar el Catalogo de la Vida</h4>
-            </div>
-            <div class="card-body text-center">
-                <a href="https://www.catalogueoflife.org/" target="_blank">
-                    <img class="rounded-3" src="https://www.catalogueoflife.org/images/col_logo.svg" alt="">
-                </a>
             </div>
         </div>
     </div>
